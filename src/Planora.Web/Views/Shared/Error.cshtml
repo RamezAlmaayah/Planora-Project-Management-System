@@ -1,0 +1,66 @@
+@model ErrorViewModel
+
+@{
+    ViewData["Title"] = "Error";
+    Layout = "_ErrorLayout";
+}
+
+<section class="error-shell">
+
+    <div class="error-copy">
+
+        <span class="error-kicker">
+            UNEXPECTED ERROR
+        </span>
+
+        <div class="error-code">
+            500
+        </div>
+
+        <h1>
+            Something went wrong.
+        </h1>
+
+        <p>
+            Planora could not complete this request.
+            Please return to the application and try again.
+        </p>
+
+        @if (Model.ShowRequestId)
+        {
+            <div class="error-trace">
+                Request ID: @Model.RequestId
+            </div>
+        }
+
+        <div class="error-actions">
+
+            <a asp-controller="Home"
+               asp-action="Index"
+               class="error-primary">
+                Back to Planora
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="error-visual">
+
+        <div class="error-illustration">
+
+            <div class="error-warning">
+
+                <span>!</span>
+
+            </div>
+
+            <strong class="error-security-label">
+                Temporary interruption
+            </strong>
+
+        </div>
+
+    </div>
+
+</section>

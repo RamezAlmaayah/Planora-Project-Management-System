@@ -1,0 +1,44 @@
+@model Planora.Web.ViewModels.Issues.IssueFormViewModel
+
+@{
+    ViewData["Title"] = "Edit Issue";
+    Layout = "_AppLayout";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/projects.css" asp-append-version="true" />
+}
+
+<div class="project-form-v3-page">
+    <div class="project-form-v3-back">
+        <a asp-action="Details" asp-route-projectId="@Model.ProjectId" asp-route-id="@Model.Id">
+            &larr; Back to issue
+        </a>
+    </div>
+    <section class="project-form-v3-header">
+        <span class="projects-v3-kicker">ISSUES</span>
+        <h1>Edit issue</h1>
+        <p>@Model.ProjectName</p>
+    </section>
+    <form class="issues-form-v3 project-form-v3" asp-action="Edit" asp-route-projectId="@Model.ProjectId" asp-route-id="@Model.Id"
+          method="post" data-single-submit>
+        @Html.AntiForgeryToken()
+        <input asp-for="Id" type="hidden" />
+        <input asp-for="ProjectId" type="hidden" />
+        <input asp-for="ExpectedStatus" type="hidden" />
+        <section class="project-form-v3-panel">
+            <partial name="_Form" model="Model" />
+        </section>
+        <div class="project-form-v3-actions">
+            <a asp-action="Details" asp-route-projectId="@Model.ProjectId" asp-route-id="@Model.Id"
+               class="detail-v3-secondary">Cancel</a>
+            <button type="submit" class="project-form-v3-submit">Save changes</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/task-collaboration.js" asp-append-version="true"></script>
+}
+

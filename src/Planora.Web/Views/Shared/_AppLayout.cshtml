@@ -1,0 +1,597 @@
+@using Planora.Infrastructure.Identity
+@inject Microsoft.AspNetCore.Identity.UserManager<ApplicationUser> UserManager
+@{
+    string pageTitle = ViewData["Title"]?.ToString() ?? "Planora";
+
+    string currentController =
+        ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
+
+    string currentAction =
+        ViewContext.RouteData.Values["action"]?.ToString() ?? "";
+
+    bool isAdmin =
+        User.IsInRole("Admin");
+
+    bool isProjectManager =
+        User.IsInRole("Project Manager");
+
+    bool canManageProjects =
+        isAdmin || isProjectManager;
+
+    ApplicationUser? currentApplicationUser =
+        await UserManager.GetUserAsync(User);
+
+    string fullName =
+        !string.IsNullOrWhiteSpace(currentApplicationUser?.FullName)
+            ? currentApplicationUser.FullName
+            : User.Identity?.Name ?? "Member";
+
+    string displayName =
+        fullName.Contains('@')
+            ? fullName.Split('@')[0]
+            : fullName;
+
+    string topbarInitial =
+        string.IsNullOrWhiteSpace(displayName)
+            ? "U"
+            : displayName[..1].ToUpperInvariant();
+
+    string? topbarProfileImagePath =
+        currentApplicationUser?.ProfileImagePath;
+
+    string topbarRoleLabel =
+        isAdmin
+            ? "Admin"
+            : isProjectManager
+                ? "Project Manager"
+                : User.IsInRole("Scrum Master")
+                    ? "Scrum Master"
+                    : User.IsInRole("Developer")
+                        ? "Developer"
+                        : User.IsInRole("QA Tester")
+                            ? "QA Tester"
+                            : "Member";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0" />
+
+    <title>@pageTitle - Planora</title>
+
+    <link rel="stylesheet"
+          href="~/css/planora-app.css"
+          asp-append-version="true" />
+
+    <link rel="stylesheet"
+          href="~/css/notifications.css"
+          asp-append-version="true" />
+
+    @await RenderSectionAsync(
+    "Styles",
+    required: false)
+</head>
+
+<body>
+
+    <div class="workspace-shell">
+
+        <!-- =====================================================
+             SIDEBAR
+             ===================================================== -->
+
+        <aside class="workspace-sidebar"
+               id="workspaceSidebar">
+
+            <!-- BRAND -->
+
+            <div class="sidebar-brand">
+    <img src="~/images/brand/planora-logo.png"
+         asp-append-version="true"
+         alt="Planora"
+         class="sidebar-brand-logo" />
+
+    <span>Planora</span>
+</div>
+
+
+            <!-- =================================================
+                 MAIN NAVIGATION
+                 ================================================= -->
+
+            <nav class="sidebar-nav" aria-label="Planora navigation">
+
+                <!-- DASHBOARD -->
+
+                <a asp-controller="Dashboard"
+                   asp-action="Index"
+                   class="sidebar-link @(currentController == "Dashboard" ? "active" : "")">
+
+                    <span class="sidebar-link-icon">
+
+                        <svg viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.9"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+
+                            <rect x="3"
+                                  y="3"
+                                  width="7"
+                                  height="7"
+                                  rx="1.5" />
+
+                            <rect x="14"
+                                  y="3"
+                                  width="7"
+                                  height="7"
+                                  rx="1.5" />
+
+                            <rect x="3"
+                                  y="14"
+                                  width="7"
+                                  height="7"
+                                  rx="1.5" />
+
+                            <rect x="14"
+                                  y="14"
+                                  width="7"
+                                  height="7"
+                                  rx="1.5" />
+
+                        </svg>
+
+                    </span>
+
+                    <span class="sidebar-link-text">
+                        Dashboard
+                    </span>
+
+                </a>
+
+
+                @if (isAdmin)
+                {
+                    <a asp-controller="AdminActivity"
+                       asp-action="Index"
+                       class="sidebar-link @(currentController == "AdminActivity" ? "active" : "")">
+                        <span class="sidebar-link-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5"/><path d="M4 19h16"/><path d="m7 15 4-4 3 2 5-6"/></svg>
+                        </span>
+                        <span class="sidebar-link-text">Activity &amp; presence</span>
+                    </a>
+                    <a asp-controller="AdminUsers"
+                       asp-action="Index"
+                       class="sidebar-link @(currentController == "AdminUsers" ? "active" : "")">
+
+                    <span class="sidebar-link-icon">
+
+                        <svg viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.9"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+
+                            <path d="M3 12h4l3-7 4 14 3-7h4" />
+
+                        </svg>
+
+                    </span>
+
+                        <span class="sidebar-link-text">Admin users</span>
+                    </a>
+
+                    <a asp-controller="AdminLogs"
+                       asp-action="Index"
+                       class="sidebar-link @(currentController == "AdminLogs" ? "active" : "")">
+                        <span class="sidebar-link-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 5h16M4 12h16M4 19h10" />
+                            </svg>
+                        </span>
+                        <span class="sidebar-link-text">System logs</span>
+                    </a>
+                }
+
+
+                <!-- PROJECTS -->
+
+                <a asp-controller="Projects"
+                   asp-action="Index"
+                   class="sidebar-link @(currentController == "Projects" || currentController == "ProjectMembers" ? "active" : "")">
+
+                    <span class="sidebar-link-icon">
+
+                        <svg viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.9"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+
+                            <path d="M3 6.5A2.5 2.5 0 0 1 5.5 4H9l2 2h7.5A2.5 2.5 0 0 1 21 8.5v9A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5Z" />
+
+                            <path d="M3 9h18" />
+
+                        </svg>
+
+                    </span>
+
+                    <span class="sidebar-link-text">
+                        Projects
+                    </span>
+
+                </a>
+
+
+            </nav>
+
+
+            <!-- =================================================
+                 PROJECTS SECTION
+                 ================================================= -->
+
+            <div class="sidebar-section">
+
+                <div class="sidebar-section-heading-row">
+
+                    <span class="sidebar-section-heading">
+                        Projects
+                    </span>
+
+                    <span class="sidebar-section-plus">
+                        +
+                    </span>
+
+                </div>
+
+
+                <!-- ALL PROJECTS -->
+
+                <a asp-controller="Projects"
+                   asp-action="Index"
+                   class="sidebar-small-link">
+
+                    <span class="project-small-icon">
+
+                        <svg viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.9"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+
+                            <path d="M3 6.5A2.5 2.5 0 0 1 5.5 4H9l2 2h7.5A2.5 2.5 0 0 1 21 8.5v9A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5Z" />
+
+                        </svg>
+
+                    </span>
+
+                    <span>
+                        All Projects
+                    </span>
+
+                </a>
+
+
+                <!-- ACTIVE PROJECTS -->
+
+                <a asp-controller="Projects"
+                   asp-action="Index"
+                   asp-route-status="Active"
+                   class="sidebar-small-link">
+
+                    <span class="project-small-icon">
+
+                        <svg viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.9"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+
+                            <path d="M4 17 10 11l4 4 6-8" />
+
+                            <path d="M15 7h5v5" />
+
+                        </svg>
+
+                    </span>
+
+                    <span>
+                        Active Projects
+                    </span>
+
+                </a>
+
+
+                <!-- PROJECT TEAMS -->
+
+                <a asp-controller="Projects"
+                   asp-action="Index"
+                   class="sidebar-small-link">
+
+                    <span class="project-small-icon">
+
+                        <svg viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.9"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+
+                            <circle cx="9"
+                                    cy="7"
+                                    r="4" />
+
+                            <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+
+                        </svg>
+
+                    </span>
+
+                    <span>
+                        Project Teams
+                    </span>
+
+                </a>
+
+            </div>
+
+
+            <!-- =================================================
+                 USER SECTION
+                 ================================================= -->
+
+            <div class="sidebar-member-section">
+
+                <div class="sidebar-section-heading">
+                    Member
+                </div>
+
+                <div class="sidebar-person">
+
+                    <div class="sidebar-person-copy">
+
+                        <strong>
+                            @fullName
+                        </strong>
+
+                        <span>
+                            @(
+                            isAdmin
+                                ? "Admin"
+                                : isProjectManager
+                                    ? "Project Manager"
+                                    : "Member"
+                        )
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 LOGOUT
+                 ================================================= -->
+
+            <form asp-controller="Account"
+                  asp-action="Logout"
+                  method="post"
+                  class="sidebar-logout-form">
+
+                <button type="submit"
+                        class="sidebar-logout">
+
+                    <span class="sidebar-logout-icon">
+
+                        <svg viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.9"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+
+                            <path d="M10 17l5-5-5-5" />
+
+                            <path d="M15 12H3" />
+
+                            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+
+                        </svg>
+
+                    </span>
+
+                    <span>
+                        Log out
+                    </span>
+
+                </button>
+
+            </form>
+
+        </aside>
+
+        <div class="sidebar-backdrop"
+             id="sidebarBackdrop"
+             aria-hidden="true"></div>
+
+
+        <!-- =====================================================
+             MAIN AREA
+             ===================================================== -->
+
+        <div class="workspace-main">
+
+            <!-- =================================================
+                 TOPBAR
+                 ================================================= -->
+
+            <header class="workspace-topbar">
+
+                <button type="button"
+                        class="sidebar-toggle"
+                        id="sidebarToggle"
+                        aria-label="Open navigation"
+                        aria-controls="workspaceSidebar"
+                        aria-expanded="false">
+                    <svg viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="2"
+                         stroke-linecap="round">
+                        <path d="M4 7h16" />
+                        <path d="M4 12h16" />
+                        <path d="M4 17h16" />
+                    </svg>
+                </button>
+
+                <form asp-controller="Projects"
+                      asp-action="Index"
+                      method="get"
+                      class="topbar-search">
+
+                    <span class="topbar-search-icon">
+
+                        <svg viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="2"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+
+                            <circle cx="11"
+                                    cy="11"
+                                    r="7" />
+
+                            <path d="m20 20-3.5-3.5" />
+
+                        </svg>
+
+                    </span>
+
+                    <input type="search"
+                           name="search"
+                           aria-label="Search projects"
+                           placeholder="Search projects" />
+
+                </form>
+
+
+                <div class="topbar-actions">
+
+                    @await Component.InvokeAsync("NotificationBell")
+
+                    <div class="topbar-user">
+
+                        <div class="topbar-user-avatar">
+
+                            @if (!string.IsNullOrWhiteSpace(topbarProfileImagePath))
+                            {
+                                <img src="@topbarProfileImagePath"
+                                     alt="@displayName profile photo" />
+                            }
+                            else
+                            {
+                                @topbarInitial
+                            }
+
+                        </div>
+
+                        <div class="topbar-user-info">
+
+                            <strong title="@displayName">
+                                @displayName
+                            </strong>
+
+                            <span>
+                                @topbarRoleLabel
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    @if (canManageProjects)
+                    {
+                        <a asp-controller="Projects"
+                           asp-action="Create"
+                           class="topbar-primary-button">
+
+                            <svg viewBox="0 0 24 24"
+                                 fill="none"
+                                 stroke="currentColor"
+                                 stroke-width="2"
+                                 stroke-linecap="round">
+
+                                <path d="M12 5v14" />
+                                <path d="M5 12h14" />
+
+                            </svg>
+
+                            <span>
+                                Add project
+                            </span>
+
+                        </a>
+                    }
+
+                </div>
+
+            </header>
+
+
+            <!-- =================================================
+                 PAGE CONTENT
+                 ================================================= -->
+
+            <main class="workspace-content">
+
+                @RenderBody()
+
+            </main>
+
+        </div>
+
+    </div>
+
+
+    <script src="~/js/planora-app.js"
+            asp-append-version="true">
+    </script>
+
+    @if (User.Identity?.IsAuthenticated == true)
+    {
+        <script src="~/lib/signalr/signalr.min.js" asp-append-version="true"></script>
+        <script src="~/js/planora-presence-client.js" asp-append-version="true"></script>
+    }
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+    @await RenderSectionAsync(
+    "Scripts",
+    required: false)
+
+</body>
+
+</html>
+
+
+
+
+

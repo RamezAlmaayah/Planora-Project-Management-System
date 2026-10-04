@@ -1,0 +1,148 @@
+@model Planora.Web.ViewModels.Profile.ProfileViewModel
+
+@{
+    ViewData["Title"] = "Profile";
+    Layout = "_AppLayout";
+
+    string initial =
+        string.IsNullOrWhiteSpace(Model.FullName)
+            ? "U"
+            : Model.FullName[..1].ToUpperInvariant();
+}
+
+@section Styles {
+    <link rel="stylesheet"
+          href="~/css/projects.css"
+          asp-append-version="true" />
+}
+
+<div class="project-form-v3-page">
+
+    <section class="project-form-v3-header">
+        <div>
+            <span class="project-form-v3-kicker">
+                ACCOUNT SETTINGS
+            </span>
+
+            <h1>Profile</h1>
+
+            <p>
+                Manage your personal information and profile photo.
+            </p>
+        </div>
+    </section>
+
+    @if (TempData["SuccessMessage"] is string success)
+    {
+        <div class="v3-alert v3-alert-success">
+            @success
+        </div>
+    }
+
+    <form asp-controller="Profile"
+          asp-action="Index"
+          method="post"
+          enctype="multipart/form-data"
+          class="project-form-v3">
+
+        <div asp-validation-summary="ModelOnly"
+             class="project-form-v3-validation">
+        </div>
+
+        <section class="project-form-v3-panel">
+
+            <div class="project-form-v3-panel-head">
+                <div>
+                    <span>PROFILE PHOTO</span>
+                    <h2>Your picture</h2>
+                    <p>JPG, PNG or WEBP. Maximum 5 MB.</p>
+                </div>
+            </div>
+
+            <div style="display:flex;align-items:center;gap:22px;">
+
+                @if (!string.IsNullOrWhiteSpace(Model.ProfileImagePath))
+                {
+                    <img src="@Model.ProfileImagePath"
+                         alt="Profile photo"
+                         style="width:88px;height:88px;border-radius:50%;object-fit:cover;" />
+                }
+                else
+                {
+                    <div style="width:88px;height:88px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#f0eee9;font-size:28px;font-weight:600;">
+                        @initial
+                    </div>
+                }
+
+                <div class="project-form-v3-field"
+                     style="flex:1;">
+                    <label asp-for="ProfileImage">
+                        Choose image
+                    </label>
+
+                    <input asp-for="ProfileImage"
+                           type="file"
+                           accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" />
+
+                    <span asp-validation-for="ProfileImage"
+                          class="project-form-v3-error">
+                    </span>
+                </div>
+
+            </div>
+
+        </section>
+
+        <section class="project-form-v3-panel">
+
+            <div class="project-form-v3-fields">
+
+                <div class="project-form-v3-field project-form-v3-full">
+                    <label asp-for="FullName">
+                        Full name
+                    </label>
+
+                    <input asp-for="FullName" />
+
+                    <span asp-validation-for="FullName"
+                          class="project-form-v3-error">
+                    </span>
+                </div>
+
+                <div class="project-form-v3-field project-form-v3-full">
+                    <label>Email</label>
+
+                    <input value="@Model.Email"
+                           readonly />
+                </div>
+
+            </div>
+
+        </section>
+
+        <div class="project-form-v3-actions">
+
+            @if (!string.IsNullOrWhiteSpace(Model.ProfileImagePath))
+            {
+                <button type="submit"
+                        formaction="@Url.Action("RemovePhoto", "Profile")"
+                        formmethod="post"
+                        class="project-form-v3-cancel">
+                    Remove photo
+                </button>
+            }
+
+            <button type="submit"
+                    class="project-form-v3-submit">
+                Save profile
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

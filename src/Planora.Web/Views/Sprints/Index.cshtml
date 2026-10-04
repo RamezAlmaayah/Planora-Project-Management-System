@@ -1,0 +1,185 @@
+@model Planora.Web.ViewModels.Sprints.SprintIndexViewModel
+@using Planora.Domain.Enums
+@using System.Globalization
+
+@{
+    ViewData["Title"] = "Sprints";
+    Layout = "_AppLayout";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/projects.css" asp-append-version="true" />
+}
+
+<div class="projects-v3-page">
+
+    @if (TempData["SuccessMessage"] is string success)
+    {
+        <div class="v3-alert v3-alert-success">@success</div>
+    }
+
+    @if (TempData["ErrorMessage"] is string error)
+    {
+        <div class="v3-alert">@error</div>
+    }
+
+    <section class="projects-v3-header">
+        <div>
+            <span class="projects-v3-kicker">SCRUM</span>
+            <h1>Sprints</h1>
+            <p>@Model.ProjectName</p>
+        </div>
+
+        @if (Model.CanManage && !Model.IsArchived)
+        {
+            <a asp-action="Create"
+               asp-route-projectId="@Model.ProjectId"
+               class="project-form-v3-submit">
+                + Create sprint
+            </a>
+        }
+    </section>
+
+    <section class="projects-v3-panel">
+
+        <div class="projects-v3-toolbar">
+            <div>
+                <h2>Project sprints</h2>
+                <span>@Model.Sprints.Count sprints</span>
+            </div>
+        </div>
+
+        @if (Model.Sprints.Count == 0)
+        {
+            <div class="projects-v3-empty">
+                <strong>No sprints yet</strong>
+                <p>Create the first sprint for this Scrum project.</p>
+            </div>
+        }
+        else
+        {
+            <div class="projects-v3-table sprint-list-v3">
+
+                <div class="projects-v3-table-head">
+                    <span>Sprint</span>
+                    <span>Status</span>
+                    <span>Timeline</span>
+                    <span>Backlog</span>
+                    <span>Tasks</span>
+                    <span></span>
+                </div>
+
+                @foreach (var sprint in Model.Sprints)
+                {
+                    string statusText =
+                        sprint.Status == SprintStatus.NotStarted
+                            ? "Not Started"
+                            : sprint.Status == SprintStatus.InProgress
+                                ? "In Progress"
+                                : "Completed";
+
+                    <div class="projects-v3-row sprint-list-v3-row">
+
+                        <div class="projects-v3-project">
+                            <div class="projects-v3-avatar">S</div>
+
+                            <div>
+                                <strong>@sprint.Name</strong>
+                                <span>@sprint.Goal</span>
+                                
+                            </div>
+                        </div>
+
+                        <div>
+                            <span class="projects-v3-status">
+                                @statusText
+                            </span>
+                        </div>
+
+                        <div class="projects-v3-timeline">
+                            <strong>
+                                @sprint.StartDate.ToString("dd MMM yyyy", CultureInfo.InvariantCulture)
+                            </strong>
+                            <span>
+                                @sprint.EndDate.ToString("dd MMM yyyy", CultureInfo.InvariantCulture)
+                            </span>
+                        </div>
+
+                        <div>@sprint.BacklogItemCount</div>
+
+                        <div>@sprint.TaskCount</div>
+
+                        <div class="backlog-row-actions">
+
+                                <a asp-controller="Tasks" asp-action="Index"
+                                   asp-route-projectId="@Model.ProjectId"
+                                   asp-route-sprintId="@sprint.Id"
+                                   class="backlog-action backlog-action-edit">View Tasks</a>
+                                <a asp-controller="Tasks" asp-action="Board"
+                                   asp-route-projectId="@Model.ProjectId"
+                                   asp-route-sprintId="@sprint.Id"
+                                   class="backlog-action backlog-action-edit">Scrum Board</a>
+
+                            @if (Model.CanManage)
+                            {
+                                <a asp-action="ManageBacklog"
+                                   asp-route-projectId="@Model.ProjectId"
+                                   asp-route-id="@sprint.Id"
+                                   class="backlog-action backlog-action-edit">
+                                    Plan backlog
+                                </a>
+                            }
+
+                            @if (Model.CanManage && !Model.IsArchived &&
+                                 sprint.Status != SprintStatus.Completed)
+                            {
+                                <a asp-action="Edit"
+                                   asp-route-projectId="@Model.ProjectId"
+                                   asp-route-id="@sprint.Id"
+                                   class="backlog-action backlog-action-edit">
+                                    Edit
+                                </a>
+                            }
+
+                            @if (Model.CanManage && !Model.IsArchived &&
+                                 sprint.Status == SprintStatus.NotStarted)
+                            {
+                                <form asp-action="Start"
+                                      asp-route-projectId="@Model.ProjectId"
+                                      asp-route-id="@sprint.Id"
+                                      method="post">
+                                    <button class="backlog-action backlog-action-edit"
+                                            type="submit">
+                                        Start
+                                    </button>
+                                </form>
+                            }
+
+                            @if (Model.CanManage && !Model.IsArchived &&
+                                 sprint.Status == SprintStatus.InProgress)
+                            {
+                                <form asp-action="Complete"
+                                      asp-route-projectId="@Model.ProjectId"
+                                      asp-route-id="@sprint.Id"
+                                      method="post">
+                                    <button class="backlog-action backlog-action-edit"
+                                            type="submit">
+                                        Complete
+                                    </button>
+                                </form>
+                            }
+
+                        </div>
+
+                    </div>
+                }
+
+            </div>
+        }
+
+    </section>
+
+</div>
+
+
+

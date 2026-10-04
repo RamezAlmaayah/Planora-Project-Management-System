@@ -1,0 +1,42 @@
+@model Planora.Web.ViewModels.Issues.IssueFormViewModel
+
+@{
+    ViewData["Title"] = "Report Issue";
+    Layout = "_AppLayout";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/projects.css" asp-append-version="true" />
+}
+
+<div class="project-form-v3-page">
+    <div class="project-form-v3-back">
+        <a asp-action="Index" asp-route-projectId="@Model.ProjectId">&larr; Back to issues</a>
+    </div>
+    <section class="project-form-v3-header">
+        <span class="projects-v3-kicker">ISSUES</span>
+        <h1>Report issue</h1>
+        <p>@Model.ProjectName</p>
+    </section>
+    <form class="issues-form-v3 project-form-v3" asp-action="Create" asp-route-projectId="@Model.ProjectId"
+          method="post" data-single-submit>
+        @Html.AntiForgeryToken()
+        <input asp-for="ProjectId" type="hidden" />
+        <input asp-for="Id" type="hidden" />
+        <input asp-for="VModelTestExecutionId" type="hidden" />
+        <section class="project-form-v3-panel">
+            <partial name="_Form" model="Model" />
+        </section>
+        <div class="project-form-v3-actions">
+            <a asp-action="Index" asp-route-projectId="@Model.ProjectId"
+               class="detail-v3-secondary">Cancel</a>
+            <button type="submit" class="project-form-v3-submit">Report issue</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/task-collaboration.js" asp-append-version="true"></script>
+}
+

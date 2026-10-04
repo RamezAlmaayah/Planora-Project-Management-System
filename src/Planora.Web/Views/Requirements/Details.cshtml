@@ -1,0 +1,382 @@
+@model Planora.Web.ViewModels.Requirements.RequirementDetailsViewModel
+@using Planora.Domain.Enums
+@using System.Globalization
+
+@{
+    ViewData["Title"] = Model.Requirement.Identifier;
+    Layout = "_AppLayout";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/projects.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/requirements.css" asp-append-version="true" />
+}
+
+<div class="project-detail-v3 requirements-v3-page">
+    <div class="detail-v3-back">
+        <a asp-action="Index" asp-route-projectId="@Model.Requirement.ProjectId">
+            &larr; Back to requirements
+        </a>
+    </div>
+
+    @if (TempData["SuccessMessage"] is string success)
+    {
+        <div class="v3-alert v3-alert-success" role="status">@success</div>
+    }
+    @if (Model.IsReadOnly)
+    {
+        <div class="v3-alert">Requirements are read-only because this project is archived.</div>
+    }
+
+    <section class="detail-v3-header">
+        <div class="detail-v3-heading">
+            <div class="detail-v3-tags">
+                <span class="projects-v3-method">@Model.Requirement.Type</span>
+                <span class="projects-v3-status">@Model.Requirement.Status</span>
+            </div>
+            <h1>@Model.Requirement.Identifier</h1>
+            <p>@Model.Requirement.ProjectName</p>
+            <small class="requirements-v3-ieee-title-note">
+                Requirement format aligned with IEEE SRS standards.
+            </small>
+        </div>
+        @if (Model.CanEdit)
+        {
+            <div class="detail-v3-actions">
+                <a asp-action="Edit" asp-route-projectId="@Model.Requirement.ProjectId"
+                   asp-route-id="@Model.Requirement.Id"
+                   class="detail-v3-secondary">Edit requirement</a>
+            </div>
+        }
+    </section>
+
+    <section class="detail-v3-info-grid requirements-v3-info-grid">
+        <article><span>Status</span><strong>@Model.Requirement.Status</strong></article>
+        <article><span>Type</span><strong>@Model.Requirement.Type</strong></article>
+        <article><span>Priority</span><strong>@Model.Requirement.Priority</strong></article>
+        @if (Model.Requirement.Type == RequirementType.NonFunctional)
+        {
+            <article><span>NFR Category</span><strong>@(Model.Requirement.NfrCategory?.ToString() ?? "Not specified")</strong></article>
+        }
+        <article><span>Created by</span><strong>@Model.Requirement.CreatorName</strong></article>
+        <article><span>Created</span><strong>@Model.Requirement.CreatedAt.ToString("dd MMM yyyy HH:mm", CultureInfo.InvariantCulture)</strong></article>
+        <article><span>Updated</span><strong>@(Model.Requirement.UpdatedAt?.ToString("dd MMM yyyy HH:mm", CultureInfo.InvariantCulture) ?? "Not updated")</strong></article>
+    </section>
+
+    <section class="project-form-v3-panel requirements-v3-content-panel">
+        <div class="project-form-v3-panel-head">
+            <div>
+                <span>@(Model.Requirement.Type == RequirementType.Functional
+                    ? "FUNCTIONAL REQUIREMENT"
+                    : "NON-FUNCTIONAL REQUIREMENT")</span>
+                <h2>@(Model.Requirement.Type == RequirementType.Functional
+                    ? Model.Requirement.Title
+                    : Model.Requirement.NfrCategory?.ToString() ?? "Not specified")</h2>
+            </div>
+        </div>
+        <div class="requirements-v3-copy">
+            @if (Model.Requirement.Type == RequirementType.Functional)
+            {
+                <h3>Requirement Name</h3>
+                <p>@Model.Requirement.Title</p>
+            }
+
+            <h3>@(Model.Requirement.Type == RequirementType.Functional
+                ? "Description"
+                : "Requirement Description")</h3>
+            @foreach (var line in Model.Requirement.Description.Replace("\r\n", "\n").Split('\n'))
+            {
+                <p>@line</p>
+            }
+            <h3>@(Model.Requirement.Type == RequirementType.Functional
+                ? "Business Rationale"
+                : "Rationale")</h3>
+            @if (string.IsNullOrWhiteSpace(Model.Requirement.Rationale))
+            {
+                <p>No rationale recorded.</p>
+            }
+            else
+            {
+                @foreach (var line in Model.Requirement.Rationale.Replace("\r\n", "\n").Split('\n'))
+                {
+                    <p>@line</p>
+                }
+            }
+
+            @if (Model.Requirement.Type == RequirementType.Functional)
+            {
+                <h3>Dependency / Preconditions</h3>
+                @if (string.IsNullOrWhiteSpace(Model.Requirement.Preconditions))
+                {
+                    <p>No preconditions recorded.</p>
+                }
+                else
+                {
+                    @foreach (var line in Model.Requirement.Preconditions.Replace("\r\n", "\n").Split('\n'))
+                    {
+                        <p>@line</p>
+                    }
+                }
+
+                <h3>Exception Scenario</h3>
+                @if (string.IsNullOrWhiteSpace(Model.Requirement.ExceptionScenario))
+                {
+                    <p>No exception scenario recorded.</p>
+                }
+                else
+                {
+                    @foreach (var line in Model.Requirement.ExceptionScenario.Replace("\r\n", "\n").Split('\n'))
+                    {
+                        <p>@line</p>
+                    }
+                }
+            }
+            else
+            {
+                <h3>Related Functional Requirements</h3>
+                @if (Model.Requirement.RelatedFunctionalRequirements.Count == 0)
+                {
+                    <p>No related functional requirements.</p>
+                }
+                else
+                {
+                    <div class="requirements-v3-related-frs">
+                        @foreach (var related in Model.Requirement.RelatedFunctionalRequirements)
+                        {
+                            <a asp-action="Details" asp-route-projectId="@Model.Requirement.ProjectId"
+                               asp-route-id="@related.RequirementId">
+                                <strong>@related.Identifier</strong>
+                                <span>@related.Title</span>
+                            </a>
+                        }
+                    </div>
+                }
+            }
+        </div>
+    </section>
+
+    @if (Model.CanManage && Model.AllowedTargets.Count > 0)
+    {
+        <section class="project-form-v3-panel requirements-v3-actions-panel">
+            <div class="project-form-v3-panel-head">
+                <div><span>WORKFLOW</span><h2>Status actions</h2></div>
+            </div>
+            <div class="requirements-v3-action-row">
+                @foreach (RequirementStatus target in Model.AllowedTargets)
+                {
+                    <form asp-action="Transition" method="post" data-single-submit>
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="ProjectId" value="@Model.Requirement.ProjectId" />
+                        <input type="hidden" name="RequirementId" value="@Model.Requirement.Id" />
+                        <input type="hidden" name="ExpectedStatus" value="@Model.Requirement.Status" />
+                        <input type="hidden" name="TargetStatus" value="@target" />
+                        <button type="submit" class="project-form-v3-submit">Move to @target</button>
+                    </form>
+                }
+            </div>
+        </section>
+    }
+
+    @if (Model.Requirement.Type == RequirementType.Functional)
+    {
+        <section class="project-form-v3-panel requirements-v3-link-panel">
+        <div class="project-form-v3-panel-head">
+            <div><span>DEPENDENCIES</span><h2>Related requirements</h2></div>
+        </div>
+        <div class="requirements-v3-section-body">
+            @if (Model.Requirement.Dependencies.Count == 0)
+            {
+                <p class="requirements-v3-empty-copy">No requirement dependencies yet.</p>
+            }
+            else
+            {
+                <div class="requirements-v3-link-list">
+                    @foreach (var dependency in Model.Requirement.Dependencies)
+                    {
+                        <article>
+                            <div>
+                                <a asp-action="Details" asp-route-projectId="@Model.Requirement.ProjectId"
+                                   asp-route-id="@dependency.RequirementId"><strong>@dependency.Identifier</strong></a>
+                                <span>@dependency.Title</span>
+                            </div>
+                            @if (Model.CanManage)
+                            {
+                                <form asp-action="RemoveDependency" method="post" data-single-submit>
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="ProjectId" value="@Model.Requirement.ProjectId" />
+                                    <input type="hidden" name="RequirementId" value="@Model.Requirement.Id" />
+                                    <input type="hidden" name="DependencyId" value="@dependency.LinkId" />
+                                    <button type="submit" class="backlog-action backlog-action-delete">Remove</button>
+                                </form>
+                            }
+                        </article>
+                    }
+                </div>
+            }
+
+            @if (Model.Requirement.Dependents.Count > 0)
+            {
+                <div class="requirements-v3-dependent-list">
+                    <strong>Required by</strong>
+                    @foreach (var dependent in Model.Requirement.Dependents)
+                    {
+                        <a asp-action="Details" asp-route-projectId="@Model.Requirement.ProjectId"
+                           asp-route-id="@dependent.RequirementId">@dependent.Identifier</a>
+                    }
+                </div>
+            }
+
+            @if (Model.CanManage && Model.DependencyOptions.Count > 0)
+            {
+                <form asp-action="AddDependency" method="post"
+                      class="requirements-v3-inline-form" data-single-submit>
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="ProjectId" value="@Model.Requirement.ProjectId" />
+                    <input type="hidden" name="RequirementId" value="@Model.Requirement.Id" />
+                    <label for="requirement-dependency">Add dependency</label>
+                    <select id="requirement-dependency" name="DependsOnRequirementId" required>
+                        <option value="">Select requirement</option>
+                        @foreach (var option in Model.DependencyOptions)
+                        {
+                            <option value="@option.Id">@option.Identifier &mdash; @option.Title</option>
+                        }
+                    </select>
+                    <button type="submit" class="project-form-v3-submit">Add</button>
+                </form>
+            }
+        </div>
+        </section>
+    }
+
+    <section class="project-form-v3-panel requirements-v3-link-panel">
+        <div class="project-form-v3-panel-head">
+            <div><span>REAL TRACEABILITY</span><h2>Design and Implementation Artifacts</h2></div>
+            <a asp-action="Traceability" asp-route-projectId="@Model.Requirement.ProjectId">Project traceability &rarr;</a>
+        </div>
+        <div class="requirements-v3-section-body">
+            <h3>Real Design Artifacts</h3>
+            @if (Model.Requirement.DesignArtifacts.Count == 0)
+            {
+                <p class="requirements-v3-empty-copy">No linked design artifacts.</p>
+            }
+            else
+            {
+                <div class="artifact-v3-links">
+                    @foreach (var artifact in Model.Requirement.DesignArtifacts)
+                    {
+                        <a asp-controller="DesignArtifacts" asp-action="Details"
+                           asp-route-projectId="@Model.Requirement.ProjectId" asp-route-id="@artifact.Id">
+                            <strong>@artifact.Identifier</strong><span>@artifact.Title</span><em>@artifact.Type</em>
+                        </a>
+                    }
+                </div>
+            }
+            <h3>Derived Implementation Artifacts</h3>
+            @if (Model.Requirement.ImplementationArtifacts.Count == 0)
+            {
+                <p class="requirements-v3-empty-copy">No linked implementation artifacts.</p>
+            }
+            else
+            {
+                <div class="artifact-v3-links">
+                    @foreach (var artifact in Model.Requirement.ImplementationArtifacts)
+                    {
+                        <a asp-controller="ImplementationArtifacts" asp-action="Details"
+                           asp-route-projectId="@Model.Requirement.ProjectId" asp-route-id="@artifact.Id">
+                            <strong>@artifact.Identifier</strong><span>@artifact.Title</span><em>@artifact.Type</em>
+                        </a>
+                    }
+                </div>
+            }
+            <h3>Verification Test Cases</h3>
+            @{ var verificationTests = Model.Requirement.DesignArtifacts
+                    .SelectMany(design => design.ImplementationArtifacts)
+                    .SelectMany(implementation => implementation.TestCases)
+                    .DistinctBy(testCase => testCase.Id)
+                    .OrderBy(testCase => testCase.Identifier)
+                    .ToList(); }
+            @if (verificationTests.Count == 0)
+            {
+                <p class="requirements-v3-empty-copy">No linked test cases.</p>
+            }
+            else
+            {
+                <div class="artifact-v3-links">
+                    @foreach (var testCase in verificationTests)
+                    {
+                        <a asp-controller="VModelTesting" asp-action="Details"
+                           asp-route-projectId="@Model.Requirement.ProjectId" asp-route-id="@testCase.Id">
+                            <strong>@testCase.Identifier</strong><span>@testCase.Title</span><em>@(testCase.LatestResult?.ToString() ?? "Not Executed")</em>
+                        </a>
+                    }
+                </div>
+            }
+        </div>
+    </section>
+
+    <section class="project-form-v3-panel requirements-v3-link-panel">
+        <div class="project-form-v3-panel-head">
+            <div><span>MANUAL TRACEABILITY REFERENCE</span><h2>Manual Traceability References</h2></div>
+            <a asp-action="Traceability" asp-route-projectId="@Model.Requirement.ProjectId">
+                Project traceability &rarr;
+            </a>
+        </div>
+        <div class="requirements-v3-section-body">
+            @if (Model.Requirement.Traces.Count == 0)
+            {
+                <p class="requirements-v3-empty-copy">No linked manual traceability references yet.</p>
+            }
+            else
+            {
+                <div class="requirements-v3-link-list">
+                    @foreach (var trace in Model.Requirement.Traces)
+                    {
+                        <article>
+                            <div>
+                                <strong>@trace.ReferenceCode</strong>
+                                <span>@trace.Stage reference@(string.IsNullOrWhiteSpace(trace.Description) ? string.Empty : $" — {trace.Description}")</span>
+                            </div>
+                            @if (Model.CanManage)
+                            {
+                                <form asp-action="RemoveTrace" method="post" data-single-submit>
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="ProjectId" value="@Model.Requirement.ProjectId" />
+                                    <input type="hidden" name="RequirementId" value="@Model.Requirement.Id" />
+                                    <input type="hidden" name="TraceId" value="@trace.Id" />
+                                    <button type="submit" class="backlog-action backlog-action-delete">Remove</button>
+                                </form>
+                            }
+                        </article>
+                    }
+                </div>
+            }
+
+            @if (Model.CanManage)
+            {
+                <form asp-action="AddTrace" method="post"
+                      class="requirements-v3-trace-form" data-single-submit>
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="ProjectId" value="@Model.Requirement.ProjectId" />
+                    <input type="hidden" name="RequirementId" value="@Model.Requirement.Id" />
+                    <div>
+                        <label for="trace-stage">Stage</label>
+                        <select id="trace-stage" name="Stage" asp-items="Html.GetEnumSelectList<RequirementTraceStage>()"></select>
+                    </div>
+                    <div>
+                        <label for="trace-code">Reference code</label>
+                        <input id="trace-code" name="ReferenceCode" maxlength="100" required autocomplete="off" />
+                    </div>
+                    <div class="requirements-v3-trace-description">
+                        <label for="trace-description">Description</label>
+                        <input id="trace-description" name="Description" maxlength="2000" autocomplete="off" />
+                    </div>
+                    <button type="submit" class="project-form-v3-submit">Add reference</button>
+                </form>
+            }
+        </div>
+    </section>
+</div>
+
+@section Scripts {
+    <script src="~/js/task-collaboration.js" asp-append-version="true"></script>
+}

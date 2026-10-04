@@ -1,0 +1,263 @@
+@{
+    ViewData["Title"] = "Project Management";
+    Layout = "_PublicLayout";
+}
+
+<section id="home" class="landing-hero">
+
+    <div class="landing-hero-copy">
+
+        <span class="landing-kicker">
+            SMART PROJECT MANAGEMENT
+        </span>
+
+        <h1>
+            Plan, manage and deliver
+            <span>better projects.</span>
+        </h1>
+
+        <p>
+            Planora brings Scrum and V-Model workflows into one
+            organized workspace for teams, tasks, quality assurance,
+            requirements and project progress.
+        </p>
+
+        <div class="landing-hero-actions">
+
+            <a asp-controller="Account"
+               asp-action="Register"
+               class="landing-primary">
+                Start with Planora
+            </a>
+
+            <a href="#features"
+               class="landing-secondary">
+                Explore features
+            </a>
+
+        </div>
+
+        <div class="landing-trust">
+
+            <span>Scrum</span>
+            <span>V-Model</span>
+            <span>QA Workflow</span>
+            <span>AI Assisted</span>
+
+        </div>
+
+    </div>
+
+
+    <div class="landing-visual">
+
+        <div class="landing-dashboard-card">
+
+            <div class="landing-card-top">
+
+                <div>
+                    <span>PROJECT OVERVIEW</span>
+                    <strong>Product Development</strong>
+                </div>
+
+                <span class="landing-status">
+                    Active
+                </span>
+
+            </div>
+
+            <div class="landing-progress-block">
+
+                <div class="landing-progress-heading">
+                    <span>Overall progress</span>
+                    <strong>72%</strong>
+                </div>
+
+                <div class="landing-progress-track">
+                    <span></span>
+                </div>
+
+            </div>
+
+            <div class="landing-mini-grid">
+
+                <article>
+                    <span>Tasks</span>
+                    <strong>24</strong>
+                    <small>18 completed</small>
+                </article>
+
+                <article>
+                    <span>Sprint</span>
+                    <strong>04</strong>
+                    <small>In progress</small>
+                </article>
+
+                <article>
+                    <span>QA</span>
+                    <strong>07</strong>
+                    <small>Pending review</small>
+                </article>
+
+            </div>
+
+            <div class="landing-board">
+
+                <div>
+                    <span>TO DO</span>
+                    <article>Authentication flow</article>
+                    <article>Dashboard filters</article>
+                </div>
+
+                <div>
+                    <span>IN PROGRESS</span>
+                    <article>Project reports</article>
+                </div>
+
+                <div>
+                    <span>DONE</span>
+                    <article>Team management</article>
+                    <article>Project setup</article>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section id="features" class="landing-section">
+
+    <div class="landing-section-heading">
+
+        <span>FEATURES</span>
+
+        <h2>
+            One workspace for the complete project lifecycle.
+        </h2>
+
+        <p>
+            Planora combines planning, execution, QA and reporting
+            without forcing every project into the same methodology.
+        </p>
+
+    </div>
+
+    <div class="landing-feature-grid">
+
+        <article>
+            <span class="landing-feature-number">01</span>
+            <h3>Scrum workspace</h3>
+            <p>
+                Product backlog, sprints, tasks and workflow tracking
+                for Agile teams.
+            </p>
+        </article>
+
+        <article>
+            <span class="landing-feature-number">02</span>
+            <h3>V-Model lifecycle</h3>
+            <p>
+                Structured phases, requirements and validation for
+                projects that require controlled delivery.
+            </p>
+        </article>
+
+        <article>
+            <span class="landing-feature-number">03</span>
+            <h3>QA workflow</h3>
+            <p>
+                Move development work through review, pass, fail and
+                rework with clear traceability.
+            </p>
+        </article>
+
+        <article>
+            <span class="landing-feature-number">04</span>
+            <h3>AI assistance</h3>
+            <p>
+                Support requirement quality and SRS generation using
+                intelligent project context.
+            </p>
+        </article>
+
+        <article>
+            <span class="landing-feature-number">05</span>
+            <h3>Role-based access</h3>
+            <p>
+                Admin, Project Manager, Scrum Master, Developer and QA
+                each receive the right project experience.
+            </p>
+        </article>
+
+        <article>
+            <span class="landing-feature-number">06</span>
+            <h3>Reports & progress</h3>
+            <p>
+                Track real project progress, deadlines, workload and
+                workflow status.
+            </p>
+        </article>
+
+    </div>
+
+</section>
+
+
+<section id="about" class="landing-about">
+
+    <div>
+        <span class="landing-kicker">ABOUT PLANORA</span>
+
+        <h2>
+            Built for teams that need both flexibility and structure.
+        </h2>
+    </div>
+
+    <div>
+        <p>
+            Planora is designed to connect project planning,
+            team collaboration, development workflow and quality
+            assurance inside a single professional system.
+        </p>
+
+        <p>
+            Instead of treating Scrum and V-Model as identical,
+            Planora adapts the workflow and project tools to the
+            selected methodology.
+        </p>
+    </div>
+
+</section>
+
+
+<section id="contact" class="landing-contact">
+
+    <div>
+
+        <span class="landing-kicker">
+            CONTACT US
+        </span>
+
+        <h2>
+            Have a question about Planora?
+        </h2>
+
+        <p>
+            Contact the Planora team for project information,
+            support or general questions.
+        </p>
+
+    </div>
+
+    <a asp-controller="Home"
+   asp-action="Contact"
+   class="landing-primary">
+    Contact us
+</a>
+
+</section>
+

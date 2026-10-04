@@ -1,0 +1,1521 @@
+:root {
+    --sidebar-width: 195px;
+    --page-bg: #ffffff;
+    --top-bg: #f7f7ef;
+    --surface: #ffffff;
+    --surface-muted: #f5f5f3;
+    --text: #171717;
+    --text-secondary: #636363;
+    --text-muted: #989892;
+    --border: #e5e5df;
+    --border-dark: #d7d7d0;
+    --black: #191919;
+    --cream: #f7f7ef;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    min-height: 100%;
+}
+
+body {
+    background: var(--page-bg);
+    color: var(--text);
+    font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 14px;
+    -webkit-font-smoothing: antialiased;
+}
+
+button,
+input,
+select,
+textarea {
+    font: inherit;
+}
+
+a {
+    color: inherit;
+}
+
+/* =========================================================
+   APP
+   ========================================================= */
+
+.workspace-shell {
+    min-height: 100vh;
+}
+
+.workspace-main {
+    min-height: 100vh;
+    margin-left: var(--sidebar-width);
+}
+
+/* =========================================================
+   SIDEBAR
+   ========================================================= */
+
+.workspace-sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 1000;
+    width: var(--sidebar-width);
+    display: flex;
+    flex-direction: column;
+    padding: 38px 17px 20px;
+    border-right: 1px solid #eeeeea;
+    background: #ffffff;
+    overflow-y: auto;
+    transition: transform 0.2s ease;
+}
+
+.sidebar-brand {
+    margin-bottom: 34px;
+    padding-left: 5px;
+    font-size: 17px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+}
+
+.sidebar-main-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.sidebar-link {
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 11px;
+    border-radius: 7px;
+    color: #424242;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    transition: background 0.15s ease;
+}
+
+    .sidebar-link:hover {
+        background: #f5f5f3;
+    }
+
+    .sidebar-link.active {
+        background: #f1f1ef;
+        color: #171717;
+        font-weight: 650;
+    }
+
+.sidebar-link-icon {
+    width: 18px;
+    display: inline-flex;
+    justify-content: center;
+    color: #242424;
+    font-size: 14px;
+}
+
+.sidebar-count {
+    margin-left: auto;
+    padding: 3px 6px;
+    border-radius: 6px;
+    background: #f2f2ef;
+    color: #65655f;
+    font-size: 10px;
+}
+
+.sidebar-disabled {
+    cursor: default;
+}
+
+/* =========================================================
+   SIDEBAR SECTIONS
+   ========================================================= */
+
+.sidebar-section {
+    margin-top: 35px;
+}
+
+.sidebar-section-heading {
+    margin-bottom: 13px;
+    color: #9d9d97;
+    font-size: 11px;
+}
+
+.sidebar-section-heading-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    color: #9d9d97;
+    font-size: 11px;
+}
+
+.sidebar-small-link {
+    min-height: 34px;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 0 9px;
+    color: #4c4c48;
+    text-decoration: none;
+    font-size: 12px;
+}
+
+    .sidebar-small-link:hover {
+        background: #f7f7f4;
+        border-radius: 6px;
+    }
+
+.project-small-icon {
+    width: 16px;
+    font-size: 12px;
+}
+
+.sidebar-members-section {
+    margin-top: 29px;
+}
+
+.sidebar-person {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-bottom: 10px;
+    padding: 5px;
+}
+
+.sidebar-person-avatar {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    border-radius: 50%;
+    background: #e8e1d7;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.sidebar-person-copy {
+    min-width: 0;
+}
+
+    .sidebar-person-copy strong {
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: 11px;
+        font-weight: 650;
+    }
+
+    .sidebar-person-copy span {
+        display: block;
+        margin-top: 3px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: #999993;
+        font-size: 10px;
+    }
+
+.sidebar-bottom {
+    margin-top: auto;
+    padding-top: 20px;
+}
+
+    .sidebar-bottom form {
+        margin: 0;
+    }
+
+.sidebar-logout {
+    width: 100%;
+    min-height: 38px;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 0 10px;
+    border: 0;
+    border-radius: 7px;
+    background: transparent;
+    color: #555551;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+    .sidebar-logout:hover {
+        background: #f5f5f3;
+    }
+
+/* =========================================================
+   TOP BAR
+   ========================================================= */
+
+.workspace-topbar {
+    height: 82px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 0 30px;
+    border-bottom: 1px solid #eeeeea;
+    background: #ffffff;
+}
+
+.topbar-search {
+    width: min(100%, 430px);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.search-symbol {
+    color: #363633;
+    font-size: 19px;
+}
+
+.topbar-search form {
+    width: 100%;
+    margin: 0;
+}
+
+.topbar-search input {
+    width: 100%;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: #2b2b28;
+    font-size: 13px;
+}
+
+    .topbar-search input::placeholder {
+        color: #a4a49e;
+    }
+
+.topbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+}
+
+.topbar-text-button {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #353532;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.topbar-me {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 12px;
+}
+
+.topbar-primary-button {
+    min-height: 42px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 0 19px;
+    border-radius: 8px;
+    background: #20201e;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+    .topbar-primary-button:hover {
+        background: #050505;
+        color: #ffffff;
+    }
+
+/* =========================================================
+   CONTENT
+   ========================================================= */
+
+.workspace-content {
+    width: 100%;
+}
+
+.sidebar-backdrop {
+    display: none;
+}
+
+
+/* =========================
+   UI SCALE UP
+   ========================= */
+
+:root {
+    --sidebar-width: 220px;
+}
+
+body {
+    font-size: 15px;
+}
+
+.workspace-topbar {
+    height: 90px;
+    padding: 0 34px;
+}
+
+.workspace-content {
+    min-height: calc(100vh - 90px);
+}
+
+.sidebar-brand {
+    font-size: 20px;
+}
+
+.sidebar-link {
+    min-height: 44px;
+    font-size: 14px;
+    gap: 11px;
+    padding: 0 12px;
+}
+
+.sidebar-link-icon {
+    width: 19px;
+    font-size: 15px;
+}
+
+.sidebar-count {
+    font-size: 11px;
+    padding: 3px 7px;
+}
+
+.sidebar-section-heading,
+.sidebar-section-heading-row {
+    font-size: 12px;
+}
+
+.sidebar-small-link {
+    min-height: 36px;
+    font-size: 13px;
+}
+
+.sidebar-person-avatar {
+    width: 36px;
+    height: 36px;
+    font-size: 13px;
+}
+
+.sidebar-person-copy strong {
+    font-size: 12px;
+}
+
+.sidebar-person-copy span {
+    font-size: 11px;
+}
+
+.sidebar-logout {
+    min-height: 40px;
+    font-size: 13px;
+}
+
+.topbar-search {
+    width: min(100%, 470px);
+}
+
+.search-symbol {
+    font-size: 20px;
+}
+
+.topbar-search input {
+    font-size: 14px;
+}
+
+.topbar-text-button,
+.topbar-me {
+    font-size: 13px;
+}
+
+.topbar-primary-button {
+    min-height: 44px;
+    padding: 0 20px;
+    font-size: 13px;
+}
+
+.sidebar-link {
+    font-size: 14px;
+}
+
+.sidebar-small-link {
+    font-size: 13px;
+}
+
+.sidebar-section-heading,
+.sidebar-section-heading-row {
+    font-size: 12px;
+}
+
+.sidebar-person-copy strong {
+    font-size: 12px;
+}
+
+.sidebar-person-copy span {
+    font-size: 11px;
+}
+
+.topbar-search input,
+.topbar-text-button,
+.topbar-me {
+    font-size: 13px;
+}
+
+/* =========================================================
+   SIDEBAR SIZE BOOST
+   ========================================================= */
+
+:root {
+    --sidebar-width: 255px;
+}
+
+.workspace-sidebar {
+    padding: 38px 20px 22px;
+}
+
+/* Planora logo text */
+
+.sidebar-brand {
+    font-size: 24px;
+    margin-bottom: 36px;
+}
+
+/* Main sidebar items */
+
+.sidebar-link {
+    min-height: 50px;
+    gap: 13px;
+    padding: 0 14px;
+    font-size: 16px;
+    border-radius: 8px;
+}
+
+/* Main icons */
+
+.sidebar-link-icon {
+    width: 24px;
+    font-size: 20px;
+}
+
+/* Soon badge */
+
+.sidebar-count {
+    padding: 4px 8px;
+    font-size: 11px;
+}
+
+/* Projects / Member section labels */
+
+.sidebar-section-heading,
+.sidebar-section-heading-row {
+    font-size: 14px;
+    margin-bottom: 14px;
+}
+
+/* Secondary links */
+
+.sidebar-small-link {
+    min-height: 43px;
+    gap: 12px;
+    padding: 0 11px;
+    font-size: 15px;
+}
+
+.project-small-icon {
+    width: 21px;
+    font-size: 17px;
+}
+
+/* User section */
+
+.sidebar-person {
+    gap: 12px;
+    padding: 7px;
+}
+
+.sidebar-person-avatar {
+    width: 42px;
+    height: 42px;
+    font-size: 15px;
+}
+
+.sidebar-person-copy strong {
+    font-size: 14px;
+}
+
+.sidebar-person-copy span {
+    font-size: 12px;
+}
+
+/* Logout */
+
+.sidebar-logout {
+    min-height: 46px;
+    gap: 11px;
+    padding: 0 12px;
+    font-size: 14px;
+}
+
+/* =========================================================
+   PLANORA PROFESSIONAL SVG ICON SYSTEM
+   ========================================================= */
+
+/* MAIN SIDEBAR ICONS */
+
+.sidebar-link-icon {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 30px;
+    color: #62625d;
+}
+
+    .sidebar-link-icon svg {
+        width: 23px;
+        height: 23px;
+        display: block;
+    }
+
+/* ACTIVE ICON */
+
+.sidebar-link.active .sidebar-link-icon {
+    color: #171715;
+}
+
+/* HOVER ICON */
+
+.sidebar-link:hover .sidebar-link-icon {
+    color: #171715;
+}
+
+
+/* =========================================================
+   SMALL PROJECT ICONS
+   ========================================================= */
+
+.project-small-icon {
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 26px;
+    color: #777772;
+}
+
+    .project-small-icon svg {
+        width: 20px;
+        height: 20px;
+        display: block;
+    }
+
+.sidebar-small-link:hover .project-small-icon {
+    color: #20201e;
+}
+
+
+/* =========================================================
+   LOGOUT ICON
+   ========================================================= */
+
+.sidebar-logout-icon {
+    width: 27px;
+    height: 27px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 27px;
+}
+
+    .sidebar-logout-icon svg {
+        width: 21px;
+        height: 21px;
+    }
+
+
+/* =========================================================
+   TOPBAR ICONS
+   ========================================================= */
+
+.topbar-search-icon {
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 22px;
+    color: #777772;
+}
+
+    .topbar-search-icon svg {
+        width: 19px;
+        height: 19px;
+    }
+
+.topbar-text-button svg {
+    width: 18px;
+    height: 18px;
+    flex: 0 0 auto;
+}
+
+.topbar-me svg {
+    width: 16px;
+    height: 16px;
+}
+
+.topbar-primary-button svg {
+    width: 18px;
+    height: 18px;
+}
+
+
+/* =========================================================
+   SIDEBAR FINAL SIZE
+   ========================================================= */
+
+:root {
+    --sidebar-width: 255px;
+}
+
+.workspace-sidebar {
+    padding: 38px 20px 22px;
+}
+
+.sidebar-brand {
+    margin-bottom: 36px;
+    font-size: 24px;
+    font-weight: 650;
+}
+
+.sidebar-link {
+    min-height: 52px;
+    gap: 13px;
+    padding: 0 14px;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+.sidebar-small-link {
+    min-height: 44px;
+    gap: 11px;
+    padding: 0 11px;
+    font-size: 15px;
+}
+
+.sidebar-section-heading,
+.sidebar-section-heading-row {
+    font-size: 13px;
+}
+
+.sidebar-person-avatar {
+    width: 44px;
+    height: 44px;
+    font-size: 15px;
+}
+
+.sidebar-person-copy strong {
+    font-size: 14px;
+}
+
+.sidebar-person-copy span {
+    font-size: 12px;
+}
+
+.sidebar-logout {
+    min-height: 48px;
+    gap: 12px;
+    padding: 0 13px;
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   DISABLED NAV ITEMS
+   ========================================================= */
+
+.sidebar-disabled {
+    cursor: default;
+    opacity: 0.62;
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   SOON BADGE
+   ========================================================= */
+
+.sidebar-count {
+    margin-left: auto;
+    padding: 4px 8px;
+    border-radius: 999px;
+    background: #efefeb;
+    color: #777772;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   PROJECT SECTION PLUS
+   ========================================================= */
+
+.sidebar-section-plus {
+    color: #888883;
+    font-size: 18px;
+    font-weight: 400;
+}
+
+
+/* =========================================================
+   LOGOUT RESET
+   ========================================================= */
+
+.sidebar-logout-form {
+    margin: 0;
+}
+
+.sidebar-logout {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    border: 0;
+    background: transparent;
+    color: #666661;
+    cursor: pointer;
+    text-align: left;
+}
+
+    .sidebar-logout:hover {
+        background: #f4f4f0;
+        color: #20201e;
+    }
+
+
+/* =========================================================
+   TOPBAR SVG ALIGNMENT
+   ========================================================= */
+
+.topbar-search {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.topbar-text-button,
+.topbar-me,
+.topbar-primary-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+/* =========================================================
+   TOPBAR USER PROFILE
+   ========================================================= */
+
+.topbar-user {
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    padding: 5px 13px 5px 6px;
+    border: 1px solid #e1e1dc;
+    border-radius: 10px;
+    background: #ffffff;
+}
+
+.topbar-user-avatar {
+    width: 39px;
+    height: 39px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 39px;
+    border-radius: 50%;
+    background: #eee9df;
+    color: #262623;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.topbar-user-info {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+    .topbar-user-info strong {
+        max-width: 135px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: #232320;
+        font-size: 13px;
+        font-weight: 650;
+        line-height: 1.2;
+    }
+
+    .topbar-user-info span {
+        color: #85857f;
+        font-size: 10px;
+        line-height: 1.2;
+    }
+
+/* =========================================================
+   TOPBAR USER PROFILE FINAL
+   ========================================================= */
+
+.topbar-user {
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    gap: 11px;
+
+    padding: 5px 14px 5px 6px;
+
+    border: 1px solid #e1e1dc;
+    border-radius: 10px;
+
+    background: #ffffff;
+}
+
+.topbar-user-avatar {
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex: 0 0 40px;
+
+    border-radius: 50%;
+
+    background: #eee9df;
+    color: #262623;
+
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.topbar-user-info {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 3px;
+}
+
+.topbar-user-info strong {
+    max-width: 150px;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    color: #232320;
+
+    font-size: 14px;
+    font-weight: 650;
+
+    line-height: 1.2;
+}
+
+.topbar-user-info span {
+    color: #85857f;
+
+    font-size: 11px;
+
+    line-height: 1.2;
+}
+
+/* =========================================================
+   PLANORA — GLOBAL ICON MICRO INTERACTIONS
+   ========================================================= */
+
+/* Smooth motion for icons */
+a svg,
+button svg,
+[class*="icon"] svg {
+    transform-origin: center;
+    transition:
+        transform 160ms cubic-bezier(.2, .8, .2, 1),
+        opacity 160ms ease;
+}
+
+/* Hover */
+a:hover svg,
+button:hover svg,
+[class*="icon"]:hover svg {
+    transform: translateY(-1px) scale(1.055);
+}
+
+/* Click */
+a:active svg,
+button:active svg {
+    transform: translateY(0) scale(.96);
+}
+
+/* Interactive controls feel slightly alive */
+a,
+button {
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+    a svg,
+    button svg,
+    [class*="icon"] svg {
+        transition: none !important;
+        transform: none !important;
+    }
+}
+
+/* =========================================================
+   PLANORA — CHATGPT-LIKE MICRO INTERACTIONS
+   ========================================================= */
+
+/* ---------------------------------------------------------
+   1. SIDEBAR ITEMS
+   Whole row moves + soft background
+   --------------------------------------------------------- */
+
+.sidebar-link,
+.sidebar-small-link,
+.sidebar-logout {
+    transition: background-color 150ms ease, transform 150ms cubic-bezier(.2, .8, .2, 1), color 150ms ease !important;
+}
+
+    .sidebar-link:not(.sidebar-disabled):hover,
+    .sidebar-small-link:hover,
+    .sidebar-logout:hover {
+        background-color: rgba(0, 0, 0, 0.055) !important;
+        transform: translateX(2px);
+    }
+
+    .sidebar-link:not(.sidebar-disabled):active,
+    .sidebar-small-link:active,
+    .sidebar-logout:active {
+        transform: translateX(2px) scale(.985);
+    }
+
+
+/* ---------------------------------------------------------
+   2. ICONS INSIDE INTERACTIVE ELEMENTS
+   --------------------------------------------------------- */
+
+.sidebar-link-icon,
+.project-small-icon,
+.sidebar-logout-icon,
+.topbar-search-icon,
+a svg,
+button svg {
+    transform-origin: center;
+    transition: transform 150ms cubic-bezier(.2, .8, .2, 1), opacity 150ms ease !important;
+}
+
+.sidebar-link:not(.sidebar-disabled):hover .sidebar-link-icon,
+.sidebar-small-link:hover .project-small-icon,
+.sidebar-logout:hover .sidebar-logout-icon {
+    transform: translateX(1px) scale(1.035);
+}
+
+
+/* ---------------------------------------------------------
+   3. EVERY CLICKABLE ELEMENT THAT CONTAINS AN SVG
+   Project buttons / module buttons / actions / future icons
+   --------------------------------------------------------- */
+
+a:has(svg),
+button:has(svg) {
+    transition: transform 150ms cubic-bezier(.2, .8, .2, 1), filter 150ms ease, background-color 150ms ease !important;
+}
+
+    a:has(svg):hover,
+    button:has(svg):not(:disabled):hover {
+        transform: translateY(-1px);
+    }
+
+        a:has(svg):hover svg,
+        button:has(svg):not(:disabled):hover svg {
+            transform: scale(1.04);
+        }
+
+    a:has(svg):active,
+    button:has(svg):not(:disabled):active {
+        transform: translateY(0) scale(.985);
+    }
+
+
+/* ---------------------------------------------------------
+   4. TOPBAR TEXT BUTTONS
+   --------------------------------------------------------- */
+
+.topbar-text-button {
+    transition: background-color 150ms ease, transform 150ms ease !important;
+}
+
+    .topbar-text-button:hover {
+        background-color: rgba(0, 0, 0, .045) !important;
+        transform: translateY(-1px);
+    }
+
+
+/* ---------------------------------------------------------
+   5. DISABLED ITEMS MUST NOT MOVE
+   --------------------------------------------------------- */
+
+.sidebar-disabled,
+.sidebar-disabled:hover,
+.sidebar-disabled svg,
+.sidebar-disabled:hover svg {
+    transform: none !important;
+}
+
+
+/* ---------------------------------------------------------
+   6. ACCESSIBILITY
+   --------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+    .sidebar-link,
+    .sidebar-small-link,
+    .sidebar-logout,
+    .topbar-text-button,
+    a,
+    button,
+    svg {
+        transition: none !important;
+        transform: none !important;
+    }
+}
+
+/* =========================================================
+   PLANORA — CHATGPT STYLE HOVER
+   ========================================================= */
+
+/* Stop the old icon movement */
+a svg,
+button svg,
+[class*="icon"] svg {
+    transform: none !important;
+    transition: opacity 140ms ease, color 140ms ease !important;
+}
+
+
+/* =========================================================
+   SIDEBAR ROWS
+   ========================================================= */
+
+.sidebar-link,
+.sidebar-small-link,
+.sidebar-logout {
+    border-radius: 8px !important;
+    transition: background-color 140ms ease, color 140ms ease, box-shadow 140ms ease !important;
+    transform: none !important;
+}
+
+
+    /* Soft ChatGPT-like hover */
+
+    .sidebar-link:not(.sidebar-disabled):hover,
+    .sidebar-small-link:hover,
+    .sidebar-logout:hover {
+        background-color: rgba(0, 0, 0, 0.055) !important;
+        transform: none !important;
+    }
+
+
+    /* Small click feedback */
+
+    .sidebar-link:not(.sidebar-disabled):active,
+    .sidebar-small-link:active,
+    .sidebar-logout:active {
+        background-color: rgba(0, 0, 0, 0.085) !important;
+        transform: none !important;
+    }
+
+
+    /* Active page */
+
+    .sidebar-link.active {
+        background-color: rgba(0, 0, 0, 0.065) !important;
+    }
+
+
+/* =========================================================
+   ICON BUTTONS THROUGHOUT PLANORA
+   ========================================================= */
+
+button:has(svg),
+a:has(svg) {
+    transition: background-color 140ms ease, border-color 140ms ease, box-shadow 140ms ease, filter 140ms ease !important;
+}
+
+
+    /* Don't physically move the control */
+
+    button:has(svg):hover,
+    a:has(svg):hover {
+        transform: none !important;
+    }
+
+
+    /* Very subtle visual feedback */
+
+    button:has(svg):not(:disabled):hover {
+        filter: brightness(.97);
+    }
+
+    button:has(svg):not(:disabled):active,
+    a:has(svg):active {
+        filter: brightness(.94);
+    }
+
+
+/* =========================================================
+   TOPBAR
+   ========================================================= */
+
+.topbar-text-button {
+    border-radius: 8px !important;
+    transition: background-color 140ms ease, color 140ms ease !important;
+    transform: none !important;
+}
+
+    .topbar-text-button:hover {
+        background-color: rgba(0, 0, 0, 0.05) !important;
+        transform: none !important;
+    }
+
+
+/* =========================================================
+   DISABLED
+   ========================================================= */
+
+.sidebar-disabled,
+.sidebar-disabled:hover,
+.sidebar-disabled:active {
+    background: transparent !important;
+    transform: none !important;
+}
+
+
+/* =========================================================
+   ACCESSIBILITY
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .sidebar-link,
+    .sidebar-small-link,
+    .sidebar-logout,
+    .topbar-text-button,
+    button,
+    a,
+    svg {
+        transition: none !important;
+    }
+}
+
+/* =========================================
+   PLANORA — LARGER TOPBAR
+   ========================================= */
+
+.topbar-search {
+    min-width: 380px !important;
+    height: 46px !important;
+    padding: 0 14px !important;
+    gap: 10px !important;
+    border-radius: 10px !important;
+}
+
+    .topbar-search input {
+        font-size: 14px !important;
+    }
+
+    .topbar-search svg,
+    .topbar-search-icon {
+        width: 18px !important;
+        height: 18px !important;
+    }
+
+.topbar-text-button {
+    min-height: 42px !important;
+    padding: 0 13px !important;
+    font-size: 14px !important;
+    gap: 8px !important;
+}
+
+    .topbar-text-button svg {
+        width: 17px !important;
+        height: 17px !important;
+    }
+
+.topbar-user {
+    min-height: 48px !important;
+    padding: 6px 12px 6px 7px !important;
+    gap: 11px !important;
+    border-radius: 11px !important;
+}
+
+    .topbar-user strong {
+        font-size: 14px !important;
+        font-weight: 600 !important;
+    }
+
+    .topbar-user small {
+        font-size: 12px !important;
+    }
+
+    .topbar-user img,
+    .topbar-avatar,
+    .topbar-user-avatar {
+        width: 36px !important;
+        height: 36px !important;
+        min-width: 36px !important;
+        border-radius: 50% !important;
+        object-fit: cover !important;
+    }
+
+.topbar-primary-button {
+    min-height: 44px !important;
+    padding: 0 17px !important;
+    font-size: 14px !important;
+    border-radius: 9px !important;
+}
+
+
+/* PROFILE IMAGE — TOPBAR */
+
+.topbar-user-avatar {
+    overflow: hidden;
+}
+
+.topbar-user-avatar img {
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+/* SIDEBAR PROFILE IMAGE */
+
+.sidebar-person-avatar {
+    overflow: hidden;
+}
+
+.sidebar-person-avatar img {
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+/* SIDEBAR ACCOUNT — NO DUPLICATE AVATAR */
+.sidebar-person {
+    display: block !important;
+}
+
+.sidebar-person > div {
+    width: 100%;
+}
+
+
+/* ===== PLANORA BRAND LOGO ===== */
+
+.sidebar-brand {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+}
+
+.sidebar-brand-logo {
+    width: 31px !important;
+    height: 31px !important;
+    min-width: 31px !important;
+
+    display: block !important;
+    object-fit: contain !important;
+}
+
+.sidebar-brand span {
+    font-size: 18px !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.035em !important;
+}
+
+/* ===== END PLANORA BRAND LOGO ===== */
+
+/* ===== PLANORA LOGO FINAL SIZE ===== */
+
+.sidebar-brand-logo {
+    width: 46px !important;
+    height: 46px !important;
+    min-width: 46px !important;
+    object-fit: contain !important;
+}
+
+.sidebar-brand {
+    gap: 11px !important;
+}
+
+.sidebar-brand span {
+    font-size: 20px !important;
+}
+
+/* ===== END PLANORA LOGO FINAL SIZE ===== */
+/* =========================================================
+   RESPONSIVE WORKSPACE SHELL
+   Kept after the scale rules so compact layouts stay authoritative.
+   ========================================================= */
+
+.workspace-main {
+    min-width: 0;
+}
+
+.sidebar-toggle {
+    width: 42px;
+    height: 42px;
+    flex: 0 0 42px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 1px solid #deded8;
+    border-radius: 9px;
+    background: #ffffff;
+    color: #242421;
+    cursor: pointer;
+}
+
+.sidebar-toggle:hover {
+    background: #f5f5f2;
+}
+
+.sidebar-toggle:focus-visible {
+    outline: 2px solid #20201e;
+    outline-offset: 2px;
+}
+
+.sidebar-toggle svg {
+    width: 20px;
+    height: 20px;
+}
+
+@media (max-width: 1200px) {
+    .workspace-topbar {
+        gap: 18px;
+        padding: 0 20px;
+    }
+
+    .topbar-search {
+        max-width: 320px;
+        min-width: 0 !important;
+    }
+
+    .topbar-actions {
+        flex: 0 0 auto;
+        gap: 12px;
+    }
+
+    .topbar-text-button,
+    .topbar-me,
+    .topbar-user-info {
+        display: none;
+    }
+}
+
+@media (max-width: 920px) {
+    .workspace-sidebar {
+        transform: translateX(-100%);
+    }
+
+    .workspace-sidebar.is-open {
+        transform: translateX(0);
+        box-shadow: 12px 0 35px rgba(31, 31, 28, 0.12);
+    }
+
+    .workspace-main {
+        margin-left: 0;
+    }
+
+    .sidebar-toggle {
+        display: inline-flex;
+    }
+
+    .sidebar-backdrop {
+        position: fixed;
+        inset: 0;
+        z-index: 950;
+        background: rgba(0, 0, 0, 0.25);
+    }
+
+    .sidebar-backdrop.visible {
+        display: block;
+    }
+}
+
+@media (max-width: 720px) {
+    .workspace-topbar {
+        height: 72px;
+        gap: 10px;
+        padding: 0 16px;
+    }
+
+    .workspace-content {
+        min-height: calc(100vh - 72px);
+    }
+
+    .topbar-search {
+        flex: 1 1 auto;
+        width: auto;
+    }
+
+    .topbar-actions {
+        gap: 8px;
+    }
+
+    .topbar-user {
+        display: none;
+    }
+
+    .topbar-primary-button {
+        width: 42px;
+        min-height: 42px !important;
+        padding: 0 !important;
+    }
+
+    .topbar-primary-button span {
+        display: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .workspace-sidebar {
+        transition: none;
+    }
+}

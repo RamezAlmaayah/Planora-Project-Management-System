@@ -1,0 +1,74 @@
+@model Planora.Web.ViewModels.Srs.SrsIndexViewModel
+@using Planora.Application.Common.Ai
+
+@{ ViewData["Title"] = "Software Requirements Specifications"; Layout = "_AppLayout"; }
+@section Styles { <link rel="stylesheet" href="~/css/projects.css" asp-append-version="true" /><link rel="stylesheet" href="~/css/requirements.css" asp-append-version="true" /><link rel="stylesheet" href="~/css/srs.css" asp-append-version="true" /> }
+
+<div class="project-form-v3-page requirements-v3-page srs-v3-page">
+    <div class="project-form-v3-back"><a asp-controller="Projects" asp-action="Details" asp-route-id="@Model.ProjectId">&larr; Back to project</a></div>
+    <section class="project-form-v3-header"><span class="projects-v3-kicker">V-MODEL &middot; DOCUMENTATION</span><h1>Software Requirements Specifications</h1><p>@Model.ProjectName</p></section>
+
+    @if (Model.CanManage)
+    {
+        <form method="post" class="requirements-form-v3 project-form-v3" data-ai-generation-form>
+            @Html.AntiForgeryToken()<input asp-for="ProjectId" type="hidden" />
+            <section class="project-form-v3-panel ai-requirements-v3-panel">
+                <div asp-validation-summary="ModelOnly" class="v3-alert" role="alert"></div>
+                <p class="requirements-v3-ieee-note">IEEE-style Software Requirements Specification.</p>
+                <p class="ai-requirements-v3-advisory">Gemini creates a temporary draft. Review and explicitly save it before it becomes a project document.</p>
+                @if (!Model.IsConfigured) { <div class="v3-alert" role="status">AI configuration is unavailable. Saved SRS documents remain available below.</div> }
+                @if (Model.IsReadOnly) { <div class="v3-alert" role="status">This archived project is read-only. Saved documents remain viewable and exportable.</div> }
+                <div class="project-form-v3-field"><label asp-for="AdditionalContext">Additional Context</label><textarea asp-for="AdditionalContext" rows="6" maxlength="3000" placeholder="Add SRS context that is not already captured by the project and approved requirements."></textarea><span asp-validation-for="AdditionalContext"></span></div>
+
+                @if (Model.QualityAnalysis is not null)
+                {
+                    <section class="ai-quality-v3-result" data-ai-quality-result aria-live="polite">
+                        <header><div><span class="projects-v3-kicker">INPUT QUALITY</span><h2>@Model.QualityAnalysis.QualityScore / 100</h2></div><strong>@Model.QualityAnalysis.QualityLevel</strong></header>
+                        <progress value="@Model.QualityAnalysis.QualityScore" max="100" aria-label="Input quality score: @Model.QualityAnalysis.QualityScore out of 100">@Model.QualityAnalysis.QualityScore%</progress>
+                        <p>@Model.QualityAnalysis.ValidationMessage</p>
+                        @if (Model.QualityAnalysis.MissingInformation.Count > 0) { <div class="ai-quality-v3-list"><h3>Missing Information</h3><ul>@foreach (string item in Model.QualityAnalysis.MissingInformation) { <li>@item</li> }</ul></div> }
+                        @if (Model.QualityAnalysis.Issues.Count > 0) { <div class="ai-quality-v3-list"><h3>Issues</h3><ul>@foreach (string item in Model.QualityAnalysis.Issues) { <li>@item</li> }</ul></div> }
+                    </section>
+                    @if (Model.QualityAnalysis.ImprovementItems.Count > 0)
+                    {
+                        <h2 class="srs-v3-subheading">Improve Your Input</h2>
+                        <div class="ai-quality-v3-improvements">
+                            @foreach (var item in Model.QualityAnalysis.ImprovementItems)
+                            {
+                                <article data-ai-improvement data-topic="@item.Topic" data-suggested-text="@item.SuggestedText">
+                                    <span>@item.Topic</span><h3>@item.Question</h3>
+                                    @if (item.InputType == AiImprovementInputType.SingleChoice)
+                                    {
+                                        <div class="ai-quality-v3-options">@for (int i = 0; i < item.Options.Count; i++) { string optionId = $"srs-quality-{item.Id}-{i}"; <label for="@optionId"><input id="@optionId" type="radio" name="srs-quality-@item.Id" value="@item.Options[i]" /> @item.Options[i]</label> }</div>
+                                    }
+                                    else { <textarea rows="3" maxlength="1000" data-ai-improvement-answer aria-label="Answer for @item.Question"></textarea> }
+                                    <button type="button" class="detail-v3-secondary" data-ai-apply-improvement>Apply</button><span class="ai-quality-v3-applied" data-ai-improvement-status aria-live="polite"></span>
+                                </article>
+                            }
+                        </div>
+                    }
+                }
+            </section>
+            <div class="project-form-v3-actions">
+                <button asp-action="Analyze" asp-route-projectId="@Model.ProjectId" type="submit" class="detail-v3-secondary" disabled="@(!Model.IsConfigured || Model.IsReadOnly ? "disabled" : null)" data-ai-analyze-button><span data-ai-button-label>@(Model.QualityAnalysis is null ? "Analyze Input Quality" : "Analyze Again")</span></button>
+                <button asp-action="Generate" asp-route-projectId="@Model.ProjectId" type="submit" class="project-form-v3-submit" disabled="@(!Model.IsConfigured || Model.IsReadOnly || Model.QualityAnalysis?.CanGenerate != true ? "disabled" : null)" data-ai-generate-button><span data-ai-button-label>Generate SRS</span></button>
+                <span class="ai-requirements-v3-loading" data-ai-loading hidden><i aria-hidden="true"></i><span data-ai-loading-text>Working...</span></span>
+            </div>
+        </form>
+    }
+
+    <section class="project-form-v3-panel srs-v3-library">
+        <header><div><span class="projects-v3-kicker">SAVED SNAPSHOTS</span><h2>Saved SRS Documents</h2></div></header>
+        @if (Model.Documents.Count == 0) { <div class="requirements-v3-empty"><strong>No saved SRS documents yet.</strong><span>Generated drafts appear here only after an explicit save.</span></div> }
+        else
+        {
+            <div class="srs-v3-document-list">
+                @foreach (var document in Model.Documents)
+                {
+                    <article><div><span class="requirements-v3-code">SRS-@document.Id</span><h3>@document.Title</h3><p>Saved @document.SavedAt.ToLocalTime().ToString("dd MMM yyyy, HH:mm") by @document.SavedByName</p><small>Input quality: @document.QualityScore/100 (@document.QualityLevel)</small></div><div class="srs-v3-actions"><a asp-action="Details" asp-route-projectId="@Model.ProjectId" asp-route-id="@document.Id" class="detail-v3-secondary">View</a><a asp-action="ExportTxt" asp-route-projectId="@Model.ProjectId" asp-route-id="@document.Id" class="detail-v3-secondary">TXT</a><a asp-action="ExportPdf" asp-route-projectId="@Model.ProjectId" asp-route-id="@document.Id" class="detail-v3-secondary">PDF</a></div></article>
+                }
+            </div>
+        }
+    </section>
+</div>
+@section Scripts { <partial name="_ValidationScriptsPartial" /><script src="~/js/ai-requirements.js" asp-append-version="true"></script> }

@@ -1,0 +1,25 @@
+@model Planora.Web.ViewModels.VModel.DesignArtifactFormViewModel
+@using Planora.Domain.Enums
+<div asp-validation-summary="ModelOnly" class="v3-alert" role="alert"></div>
+<div class="project-form-v3-grid">
+    <div class="project-form-v3-field project-form-v3-wide artifact-v3-id"><label>Design identifier</label><strong>@Model.Identifier</strong><small>Generated and protected by the server.</small></div>
+    <div class="project-form-v3-field project-form-v3-wide"><label asp-for="Title">Title</label><input asp-for="Title" maxlength="200" autocomplete="off" /><span asp-validation-for="Title"></span></div>
+    <div class="project-form-v3-field"><label asp-for="Type">Design type</label><select asp-for="Type" asp-items="Html.GetEnumSelectList<DesignArtifactType>()"></select><span asp-validation-for="Type"></span></div>
+    <div class="project-form-v3-field project-form-v3-wide"><label asp-for="Description">Description</label><textarea asp-for="Description" rows="8" maxlength="4000"></textarea><span asp-validation-for="Description"></span></div>
+    <div class="project-form-v3-field project-form-v3-wide">
+        <label>Linked Approved Requirements</label>
+        <div class="requirements-v3-fr-picker" data-artifact-picker>
+            <input type="search" data-artifact-search placeholder="Search approved requirements..." aria-label="Search approved requirements" autocomplete="off" />
+            <div class="requirements-v3-fr-options">
+                @if (Model.RequirementOptions.Count == 0) { <p>No Approved requirements are available.</p> }
+                @foreach (var option in Model.RequirementOptions) {
+                    bool selected = Model.RequirementIds.Contains(option.Id);
+                    <label data-artifact-option>
+                        <input type="checkbox" name="RequirementIds" value="@option.Id" checked="@(selected ? "checked" : null)" />
+                        <span><strong>@option.Identifier</strong> &mdash; @option.Title @if (option.Status != RequirementStatus.Approved) { <em>(@option.Status, historical link)</em> }</span>
+                    </label>
+                }
+            </div>
+        </div>
+    </div>
+</div>

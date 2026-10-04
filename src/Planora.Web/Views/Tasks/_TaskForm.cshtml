@@ -1,0 +1,104 @@
+@model Planora.Web.ViewModels.Tasks.TaskFormViewModel
+@using Planora.Domain.Enums
+
+@{
+    bool isEdit = ViewData["IsEdit"] is true;
+}
+
+<input asp-for="Id" type="hidden" />
+<input asp-for="ProjectId" type="hidden" />
+<input asp-for="SprintId" type="hidden" />
+
+<div asp-validation-summary="All" class="project-form-v3-validation" role="alert"></div>
+
+@if (!Model.CanSave)
+{
+    <div class="v3-alert">
+        Task changes are unavailable. The project or sprint is read-only, or there is no eligible sprint backlog item.
+    </div>
+}
+
+<section class="project-form-v3-panel">
+    <div class="project-form-v3-panel-head">
+        <div>
+            <span>TASK</span>
+            <h2>Task information</h2>
+            <p>@(isEdit ? "Update the task details and assignment." : "Define the work for a sprint backlog item. New tasks start as To do.")</p>
+        </div>
+    </div>
+    <div class="project-form-v3-fields">
+        <div class="project-form-v3-field project-form-v3-full">
+            @if (isEdit)
+            {
+                <span>Backlog item</span>
+                <strong>@(Model.BacklogOptions.FirstOrDefault(option => option.SprintBacklogItemId == Model.SprintBacklogItemId)?.Title ?? "Backlog item unavailable")</strong>
+                <input asp-for="SprintBacklogItemId" type="hidden" />
+            }
+            else
+            {
+                <label asp-for="SprintBacklogItemId"></label>
+                <div class="project-form-v3-select-wrap">
+                    <select asp-for="SprintBacklogItemId" disabled="@(!Model.CanSave)">
+                        <option value="">Select a backlog item</option>
+                        @foreach (var option in Model.BacklogOptions)
+                        {
+                            <option value="@option.SprintBacklogItemId">@option.Title</option>
+                        }
+                    </select>
+                </div>
+            }
+            <span asp-validation-for="SprintBacklogItemId" class="project-form-v3-error"></span>
+        </div>
+        <div class="project-form-v3-field project-form-v3-full">
+            <label asp-for="Title"></label>
+            <input asp-for="Title" placeholder="Enter task title" disabled="@(!Model.CanSave)" />
+            <span asp-validation-for="Title" class="project-form-v3-error"></span>
+        </div>
+        <div class="project-form-v3-field project-form-v3-full">
+            <label asp-for="Description"></label>
+            <textarea asp-for="Description" rows="6" placeholder="Describe this task..." disabled="@(!Model.CanSave)"></textarea>
+            <span asp-validation-for="Description" class="project-form-v3-error"></span>
+        </div>
+    </div>
+</section>
+
+<section class="project-form-v3-panel">
+    <div class="project-form-v3-panel-head">
+        <div>
+            <span>CONFIGURATION</span>
+            <h2>Priority & assignment</h2>
+            <p>Assign a project member or leave the task unassigned.</p>
+        </div>
+    </div>
+    <div class="project-form-v3-fields project-form-v3-two-columns">
+        <div class="project-form-v3-field">
+            <label asp-for="Priority"></label>
+            <div class="project-form-v3-select-wrap">
+                <select asp-for="Priority" asp-items="Html.GetEnumSelectList<PriorityLevel>()" disabled="@(!Model.CanSave)"></select>
+            </div>
+            <span asp-validation-for="Priority" class="project-form-v3-error"></span>
+        </div>
+        <div class="project-form-v3-field">
+            <label asp-for="AssignedUserId"></label>
+            <div class="project-form-v3-select-wrap">
+                <select asp-for="AssignedUserId" disabled="@(!Model.CanSave)">
+                    <option value="">Unassigned</option>
+                    @if (!string.IsNullOrWhiteSpace(Model.AssignedUserId) && !Model.AssigneeOptions.Any(option => option.UserId == Model.AssignedUserId))
+                    {
+                        <option value="@Model.AssignedUserId">Current assignee is no longer eligible</option>
+                    }
+                    @foreach (var option in Model.AssigneeOptions)
+                    {
+                        <option value="@option.UserId">@option.DisplayName</option>
+                    }
+                </select>
+            </div>
+            <span asp-validation-for="AssignedUserId" class="project-form-v3-error"></span>
+        </div>
+        <div class="project-form-v3-field">
+            <label asp-for="Deadline"></label>
+            <input asp-for="Deadline" type="date" disabled="@(!Model.CanSave)" />
+            <span asp-validation-for="Deadline" class="project-form-v3-error"></span>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,3960 @@
+/* =========================================================
+   PLANORA PROJECTS - FINAL V3
+   ========================================================= */
+
+.projects-v3-page {
+    width: 100%;
+    padding: 30px 28px 50px;
+    background: #ffffff;
+    color: #1c1c1a;
+}
+
+/* =========================================================
+   PAGE HEADER
+   ========================================================= */
+
+.projects-v3-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 26px;
+}
+
+.projects-v3-kicker {
+    display: block;
+    margin-bottom: 8px;
+    color: #969690;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+}
+
+.projects-v3-header h1 {
+    margin: 0;
+    font-size: 28px;
+    line-height: 1.1;
+    font-weight: 600;
+    letter-spacing: -0.04em;
+}
+
+.projects-v3-header p {
+    margin: 9px 0 0;
+    color: #686863;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.projects-v3-create {
+    min-height: 42px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 18px;
+    border-radius: 8px;
+    background: #20201e;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+    .projects-v3-create:hover {
+        background: #050505;
+        color: #ffffff;
+    }
+
+/* =========================================================
+   SUMMARY
+   ========================================================= */
+
+.projects-v3-stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    margin-bottom: 16px;
+}
+
+    .projects-v3-stats article {
+        min-height: 120px;
+        padding: 18px;
+        border: 1px solid #e2e2dc;
+        border-radius: 9px;
+        background: #f8f8f2;
+    }
+
+    .projects-v3-stats span {
+        display: block;
+        color: #666660;
+        font-size: 12px;
+    }
+
+    .projects-v3-stats strong {
+        display: block;
+        margin-top: 24px;
+        font-size: 30px;
+        line-height: 1;
+        font-weight: 500;
+        letter-spacing: -0.04em;
+    }
+
+/* =========================================================
+   PANEL
+   ========================================================= */
+
+.projects-v3-panel {
+    overflow: hidden;
+    border: 1px solid #e2e2dc;
+    border-radius: 9px;
+    background: #ffffff;
+}
+
+.projects-v3-toolbar {
+    min-height: 76px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 15px 18px;
+    border-bottom: 1px solid #e7e7e2;
+}
+
+    .projects-v3-toolbar h2 {
+        margin: 0;
+        font-size: 17px;
+        font-weight: 600;
+    }
+
+    .projects-v3-toolbar > div > span {
+        display: block;
+        margin-top: 4px;
+        color: #969690;
+        font-size: 11px;
+    }
+
+/* =========================================================
+   SEARCH
+   ========================================================= */
+
+.projects-v3-search {
+    min-width: 280px;
+    height: 41px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 11px;
+    border: 1px solid #deded8;
+    border-radius: 7px;
+    background: #f8f8f5;
+}
+
+    .projects-v3-search > span {
+        color: #62625d;
+        font-size: 16px;
+    }
+
+    .projects-v3-search input {
+        min-width: 0;
+        width: 100%;
+        border: 0;
+        outline: 0;
+        background: transparent;
+        color: #252522;
+        font-size: 12px;
+    }
+
+        .projects-v3-search input::placeholder {
+            color: #a4a49e;
+        }
+
+    .projects-v3-search a {
+        color: #4d4d48;
+        text-decoration: none;
+        font-size: 10px;
+        font-weight: 600;
+    }
+
+/* =========================================================
+   TABLE
+   ========================================================= */
+
+.projects-v3-table-head,
+.projects-v3-row {
+    display: grid;
+    grid-template-columns: minmax(280px, 2fr) 0.8fr 0.75fr 1fr 0.5fr 0.4fr;
+    align-items: center;
+    gap: 15px;
+    padding-left: 18px;
+    padding-right: 18px;
+}
+
+.projects-v3-table-head {
+    min-height: 44px;
+    background: #fafaf7;
+    color: #94948e;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+.projects-v3-row {
+    min-height: 82px;
+    border-top: 1px solid #edede8;
+    color: #52524d;
+    font-size: 12px;
+    transition: background 0.15s ease;
+}
+
+    .projects-v3-row:hover {
+        background: #fafaf7;
+    }
+
+/* =========================================================
+   PROJECT
+   ========================================================= */
+
+.projects-v3-project {
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.projects-v3-avatar {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    border-radius: 9px;
+    background: #f0ede6;
+    color: #393934;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.projects-v3-project strong {
+    display: block;
+    color: #20201e;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.projects-v3-project span {
+    display: block;
+    max-width: 340px;
+    margin-top: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #8b8b85;
+    font-size: 11px;
+}
+
+/* =========================================================
+   TAGS
+   ========================================================= */
+
+.projects-v3-method,
+.projects-v3-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 27px;
+    padding: 0 9px;
+    border-radius: 999px;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+.projects-v3-method {
+    background: #f1eee8;
+    color: #55514b;
+}
+
+.projects-v3-status.status-planning {
+    background: #f4ecda;
+    color: #896c3c;
+}
+
+.projects-v3-status.status-active {
+    background: #e9f0e8;
+    color: #5d735d;
+}
+
+.projects-v3-status.status-completed {
+    background: #e8efe5;
+    color: #516b50;
+}
+
+.projects-v3-status.status-archived {
+    background: #eeeeeb;
+    color: #777771;
+}
+
+/* =========================================================
+   TIMELINE
+   ========================================================= */
+
+.projects-v3-timeline strong {
+    display: block;
+    color: #3e3e39;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.projects-v3-timeline span {
+    display: block;
+    margin-top: 4px;
+    color: #999992;
+    font-size: 10px;
+}
+
+.projects-v3-member-count {
+    color: #343430;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.projects-v3-view {
+    color: #20201e;
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+    .projects-v3-view:hover {
+        text-decoration: underline;
+    }
+
+/* =========================================================
+   EMPTY STATE
+   ========================================================= */
+
+.projects-v3-empty {
+    min-height: 260px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+    .projects-v3-empty::before {
+        content: "?";
+        display: block;
+        margin-bottom: 12px;
+        color: #aaa9a2;
+        font-size: 28px;
+    }
+
+    .projects-v3-empty strong {
+        color: #20201e;
+        font-size: 16px;
+    }
+
+    .projects-v3-empty p {
+        margin: 7px 0 0;
+        color: #8e8e88;
+        font-size: 12px;
+    }
+
+/* =========================================================
+   ALERT
+   ========================================================= */
+
+.v3-alert {
+    margin-bottom: 16px;
+    padding: 12px 14px;
+    border-radius: 7px;
+    font-size: 12px;
+}
+
+.v3-alert-success {
+    border: 1px solid #d5dfd2;
+    background: #eff4ed;
+    color: #587057;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1050px) {
+
+    .projects-v3-table-head {
+        display: none;
+    }
+
+    .projects-v3-row {
+        grid-template-columns: minmax(0, 1fr) auto auto;
+    }
+
+        .projects-v3-row > :nth-child(2),
+        .projects-v3-row > :nth-child(4),
+        .projects-v3-row > :nth-child(5) {
+            display: none;
+        }
+}
+
+@media (max-width: 720px) {
+
+    .projects-v3-page {
+        padding: 20px 14px 40px;
+    }
+
+    .projects-v3-header {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .projects-v3-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .projects-v3-toolbar {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .projects-v3-search {
+        width: 100%;
+        min-width: 0;
+    }
+}
+
+/* =========================================================
+   PLANORA V3 - PROJECT DETAILS
+   ========================================================= */
+
+.project-detail-v3 {
+    width: 100%;
+    padding: 28px 28px 50px;
+    color: #20201e;
+}
+
+.detail-v3-back {
+    margin-bottom: 18px;
+}
+
+    .detail-v3-back a {
+        color: #72726c;
+        text-decoration: none;
+        font-size: 11px;
+        font-weight: 600;
+    }
+
+        .detail-v3-back a:hover {
+            color: #20201e;
+        }
+
+.detail-v3-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 28px;
+    margin-bottom: 23px;
+}
+
+.detail-v3-heading {
+    max-width: 760px;
+}
+
+.detail-v3-tags {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-bottom: 13px;
+}
+
+.detail-v3-heading h1 {
+    margin: 0;
+    font-size: 29px;
+    line-height: 1.1;
+    font-weight: 600;
+    letter-spacing: -0.04em;
+}
+
+.detail-v3-heading p {
+    margin: 10px 0 0;
+    color: #686863;
+    font-size: 13px;
+    line-height: 1.65;
+}
+
+.detail-v3-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.detail-v3-secondary,
+.detail-v3-danger {
+    min-height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 14px;
+    border-radius: 7px;
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.detail-v3-secondary {
+    border: 1px solid #deded8;
+    background: #ffffff;
+    color: #343430;
+}
+
+    .detail-v3-secondary:hover {
+        background: #f7f7f4;
+    }
+
+.detail-v3-danger {
+    border: 1px solid #e3d1cd;
+    background: #faf1ef;
+    color: #99574f;
+}
+
+    .detail-v3-danger:hover {
+        background: #f6e8e5;
+    }
+
+/* INFORMATION */
+
+.detail-v3-info-grid {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+    .detail-v3-info-grid article {
+        min-height: 94px;
+        padding: 15px;
+        border: 1px solid #e2e2dc;
+        border-radius: 8px;
+        background: #f8f8f3;
+    }
+
+    .detail-v3-info-grid span {
+        display: block;
+        color: #888882;
+        font-size: 10px;
+    }
+
+    .detail-v3-info-grid strong {
+        display: block;
+        margin-top: 22px;
+        color: #292926;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+/* WORKSPACE */
+
+.detail-v3-workspace {
+    overflow: hidden;
+    border: 1px solid #e2e2dc;
+    border-radius: 9px;
+    background: #ffffff;
+}
+
+.detail-v3-section-head {
+    min-height: 75px;
+    display: flex;
+    align-items: center;
+    padding: 15px 18px;
+    border-bottom: 1px solid #e7e7e2;
+}
+
+    .detail-v3-section-head span {
+        display: block;
+        margin-bottom: 5px;
+        color: #989892;
+        font-size: 9px;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+    }
+
+    .detail-v3-section-head h2 {
+        margin: 0;
+        font-size: 17px;
+        font-weight: 600;
+    }
+
+.detail-v3-module {
+    min-height: 76px;
+    display: grid;
+    grid-template-columns: 42px 1fr auto;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 18px;
+    border-bottom: 1px solid #ededE8;
+}
+
+    .detail-v3-module:last-child {
+        border-bottom: 0;
+    }
+
+    .detail-v3-module:hover {
+        background: #fafaf7;
+    }
+
+.module-v3-icon {
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: #f0ede6;
+    color: #44443f;
+    font-size: 14px;
+}
+
+.module-v3-copy strong {
+    display: block;
+    color: #242421;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.module-v3-copy span {
+    display: block;
+    margin-top: 4px;
+    color: #8d8d87;
+    font-size: 10px;
+}
+
+.detail-v3-module > a {
+    color: #282825;
+    text-decoration: none;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.module-v3-state {
+    color: #989892;
+    font-size: 10px;
+}
+
+/* ERROR ALERT */
+
+.v3-alert-error {
+    border: 1px solid #e4ceca;
+    background: #fbefed;
+    color: #96554d;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 1100px) {
+    .detail-v3-info-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 760px) {
+    .project-detail-v3 {
+        padding: 20px 14px 40px;
+    }
+
+    .detail-v3-header {
+        flex-direction: column;
+    }
+
+    .detail-v3-actions {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    .detail-v3-info-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 500px) {
+    .detail-v3-info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .detail-v3-module {
+        grid-template-columns: 38px 1fr;
+    }
+
+        .detail-v3-module > a,
+        .module-v3-state {
+            grid-column: 2;
+        }
+}
+
+/* =========================================================
+   PROJECTS READABILITY BOOST
+   ========================================================= */
+
+.projects-v3-kicker {
+    font-size: 12px;
+}
+
+.projects-v3-header h1 {
+    font-size: 31px;
+}
+
+.projects-v3-header p {
+    font-size: 14px;
+}
+
+.projects-v3-stats article {
+    min-height: 130px;
+    padding: 20px;
+}
+
+.projects-v3-stats span {
+    font-size: 13px;
+}
+
+.projects-v3-stats strong {
+    font-size: 34px;
+}
+
+.projects-v3-toolbar {
+    min-height: 82px;
+    padding: 16px 20px;
+}
+
+    .projects-v3-toolbar h2 {
+        font-size: 19px;
+    }
+
+    .projects-v3-toolbar > div > span {
+        font-size: 12px;
+    }
+
+.projects-v3-search {
+    min-width: 300px;
+    height: 44px;
+}
+
+    .projects-v3-search input {
+        font-size: 13px;
+    }
+
+/* TABLE HEADER */
+
+.projects-v3-table-head {
+    min-height: 48px;
+    font-size: 11px;
+}
+
+/* TABLE ROW */
+
+.projects-v3-row {
+    min-height: 92px;
+    font-size: 13px;
+}
+
+/* PROJECT AVATAR */
+
+.projects-v3-avatar {
+    width: 46px;
+    height: 46px;
+    font-size: 15px;
+}
+
+/* PROJECT NAME */
+
+.projects-v3-project strong {
+    font-size: 14px;
+}
+
+/* DESCRIPTION */
+
+.projects-v3-project span {
+    max-width: 390px;
+    font-size: 12px;
+}
+
+/* METHODOLOGY / STATUS */
+
+.projects-v3-method,
+.projects-v3-status {
+    min-height: 30px;
+    padding: 0 11px;
+    font-size: 11px;
+}
+
+/* DATES */
+
+.projects-v3-timeline strong {
+    font-size: 12px;
+}
+
+.projects-v3-timeline span {
+    font-size: 11px;
+}
+
+/* MEMBER COUNT */
+
+.projects-v3-member-count {
+    font-size: 14px;
+}
+
+/* VIEW BUTTON */
+
+.projects-v3-view {
+    font-size: 12px;
+}
+
+/* EMPTY STATE */
+
+.projects-v3-empty strong {
+    font-size: 18px;
+}
+
+.projects-v3-empty p {
+    font-size: 13px;
+}
+
+/* =========================================================
+   PROJECTS EXTRA SCALE BOOST
+   ========================================================= */
+
+.projects-v3-page {
+    padding: 34px 32px 56px;
+}
+
+.projects-v3-kicker {
+    font-size: 13px;
+}
+
+.projects-v3-header h1 {
+    font-size: 35px;
+}
+
+.projects-v3-header p {
+    font-size: 15px;
+}
+
+.projects-v3-stats {
+    gap: 16px;
+}
+
+    .projects-v3-stats article {
+        min-height: 145px;
+        padding: 22px;
+    }
+
+    .projects-v3-stats span {
+        font-size: 14px;
+    }
+
+    .projects-v3-stats strong {
+        margin-top: 28px;
+        font-size: 38px;
+    }
+
+.projects-v3-toolbar {
+    min-height: 90px;
+    padding: 18px 22px;
+}
+
+    .projects-v3-toolbar h2 {
+        font-size: 22px;
+    }
+
+    .projects-v3-toolbar > div > span {
+        font-size: 13px;
+    }
+
+.projects-v3-search {
+    min-width: 320px;
+    height: 48px;
+}
+
+    .projects-v3-search > span {
+        font-size: 18px;
+    }
+
+    .projects-v3-search input {
+        font-size: 14px;
+    }
+
+.projects-v3-table-head {
+    min-height: 54px;
+    font-size: 12px;
+}
+
+.projects-v3-row {
+    min-height: 104px;
+    font-size: 14px;
+}
+
+.projects-v3-project {
+    gap: 14px;
+}
+
+.projects-v3-avatar {
+    width: 52px;
+    height: 52px;
+    border-radius: 10px;
+    font-size: 17px;
+}
+
+.projects-v3-project strong {
+    font-size: 16px;
+}
+
+.projects-v3-project span {
+    max-width: 430px;
+    font-size: 13px;
+}
+
+.projects-v3-method,
+.projects-v3-status {
+    min-height: 34px;
+    padding: 0 12px;
+    font-size: 12px;
+}
+
+.projects-v3-timeline strong {
+    font-size: 13px;
+}
+
+.projects-v3-timeline span {
+    font-size: 12px;
+}
+
+.projects-v3-member-count {
+    font-size: 16px;
+}
+
+.projects-v3-view {
+    font-size: 13px;
+}
+
+/* =========================================================
+   PROJECT DETAILS EXTRA SCALE BOOST
+   ========================================================= */
+
+.project-detail-v3 {
+    padding: 36px 34px 58px;
+}
+
+/* Back link */
+
+.detail-v3-back {
+    margin-bottom: 22px;
+}
+
+    .detail-v3-back a {
+        font-size: 13px;
+    }
+
+/* Tags */
+
+.detail-v3-tags {
+    gap: 9px;
+    margin-bottom: 16px;
+}
+
+    .detail-v3-tags .projects-v3-method,
+    .detail-v3-tags .projects-v3-status {
+        min-height: 34px;
+        padding: 0 13px;
+        font-size: 12px;
+    }
+
+/* Main project title */
+
+.detail-v3-heading h1 {
+    font-size: 36px;
+    line-height: 1.1;
+}
+
+.detail-v3-heading p {
+    margin-top: 12px;
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+/* Action buttons */
+
+.detail-v3-actions {
+    gap: 10px;
+}
+
+.detail-v3-secondary,
+.detail-v3-danger {
+    min-height: 46px;
+    padding: 0 17px;
+    font-size: 13px;
+}
+
+/* =========================================================
+   INFORMATION CARDS
+   ========================================================= */
+
+.detail-v3-info-grid {
+    gap: 14px;
+    margin-bottom: 18px;
+}
+
+    .detail-v3-info-grid article {
+        min-height: 125px;
+        padding: 19px;
+        border-radius: 10px;
+    }
+
+    /* Methodology / Status / Start Date labels */
+
+    .detail-v3-info-grid span {
+        font-size: 12px;
+    }
+
+    /* Actual values */
+
+    .detail-v3-info-grid strong {
+        margin-top: 29px;
+        font-size: 16px;
+        line-height: 1.3;
+    }
+
+/* =========================================================
+   MODULES PANEL
+   ========================================================= */
+
+.detail-v3-section-head {
+    min-height: 94px;
+    padding: 19px 22px;
+}
+
+    .detail-v3-section-head span {
+        margin-bottom: 7px;
+        font-size: 11px;
+    }
+
+    .detail-v3-section-head h2 {
+        font-size: 22px;
+    }
+
+/* Module rows */
+
+.detail-v3-module {
+    min-height: 96px;
+    grid-template-columns: 50px 1fr auto;
+    gap: 16px;
+    padding: 16px 22px;
+}
+
+/* Module icons */
+
+.module-v3-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 10px;
+    font-size: 17px;
+}
+
+/* Module title */
+
+.module-v3-copy strong {
+    font-size: 15px;
+}
+
+/* Module description */
+
+.module-v3-copy span {
+    margin-top: 6px;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+/* Open / Coming soon */
+
+.detail-v3-module > a,
+.module-v3-state {
+    font-size: 12px;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1100px) {
+    .detail-v3-info-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 760px) {
+    .project-detail-v3 {
+        padding: 24px 16px 44px;
+    }
+
+    .detail-v3-heading h1 {
+        font-size: 30px;
+    }
+
+    .detail-v3-info-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 500px) {
+    .detail-v3-info-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* =========================================================
+   PROJECT DETAILS PROFESSIONAL SVG ICONS
+   ========================================================= */
+
+.module-v3-icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 48px;
+    border-radius: 10px;
+    background: #f1eee8;
+    color: #3f3e39;
+}
+
+    .module-v3-icon svg {
+        width: 22px;
+        height: 22px;
+        display: block;
+    }
+
+.detail-v3-module:hover .module-v3-icon {
+    background: #ebe8e1;
+    color: #171715;
+}
+
+/* =========================================================
+   PLANORA V3 — PROJECT MEMBERS
+   FINAL UI
+   ========================================================= */
+
+.members-v3-page {
+    width: 100%;
+    padding: 36px 34px 58px;
+    color: #20201e;
+}
+
+/* BACK */
+
+.members-v3-back {
+    margin-bottom: 22px;
+}
+
+    .members-v3-back a {
+        color: #686863;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+        .members-v3-back a:hover {
+            color: #111;
+        }
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.members-v3-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 28px;
+    margin-bottom: 26px;
+}
+
+.members-v3-tags {
+    display: flex;
+    gap: 9px;
+    margin-bottom: 16px;
+}
+
+    .members-v3-tags .projects-v3-method,
+    .members-v3-tags .projects-v3-status {
+        min-height: 34px;
+        display: inline-flex;
+        align-items: center;
+        padding: 0 13px;
+        font-size: 12px;
+    }
+
+.members-v3-header h1 {
+    margin: 0;
+    font-size: 36px;
+    line-height: 1.1;
+    font-weight: 650;
+    letter-spacing: -0.035em;
+}
+
+.members-v3-header p {
+    margin: 12px 0 0;
+    color: #686863;
+    font-size: 15px;
+    line-height: 1.65;
+}
+
+    .members-v3-header p strong {
+        color: #242421;
+    }
+
+/* MEMBER COUNT */
+
+.members-v3-count {
+    width: 160px;
+    min-height: 112px;
+    padding: 18px 20px;
+    border: 1px solid #e1e1dc;
+    border-radius: 10px;
+    background: #f8f8f4;
+}
+
+    .members-v3-count span {
+        display: block;
+        color: #868680;
+        font-size: 12px;
+    }
+
+    .members-v3-count strong {
+        display: block;
+        margin-top: 22px;
+        color: #20201e;
+        font-size: 32px;
+        font-weight: 550;
+    }
+
+/* =========================================================
+   PANELS
+   ========================================================= */
+
+.members-v3-add-panel,
+.members-v3-table-panel {
+    overflow: hidden;
+    margin-bottom: 20px;
+    border: 1px solid #dfdfda;
+    border-radius: 10px;
+    background: #fff;
+}
+
+.members-v3-panel-head {
+    min-height: 108px;
+    display: flex;
+    align-items: center;
+    padding: 20px 24px;
+    border-bottom: 1px solid #e7e7e2;
+}
+
+    .members-v3-panel-head > div > span {
+        display: block;
+        margin-bottom: 7px;
+        color: #92928c;
+        font-size: 11px;
+        font-weight: 650;
+        letter-spacing: .06em;
+    }
+
+    .members-v3-panel-head h2 {
+        margin: 0;
+        font-size: 22px;
+        font-weight: 650;
+    }
+
+    .members-v3-panel-head p {
+        margin: 7px 0 0;
+        color: #80807a;
+        font-size: 13px;
+    }
+
+/* =========================================================
+   AVAILABLE USERS
+   ========================================================= */
+
+.members-v3-available-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(370px, 1fr));
+    gap: 16px;
+    padding: 22px;
+}
+
+.members-v3-user-card {
+    padding: 20px;
+    border: 1px solid #e1e1dc;
+    border-radius: 10px;
+    background: #f8f8f5;
+}
+
+.members-v3-user {
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.members-v3-avatar {
+    width: 50px;
+    height: 50px;
+    flex: 0 0 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #eee9df;
+    color: #393934;
+    font-size: 17px;
+    font-weight: 650;
+}
+
+.members-v3-user-copy {
+    min-width: 0;
+}
+
+    .members-v3-user-copy strong {
+        display: block;
+        color: #242421;
+        font-size: 15px;
+        font-weight: 650;
+    }
+
+    .members-v3-user-copy span {
+        display: block;
+        margin-top: 5px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: #7f7f79;
+        font-size: 13px;
+    }
+
+/* =========================================================
+   ADD FORM
+   ========================================================= */
+
+.members-v3-add-form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+    .members-v3-add-form select {
+        flex: 1;
+        min-width: 0;
+        height: 46px;
+        padding: 0 13px;
+        border: 1px solid #d9d9d4;
+        border-radius: 8px;
+        background: #fff;
+        color: #292926;
+        outline: none;
+        font-size: 13px;
+    }
+
+        .members-v3-add-form select:focus {
+            border-color: #777772;
+        }
+
+    .members-v3-add-form button {
+        min-width: 125px;
+        height: 46px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 0 16px;
+        border: 0;
+        border-radius: 8px;
+        background: #20201e;
+        color: #fff;
+        cursor: pointer;
+        font-size: 13px;
+        font-weight: 650;
+    }
+
+        .members-v3-add-form button:hover {
+            background: #050505;
+        }
+
+        /* ??? ??? ?? ???? ????? + ???? */
+
+        .members-v3-add-form button svg {
+            width: 18px;
+            height: 18px;
+            flex: 0 0 18px;
+        }
+
+/* =========================================================
+   MEMBERS TABLE
+   ========================================================= */
+
+.members-v3-table {
+    width: 100%;
+}
+
+.members-v3-table-head,
+.members-v3-row {
+    display: grid;
+    grid-template-columns: minmax(280px, 1.7fr) minmax(270px, 1.15fr) minmax(150px, .75fr) minmax(110px, .55fr);
+    align-items: center;
+    gap: 18px;
+    padding-left: 24px;
+    padding-right: 24px;
+}
+
+.members-v3-table-head {
+    min-height: 58px;
+    background: #fafaf7;
+    color: #85857f;
+    font-size: 12px;
+    font-weight: 650;
+}
+
+.members-v3-row {
+    min-height: 106px;
+    border-top: 1px solid #e9e9e4;
+}
+
+    .members-v3-row:hover {
+        background: #fafaf7;
+    }
+
+/* =========================================================
+   ROLE FORM
+   ========================================================= */
+
+.members-v3-role-form {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+    .members-v3-role-form select {
+        min-width: 165px;
+        height: 44px;
+        padding: 0 11px;
+        border: 1px solid #d9d9d4;
+        border-radius: 8px;
+        background: #fff;
+        color: #30302c;
+        outline: none;
+        font-size: 13px;
+    }
+
+    .members-v3-role-form button {
+        height: 44px;
+        padding: 0 14px;
+        border: 1px solid #dadad5;
+        border-radius: 8px;
+        background: #f7f7f4;
+        color: #30302c;
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: 650;
+    }
+
+        .members-v3-role-form button:hover {
+            background: #ecece8;
+        }
+
+.members-v3-role-pill {
+    width: fit-content;
+    min-height: 34px;
+    display: inline-flex;
+    align-items: center;
+    padding: 0 12px;
+    border-radius: 999px;
+    background: #f1eee8;
+    color: #55514b;
+    font-size: 12px;
+    font-weight: 650;
+}
+
+/* =========================================================
+   JOINED
+   ========================================================= */
+
+.members-v3-joined {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #62625d;
+    font-size: 13px;
+}
+
+    .members-v3-joined svg {
+        width: 18px;
+        height: 18px;
+        flex: 0 0 18px;
+        color: #81817b;
+    }
+
+/* =========================================================
+   REMOVE
+   ========================================================= */
+
+.members-v3-actions form {
+    margin: 0;
+}
+
+.members-v3-remove {
+    min-height: 43px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 0 14px;
+    border: 1px solid #e3cbc7;
+    border-radius: 8px;
+    background: #fbf1ef;
+    color: #925047;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 650;
+}
+
+    .members-v3-remove:hover {
+        background: #f6e5e1;
+    }
+
+    .members-v3-remove svg {
+        width: 17px;
+        height: 17px;
+    }
+
+/* LOCKED */
+
+.members-v3-locked {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    color: #81817b;
+    font-size: 12px;
+}
+
+    .members-v3-locked svg {
+        width: 17px;
+        height: 17px;
+    }
+
+/* =========================================================
+   EMPTY STATE
+   ========================================================= */
+
+.members-v3-empty {
+    min-height: 230px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 28px;
+    text-align: center;
+}
+
+.members-v3-empty-icon {
+    width: 54px;
+    height: 54px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+    border-radius: 12px;
+    background: #f1eee8;
+    color: #4b4944;
+}
+
+    .members-v3-empty-icon svg {
+        width: 24px;
+        height: 24px;
+    }
+
+.members-v3-empty strong {
+    color: #242421;
+    font-size: 18px;
+    font-weight: 650;
+}
+
+.members-v3-empty p {
+    max-width: 470px;
+    margin: 8px 0 0;
+    color: #80807a;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+    .members-v3-table-head {
+        display: none;
+    }
+
+    .members-v3-row {
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+}
+
+@media (max-width: 760px) {
+
+    .members-v3-page {
+        padding: 24px 16px 44px;
+    }
+
+    .members-v3-header {
+        flex-direction: column;
+    }
+
+        .members-v3-header h1 {
+            font-size: 31px;
+        }
+
+    .members-v3-count {
+        width: 100%;
+    }
+
+    .members-v3-available-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .members-v3-row {
+        grid-template-columns: 1fr;
+    }
+
+    .members-v3-add-form,
+    .members-v3-role-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+        .members-v3-add-form button,
+        .members-v3-role-form select,
+        .members-v3-role-form button {
+            width: 100%;
+        }
+}
+
+/* =========================================================
+   PLANORA V3 — PROJECT CREATE / EDIT FORM
+   FINAL LARGE UI SCALE
+   ========================================================= */
+
+.project-form-v3-page {
+    width: 100%;
+    max-width: 1260px;
+    margin: 0 auto;
+    padding: 36px 34px 60px;
+    color: #20201e;
+}
+
+
+/* =========================================================
+   BACK
+   ========================================================= */
+
+.project-form-v3-back {
+    margin-bottom: 22px;
+}
+
+    .project-form-v3-back a {
+        color: #686863;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+        .project-form-v3-back a:hover {
+            color: #171715;
+        }
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.project-form-v3-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 28px;
+    margin-bottom: 28px;
+}
+
+.project-form-v3-kicker {
+    display: block;
+    margin-bottom: 10px;
+    color: #8b8b85;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .07em;
+}
+
+.project-form-v3-header h1 {
+    margin: 0;
+    color: #20201e;
+    font-size: 36px;
+    font-weight: 650;
+    line-height: 1.1;
+    letter-spacing: -0.04em;
+}
+
+.project-form-v3-header p {
+    max-width: 660px;
+    margin: 12px 0 0;
+    color: #6d6d67;
+    font-size: 15px;
+    line-height: 1.65;
+}
+
+.project-form-v3-header-icon {
+    width: 58px;
+    height: 58px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 58px;
+    border-radius: 12px;
+    background: #20201e;
+    color: #ffffff;
+}
+
+    .project-form-v3-header-icon svg {
+        width: 25px;
+        height: 25px;
+    }
+
+
+/* =========================================================
+   PANEL
+   ========================================================= */
+
+.project-form-v3-panel {
+    overflow: hidden;
+    margin-bottom: 18px;
+    border: 1px solid #dfdfda;
+    border-radius: 10px;
+    background: #ffffff;
+}
+
+.project-form-v3-panel-head {
+    min-height: 110px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 20px 24px;
+    border-bottom: 1px solid #e6e6e1;
+    background: #ffffff;
+}
+
+.project-form-v3-panel-icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 48px;
+    border-radius: 10px;
+    background: #f1eee8;
+    color: #43413c;
+}
+
+    .project-form-v3-panel-icon svg {
+        width: 22px;
+        height: 22px;
+    }
+
+.project-form-v3-panel-head > div:last-child > span {
+    display: block;
+    margin-bottom: 5px;
+    color: #969690;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .06em;
+}
+
+.project-form-v3-panel-head h2 {
+    margin: 0;
+    color: #252522;
+    font-size: 22px;
+    font-weight: 650;
+}
+
+.project-form-v3-panel-head p {
+    margin: 6px 0 0;
+    color: #80807a;
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   FIELDS
+   ========================================================= */
+
+.project-form-v3-fields {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 22px;
+    padding: 24px;
+}
+
+.project-form-v3-two-columns {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.project-form-v3-field {
+    min-width: 0;
+}
+
+.project-form-v3-full {
+    grid-column: 1 / -1;
+}
+
+.project-form-v3-field label {
+    display: block;
+    margin-bottom: 9px;
+    color: #343430;
+    font-size: 13px;
+    font-weight: 650;
+}
+
+.project-form-v3-label-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+    .project-form-v3-label-row > span {
+        margin-bottom: 9px;
+        color: #999993;
+        font-size: 11px;
+    }
+
+
+/* =========================================================
+   INPUTS
+   ========================================================= */
+
+.project-form-v3-field input,
+.project-form-v3-field select,
+.project-form-v3-field textarea {
+    width: 100%;
+    border: 1px solid #d9d9d4;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #292926;
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+    transition: border-color .15s ease, box-shadow .15s ease;
+}
+
+.project-form-v3-field input,
+.project-form-v3-field select {
+    height: 50px;
+    padding: 0 14px;
+}
+
+.project-form-v3-field textarea {
+    min-height: 150px;
+    padding: 14px;
+    resize: vertical;
+    line-height: 1.6;
+}
+
+    .project-form-v3-field input::placeholder,
+    .project-form-v3-field textarea::placeholder {
+        color: #aaa9a4;
+    }
+
+    .project-form-v3-field input:focus,
+    .project-form-v3-field select:focus,
+    .project-form-v3-field textarea:focus {
+        border-color: #767670;
+        box-shadow: 0 0 0 3px rgba(32, 32, 30, 0.06);
+    }
+
+
+/* =========================================================
+   SELECT
+   ========================================================= */
+
+.project-form-v3-select-wrap {
+    position: relative;
+}
+
+    .project-form-v3-select-wrap select {
+        appearance: none;
+        padding-right: 44px;
+    }
+
+    .project-form-v3-select-wrap > svg {
+        position: absolute;
+        top: 50%;
+        right: 14px;
+        width: 17px;
+        height: 17px;
+        transform: translateY(-50%);
+        color: #74746e;
+        pointer-events: none;
+    }
+
+
+/* =========================================================
+   READONLY STATUS
+   ========================================================= */
+
+.project-form-v3-readonly {
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 14px;
+    border: 1px solid #dfdfda;
+    border-radius: 8px;
+    background: #f8f8f4;
+}
+
+.project-form-v3-status-dot {
+    width: 9px;
+    height: 9px;
+    flex: 0 0 9px;
+    border-radius: 50%;
+    background: #d1a74d;
+}
+
+.project-form-v3-readonly strong {
+    display: block;
+    color: #30302c;
+    font-size: 13px;
+    font-weight: 650;
+}
+
+.project-form-v3-readonly small {
+    display: block;
+    margin-top: 2px;
+    color: #8a8a84;
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   VALIDATION
+   ========================================================= */
+
+.project-form-v3-validation {
+    margin-bottom: 18px;
+    color: #984d45;
+    font-size: 13px;
+}
+
+    .project-form-v3-validation:empty {
+        display: none;
+    }
+
+.project-form-v3-error {
+    display: block;
+    margin-top: 7px;
+    color: #a34f47;
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   ACTIONS
+   ========================================================= */
+
+.project-form-v3-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 22px;
+    padding-top: 22px;
+    border-top: 1px solid #e2e2dd;
+}
+
+.project-form-v3-cancel,
+.project-form-v3-submit {
+    min-height: 48px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 0 18px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 650;
+}
+
+.project-form-v3-cancel {
+    border: 1px solid #dcdcd7;
+    background: #ffffff;
+    color: #44443f;
+}
+
+    .project-form-v3-cancel:hover {
+        background: #f6f6f3;
+    }
+
+.project-form-v3-submit {
+    min-width: 160px;
+    border: 1px solid #20201e;
+    background: #20201e;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+    .project-form-v3-submit:hover {
+        background: #050505;
+    }
+
+    .project-form-v3-submit svg {
+        width: 18px;
+        height: 18px;
+    }
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 800px) {
+
+    .project-form-v3-page {
+        padding: 24px 16px 44px;
+    }
+
+    .project-form-v3-header h1 {
+        font-size: 31px;
+    }
+
+    .project-form-v3-two-columns {
+        grid-template-columns: 1fr;
+    }
+
+    .project-form-v3-header-icon {
+        width: 50px;
+        height: 50px;
+        flex-basis: 50px;
+    }
+}
+
+@media (max-width: 560px) {
+
+    .project-form-v3-header-icon {
+        display: none;
+    }
+
+    .project-form-v3-panel-head {
+        align-items: flex-start;
+    }
+
+    .project-form-v3-actions {
+        flex-direction: column-reverse;
+        align-items: stretch;
+    }
+
+    .project-form-v3-cancel,
+    .project-form-v3-submit {
+        width: 100%;
+    }
+}
+
+
+/* =========================================================
+   CREATE / EDIT PROJECT — FULL WORKSPACE WIDTH
+   ========================================================= */
+
+.project-form-v3-page {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 36px 28px 60px;
+}
+
+.project-form-v3-header {
+    width: 100%;
+    margin-bottom: 28px;
+}
+
+    .project-form-v3-header > div:first-child {
+        width: 100%;
+    }
+
+    .project-form-v3-header p {
+        max-width: 850px;
+    }
+
+/* Wider panels */
+
+.project-form-v3 {
+    width: 100%;
+}
+
+.project-form-v3-panel {
+    width: 100%;
+}
+
+/* More comfortable content spacing */
+
+.project-form-v3-panel-head {
+    padding: 22px 26px;
+}
+
+.project-form-v3-fields {
+    padding: 26px;
+    gap: 24px;
+}
+
+/* Inputs */
+
+.project-form-v3-field input,
+.project-form-v3-field select {
+    height: 52px;
+    font-size: 14px;
+}
+
+.project-form-v3-field textarea {
+    min-height: 165px;
+    font-size: 14px;
+}
+
+/* Better two-column spacing */
+
+.project-form-v3-two-columns {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: 24px;
+}
+
+/* Actions */
+
+.project-form-v3-actions {
+    margin-top: 24px;
+    padding-bottom: 10px;
+}
+
+/* =========================================================
+   CREATE PROJECT — IMPROVE LIGHT/FADED TEXT READABILITY
+   ========================================================= */
+
+.project-form-v3-kicker {
+    color: #7d7d76;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+}
+
+.project-form-v3-header p {
+    color: #5f5f59;
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 1.7;
+}
+
+.project-form-v3-panel-head > div:last-child > span {
+    color: #83837c;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.07em;
+}
+
+.project-form-v3-panel-head p {
+    color: #666660;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.65;
+}
+
+.project-form-v3-label-row > span {
+    color: #7a7a73;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.project-form-v3-field small {
+    color: #777771;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.project-form-v3-field input::placeholder,
+.project-form-v3-field textarea::placeholder {
+    color: #8f8f88;
+    font-size: 14px;
+    font-weight: 500;
+    opacity: 1;
+}
+
+.project-form-v3-readonly small {
+    color: #75756e;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.project-form-v3-validation {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.project-form-v3-error {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* =========================================================
+   PLANORA — LARGE CLEAR UI OVERRIDE
+   ??????? ?????? ???????? ???????? ???? ???? ???? ???? ?????
+   ========================================================= */
+
+/* ?????? ????? */
+.project-form-v3-page {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 40px 32px 72px !important;
+    color: #1f1f1d !important;
+}
+
+/* back link */
+.project-form-v3-back {
+    margin-bottom: 22px !important;
+}
+
+    .project-form-v3-back a {
+        color: #575751 !important;
+        font-size: 15px !important;
+        font-weight: 700 !important;
+        text-decoration: none !important;
+    }
+
+/* ??????? ??????? */
+.project-form-v3-kicker {
+    display: block !important;
+    margin-bottom: 12px !important;
+    color: #6e6e67 !important;
+    font-size: 13px !important;
+    font-weight: 800 !important;
+    letter-spacing: .09em !important;
+}
+
+.project-form-v3-header {
+    width: 100% !important;
+    margin-bottom: 30px !important;
+}
+
+    .project-form-v3-header h1 {
+        margin: 0 !important;
+        color: #1f1f1d !important;
+        font-size: 52px !important;
+        font-weight: 800 !important;
+        line-height: 1.08 !important;
+        letter-spacing: -0.04em !important;
+    }
+
+    .project-form-v3-header p {
+        margin-top: 14px !important;
+        max-width: 920px !important;
+        color: #585852 !important;
+        font-size: 20px !important;
+        font-weight: 500 !important;
+        line-height: 1.75 !important;
+    }
+
+/* ?????? */
+.project-form-v3 {
+    width: 100% !important;
+}
+
+/* ??????? */
+.project-form-v3-panel {
+    width: 100% !important;
+    margin-bottom: 24px !important;
+    border: 1px solid #ddddd7 !important;
+    border-radius: 14px !important;
+    background: #ffffff !important;
+    overflow: hidden !important;
+}
+
+.project-form-v3-panel-head {
+    display: flex !important;
+    align-items: center !important;
+    gap: 18px !important;
+    padding: 26px 28px !important;
+    border-bottom: 1px solid #e7e7e2 !important;
+    background: #ffffff !important;
+    min-height: 120px !important;
+}
+
+.project-form-v3-panel-icon {
+    width: 56px !important;
+    height: 56px !important;
+    flex: 0 0 56px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 14px !important;
+    background: #f1eee8 !important;
+    color: #3a3935 !important;
+}
+
+    .project-form-v3-panel-icon svg {
+        width: 26px !important;
+        height: 26px !important;
+    }
+
+.project-form-v3-panel-head > div:last-child > span {
+    display: block !important;
+    margin-bottom: 6px !important;
+    color: #7b7b74 !important;
+    font-size: 13px !important;
+    font-weight: 800 !important;
+    letter-spacing: .08em !important;
+}
+
+.project-form-v3-panel-head h2 {
+    margin: 0 !important;
+    color: #1f1f1d !important;
+    font-size: 34px !important;
+    font-weight: 800 !important;
+    line-height: 1.2 !important;
+}
+
+.project-form-v3-panel-head p {
+    margin: 8px 0 0 !important;
+    color: #5d5d57 !important;
+    font-size: 18px !important;
+    font-weight: 500 !important;
+    line-height: 1.7 !important;
+}
+
+/* ???? ??????? */
+.project-form-v3-fields {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 26px !important;
+    padding: 28px !important;
+}
+
+.project-form-v3-two-columns {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 26px !important;
+}
+
+.project-form-v3-full {
+    grid-column: 1 / -1 !important;
+}
+
+/* labels */
+.project-form-v3-field label {
+    display: block !important;
+    margin-bottom: 12px !important;
+    color: #232320 !important;
+    font-size: 18px !important;
+    font-weight: 800 !important;
+    line-height: 1.4 !important;
+}
+
+.project-form-v3-label-row {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 12px !important;
+}
+
+    .project-form-v3-label-row > span {
+        color: #6d6d66 !important;
+        font-size: 14px !important;
+        font-weight: 700 !important;
+    }
+
+/* inputs + select + textarea */
+.project-form-v3-field input,
+.project-form-v3-field select,
+.project-form-v3-field textarea {
+    width: 100% !important;
+    border: 1px solid #d3d3cd !important;
+    border-radius: 12px !important;
+    background: #ffffff !important;
+    color: #1f1f1d !important;
+    font-family: inherit !important;
+    font-size: 17px !important;
+    font-weight: 600 !important;
+    line-height: 1.6 !important;
+    outline: none !important;
+    box-sizing: border-box !important;
+    transition: border-color .15s ease, box-shadow .15s ease !important;
+}
+
+.project-form-v3-field input,
+.project-form-v3-field select {
+    height: 62px !important;
+    padding: 0 18px !important;
+}
+
+.project-form-v3-field textarea {
+    min-height: 200px !important;
+    padding: 18px !important;
+    resize: vertical !important;
+}
+
+    .project-form-v3-field input::placeholder,
+    .project-form-v3-field textarea::placeholder {
+        color: #85857e !important;
+        font-size: 16px !important;
+        font-weight: 500 !important;
+        opacity: 1 !important;
+    }
+
+    .project-form-v3-field input:focus,
+    .project-form-v3-field select:focus,
+    .project-form-v3-field textarea:focus {
+        border-color: #7e7e77 !important;
+        box-shadow: 0 0 0 4px rgba(32, 32, 30, 0.07) !important;
+    }
+
+/* select arrow */
+.project-form-v3-select-wrap {
+    position: relative !important;
+}
+
+    .project-form-v3-select-wrap select {
+        appearance: none !important;
+        padding-right: 52px !important;
+    }
+
+    .project-form-v3-select-wrap > svg {
+        position: absolute !important;
+        top: 50% !important;
+        right: 18px !important;
+        width: 20px !important;
+        height: 20px !important;
+        transform: translateY(-50%) !important;
+        color: #666660 !important;
+        pointer-events: none !important;
+    }
+
+/* readonly status */
+.project-form-v3-readonly {
+    min-height: 62px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 14px !important;
+    padding: 12px 18px !important;
+    border: 1px solid #dbdbd5 !important;
+    border-radius: 12px !important;
+    background: #f8f8f5 !important;
+}
+
+.project-form-v3-status-dot {
+    width: 11px !important;
+    height: 11px !important;
+    flex: 0 0 11px !important;
+    border-radius: 50% !important;
+    background: #d1a74d !important;
+}
+
+.project-form-v3-readonly strong {
+    display: block !important;
+    color: #272724 !important;
+    font-size: 18px !important;
+    font-weight: 800 !important;
+}
+
+.project-form-v3-readonly small {
+    display: block !important;
+    margin-top: 4px !important;
+    color: #666660 !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+}
+
+/* validation */
+.project-form-v3-validation {
+    margin-bottom: 20px !important;
+    color: #9a4740 !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+}
+
+    .project-form-v3-validation:empty {
+        display: none !important;
+    }
+
+.project-form-v3-error {
+    display: block !important;
+    margin-top: 8px !important;
+    color: #a24a43 !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+}
+
+/* buttons */
+.project-form-v3-actions {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 14px !important;
+    margin-top: 26px !important;
+    padding-top: 24px !important;
+    border-top: 1px solid #e1e1db !important;
+}
+
+.project-form-v3-cancel,
+.project-form-v3-submit {
+    min-height: 56px !important;
+    padding: 0 22px !important;
+    border-radius: 12px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 10px !important;
+    text-decoration: none !important;
+    font-size: 16px !important;
+    font-weight: 800 !important;
+}
+
+.project-form-v3-cancel {
+    border: 1px solid #d7d7d1 !important;
+    background: #ffffff !important;
+    color: #3d3d38 !important;
+}
+
+.project-form-v3-submit {
+    min-width: 190px !important;
+    border: 1px solid #1f1f1d !important;
+    background: #1f1f1d !important;
+    color: #ffffff !important;
+    cursor: pointer !important;
+}
+
+    .project-form-v3-submit svg {
+        width: 19px !important;
+        height: 19px !important;
+    }
+
+/* responsive */
+@media (max-width: 900px) {
+    .project-form-v3-page {
+        padding: 28px 18px 48px !important;
+    }
+
+    .project-form-v3-header h1 {
+        font-size: 40px !important;
+    }
+
+    .project-form-v3-header p {
+        font-size: 18px !important;
+    }
+
+    .project-form-v3-panel-head h2 {
+        font-size: 28px !important;
+    }
+
+    .project-form-v3-two-columns {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+@media (max-width: 560px) {
+    .project-form-v3-header h1 {
+        font-size: 34px !important;
+    }
+
+    .project-form-v3-field label {
+        font-size: 16px !important;
+    }
+
+    .project-form-v3-field input,
+    .project-form-v3-field select,
+    .project-form-v3-field textarea {
+        font-size: 16px !important;
+    }
+
+    .project-form-v3-actions {
+        flex-direction: column-reverse !important;
+        align-items: stretch !important;
+    }
+
+    .project-form-v3-cancel,
+    .project-form-v3-submit {
+        width: 100% !important;
+    }
+}
+
+/* =========================================================
+   PLANORA FORM — BALANCED LARGE SCALE
+   ???? ?? ?????? ??????? ??? ???? ?? ?????
+   ========================================================= */
+
+.project-form-v3-page {
+    padding: 36px 30px 64px !important;
+}
+
+/* Header */
+
+.project-form-v3-kicker {
+    font-size: 12px !important;
+}
+
+.project-form-v3-header h1 {
+    font-size: 42px !important;
+}
+
+.project-form-v3-header p {
+    font-size: 17px !important;
+}
+
+/* Panel header */
+
+.project-form-v3-panel-head {
+    min-height: 108px !important;
+    padding: 22px 24px !important;
+}
+
+.project-form-v3-panel-icon {
+    width: 50px !important;
+    height: 50px !important;
+    flex-basis: 50px !important;
+}
+
+    .project-form-v3-panel-icon svg {
+        width: 22px !important;
+        height: 22px !important;
+    }
+
+.project-form-v3-panel-head > div:last-child > span {
+    font-size: 12px !important;
+}
+
+.project-form-v3-panel-head h2 {
+    font-size: 26px !important;
+}
+
+.project-form-v3-panel-head p {
+    font-size: 15px !important;
+}
+
+/* Form spacing */
+
+.project-form-v3-fields {
+    gap: 22px !important;
+    padding: 24px !important;
+}
+
+.project-form-v3-two-columns {
+    gap: 22px !important;
+}
+
+/* Labels ??? Project name / Description */
+
+.project-form-v3-field label {
+    margin-bottom: 10px !important;
+    font-size: 16px !important;
+    font-weight: 750 !important;
+}
+
+/* Project overview / Optional */
+
+.project-form-v3-label-row > span {
+    font-size: 12px !important;
+    font-weight: 650 !important;
+}
+
+/* Inputs */
+
+.project-form-v3-field input,
+.project-form-v3-field select,
+.project-form-v3-field textarea {
+    font-size: 15px !important;
+    font-weight: 500 !important;
+}
+
+.project-form-v3-field input,
+.project-form-v3-field select {
+    height: 54px !important;
+    padding: 0 15px !important;
+}
+
+.project-form-v3-field textarea {
+    min-height: 165px !important;
+    padding: 15px !important;
+}
+
+    .project-form-v3-field input::placeholder,
+    .project-form-v3-field textarea::placeholder {
+        font-size: 14px !important;
+        font-weight: 500 !important;
+    }
+
+/* Status */
+
+.project-form-v3-readonly {
+    min-height: 54px !important;
+    padding: 9px 15px !important;
+}
+
+    .project-form-v3-readonly strong {
+        font-size: 15px !important;
+    }
+
+    .project-form-v3-readonly small {
+        font-size: 11px !important;
+    }
+
+/* Validation */
+
+.project-form-v3-error {
+    font-size: 12px !important;
+}
+
+/* Buttons */
+
+.project-form-v3-cancel,
+.project-form-v3-submit {
+    min-height: 50px !important;
+    padding: 0 18px !important;
+    font-size: 14px !important;
+    border-radius: 9px !important;
+}
+
+.project-form-v3-submit {
+    min-width: 170px !important;
+}
+
+
+/* =========================================================
+   PLANORA — SOFTER FONT WEIGHT
+   ========================================================= */
+
+.project-form-v3-header h1 {
+    font-weight: 650 !important;
+}
+
+.project-form-v3-panel-head h2 {
+    font-weight: 650 !important;
+}
+
+.project-form-v3-field label {
+    font-weight: 600 !important;
+}
+
+.project-form-v3-kicker {
+    font-weight: 700 !important;
+}
+
+.project-form-v3-panel-head > div:last-child > span {
+    font-weight: 700 !important;
+}
+
+.project-form-v3-readonly strong {
+    font-weight: 600 !important;
+}
+
+.project-form-v3-submit,
+.project-form-v3-cancel {
+    font-weight: 600 !important;
+}
+/* =========================================================
+   PLANORA V3 — ARCHIVE PROJECT
+   ========================================================= */
+
+.archive-v3-page {
+    width: 100%;
+    max-width: none;
+    padding: 36px 30px 64px;
+    color: #20201e;
+}
+
+
+/* BACK */
+
+.archive-v3-back {
+    margin-bottom: 22px;
+}
+
+    .archive-v3-back a {
+        color: #575751;
+        text-decoration: none;
+        font-size: 15px;
+        font-weight: 600;
+    }
+
+        .archive-v3-back a:hover {
+            color: #171715;
+        }
+
+
+/* HEADER */
+
+.archive-v3-header {
+    margin-bottom: 28px;
+}
+
+.archive-v3-kicker {
+    display: block;
+    margin-bottom: 10px;
+    color: #6f6f69;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .08em;
+}
+
+.archive-v3-header h1 {
+    margin: 0;
+    color: #20201e;
+    font-size: 42px;
+    font-weight: 650;
+    line-height: 1.1;
+    letter-spacing: -0.04em;
+}
+
+.archive-v3-header p {
+    max-width: 760px;
+    margin: 13px 0 0;
+    color: #5d5d57;
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 1.7;
+}
+
+
+/* MAIN PANEL */
+
+.archive-v3-panel {
+    overflow: hidden;
+    border: 1px solid #dfdfda;
+    border-radius: 12px;
+    background: #ffffff;
+}
+
+
+/* WARNING */
+
+.archive-v3-warning {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    padding: 28px;
+    border-bottom: 1px solid #e8e8e3;
+    background: #fbf7f5;
+}
+
+.archive-v3-warning-icon {
+    width: 54px;
+    height: 54px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 54px;
+    border-radius: 12px;
+    background: #f3e7e4;
+    color: #96564d;
+}
+
+    .archive-v3-warning-icon svg {
+        width: 25px;
+        height: 25px;
+    }
+
+.archive-v3-warning > div:last-child > span {
+    display: block;
+    margin-bottom: 7px;
+    color: #8d6f69;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .07em;
+}
+
+.archive-v3-warning h2 {
+    margin: 0;
+    color: #252522;
+    font-size: 27px;
+    font-weight: 650;
+    line-height: 1.25;
+}
+
+.archive-v3-warning p {
+    max-width: 860px;
+    margin: 11px 0 0;
+    color: #5e5e58;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.75;
+}
+
+    .archive-v3-warning p strong {
+        color: #252522;
+        font-weight: 600;
+    }
+
+
+/* SUMMARY */
+
+.archive-v3-summary {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+    padding: 24px;
+}
+
+    .archive-v3-summary article {
+        min-height: 116px;
+        padding: 18px;
+        border: 1px solid #e1e1dc;
+        border-radius: 10px;
+        background: #f8f8f5;
+    }
+
+        .archive-v3-summary article > span {
+            display: block;
+            color: #696963;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .archive-v3-summary article > strong {
+            display: block;
+            margin-top: 27px;
+            overflow: hidden;
+            color: #252522;
+            font-size: 17px;
+            font-weight: 600;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+
+/* INFORMATION NOTE */
+
+.archive-v3-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin: 0 24px 24px;
+    padding: 18px;
+    border: 1px solid #dfdfda;
+    border-radius: 10px;
+    background: #fafaf7;
+}
+
+.archive-v3-note-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 40px;
+    border-radius: 10px;
+    background: #eeeae2;
+    color: #55524c;
+}
+
+    .archive-v3-note-icon svg {
+        width: 20px;
+        height: 20px;
+    }
+
+.archive-v3-note strong {
+    display: block;
+    color: #2d2d29;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.archive-v3-note p {
+    margin: 5px 0 0;
+    color: #62625c;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.6;
+}
+
+
+/* ACTIONS */
+
+.archive-v3-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 22px 24px;
+    border-top: 1px solid #e6e6e1;
+    background: #fafaf7;
+}
+
+    .archive-v3-actions form {
+        margin: 0;
+    }
+
+.archive-v3-cancel,
+.archive-v3-confirm {
+    min-height: 50px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    padding: 0 18px;
+    border-radius: 9px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.archive-v3-cancel {
+    border: 1px solid #d9d9d4;
+    background: #ffffff;
+    color: #3e3e39;
+}
+
+    .archive-v3-cancel:hover {
+        background: #f3f3ef;
+    }
+
+.archive-v3-confirm {
+    min-width: 170px;
+    border: 1px solid #a4564d;
+    background: #a4564d;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+    .archive-v3-confirm:hover {
+        background: #8d473f;
+    }
+
+    .archive-v3-confirm svg {
+        width: 18px;
+        height: 18px;
+    }
+
+
+/* RESPONSIVE */
+
+@media (max-width: 1000px) {
+
+    .archive-v3-summary {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 650px) {
+
+    .archive-v3-page {
+        padding: 26px 16px 46px;
+    }
+
+    .archive-v3-header h1 {
+        font-size: 34px;
+    }
+
+    .archive-v3-warning {
+        flex-direction: column;
+    }
+
+    .archive-v3-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .archive-v3-actions {
+        flex-direction: column-reverse;
+        align-items: stretch;
+    }
+
+    .archive-v3-cancel,
+    .archive-v3-confirm {
+        width: 100%;
+    }
+}
+
+/* ========================================
+   BACKLOG ROW ACTIONS
+   ======================================== */
+
+.backlog-row-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 14px;
+    min-width: 145px;
+}
+
+.backlog-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 34px;
+    padding: 7px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1;
+    text-decoration: none;
+    transition:
+        background-color 140ms ease,
+        color 140ms ease,
+        border-color 140ms ease;
+}
+
+.backlog-action-edit {
+    color: #171717;
+    background: #f5f5f4;
+    border: 1px solid #e7e5e4;
+}
+
+.backlog-action-edit:hover {
+    background: #e7e5e4;
+}
+
+.backlog-action-delete {
+    color: #b42318;
+    background: #fff;
+    border: 1px solid #fecaca;
+}
+
+.backlog-action-delete:hover {
+    background: #fef2f2;
+}
+
+.scrum-module-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.scrum-module-actions a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 36px;
+    padding: 0 13px;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    color: #171717;
+    background: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color 140ms ease;
+}
+
+.scrum-module-actions a:hover {
+    background: #f5f5f5;
+}
+
+
+.module-v3-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 36px;
+    padding: 0 13px;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    background: #fff;
+    color: #171717 !important;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none !important;
+    white-space: nowrap;
+    transition: background-color 140ms ease;
+}
+
+.module-v3-action:hover {
+    background: #f5f5f5;
+}
+
+/* ========================================
+   SPRINT LIST — BETTER ALIGNMENT
+   ======================================== */
+
+.sprint-list-v3 .projects-v3-table-head,
+.sprint-list-v3 .sprint-list-v3-row {
+    grid-template-columns:
+        minmax(260px, 2fr)
+        130px
+        165px
+        90px
+        80px
+        minmax(280px, auto) !important;
+
+    column-gap: 18px !important;
+    align-items: center !important;
+}
+
+.sprint-list-v3 .backlog-row-actions {
+    width: 100%;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    flex-wrap: nowrap;
+}
+
+.sprint-list-v3 .backlog-row-actions form {
+    margin: 0;
+}
+
+.sprint-list-v3 .backlog-action {
+    min-height: 36px;
+    padding: 0 13px;
+    white-space: nowrap !important;
+    line-height: 1;
+}
+
+
+/* ========================================
+   SPRINT PLANNING — READY / SPRINT BACKLOG
+   ======================================== */
+
+.sprint-planning-v3-row {
+    grid-template-columns:
+        minmax(320px, 2fr)
+        130px
+        130px
+        1fr
+        1fr
+        minmax(150px, auto) !important;
+
+    column-gap: 18px !important;
+    align-items: center !important;
+}
+
+.sprint-planning-v3-row form {
+    margin: 0;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.sprint-planning-v3-row .backlog-action {
+    min-width: 115px;
+    min-height: 36px;
+    padding: 0 14px;
+    white-space: nowrap !important;
+    line-height: 1;
+}
+
+/* ===== SPRINT ACTION BUTTONS FINAL ===== */
+
+.sprint-list-v3 .backlog-row-actions > a,
+.sprint-list-v3 .backlog-row-actions > form button {
+    min-height: 36px !important;
+    padding: 0 13px !important;
+
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    border: 1px solid #e1e1dd !important;
+    border-radius: 8px !important;
+
+    background: #ffffff !important;
+    color: #171717 !important;
+
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    line-height: 1 !important;
+
+    text-decoration: none !important;
+    white-space: nowrap !important;
+}
+
+/* ========================================
+   SCRUM BOARD
+   ======================================== */
+
+.scrum-board-v3-token {
+    display: none;
+}
+
+.scrum-board-v3 {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(260px, 1fr));
+    gap: 16px;
+    padding-bottom: 12px;
+    overflow-x: auto;
+}
+
+.scrum-board-v3-column {
+    min-width: 260px;
+    border: 1px solid #e7e5e0;
+    border-radius: 12px;
+    background: #f8f8f5;
+}
+
+.scrum-board-v3-column-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 58px;
+    padding: 0 15px;
+    border-bottom: 1px solid #e7e5e0;
+}
+
+.scrum-board-v3-column-head h2 {
+    margin: 0;
+    color: #252522;
+    font-size: 14px;
+    font-weight: 650;
+}
+
+.scrum-board-v3-column-head span {
+    min-width: 26px;
+    padding: 4px 8px;
+    border-radius: 999px;
+    background: #ecece7;
+    color: #686862;
+    font-size: 11px;
+    text-align: center;
+}
+
+.scrum-board-v3-list {
+    min-height: 300px;
+    padding: 12px;
+}
+
+.scrum-board-v3-empty {
+    padding: 28px 12px;
+    color: #999991;
+    font-size: 12px;
+    text-align: center;
+}
+
+.scrum-board-v3-card {
+    margin-bottom: 10px;
+    padding: 14px;
+    border: 1px solid #e5e3de;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(31, 31, 28, 0.035);
+    transition: border-color 160ms ease, box-shadow 160ms ease, opacity 160ms ease;
+}
+
+.scrum-board-v3-card:hover {
+    border-color: #d4d1ca;
+    box-shadow: 0 5px 14px rgba(31, 31, 28, 0.06);
+}
+
+.scrum-board-v3-card[draggable="true"] {
+    cursor: grab;
+}
+
+.scrum-board-v3-card.is-dragging,
+.scrum-board-v3-card.is-pending {
+    opacity: 0.58;
+}
+
+.scrum-board-v3-card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.scrum-board-v3-drag-hint {
+    color: #aaa9a3;
+    font-size: 10px;
+}
+
+.scrum-board-v3-card h3 {
+    margin: 12px 0 13px;
+    font-size: 15px;
+    line-height: 1.4;
+}
+
+.scrum-board-v3-card h3 a {
+    color: #22221f;
+    text-decoration: none;
+}
+
+.scrum-board-v3-card h3 a:hover {
+    text-decoration: underline;
+}
+
+.scrum-board-v3-meta {
+    display: grid;
+    gap: 8px;
+    margin: 0 0 14px;
+}
+
+.scrum-board-v3-meta > div {
+    display: grid;
+    grid-template-columns: 62px minmax(0, 1fr);
+    gap: 8px;
+}
+
+.scrum-board-v3-meta dt,
+.scrum-board-v3-meta dd {
+    margin: 0;
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+.scrum-board-v3-meta dt {
+    color: #989890;
+}
+
+.scrum-board-v3-meta dd {
+    overflow-wrap: anywhere;
+    color: #565650;
+}
+
+.scrum-board-v3-action {
+    width: 100%;
+}
+
+.scrum-board-v3-qa-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.scrum-board-v3-dialog {
+    width: min(520px, calc(100vw - 32px));
+    padding: 0;
+    border: 1px solid #dedbd4;
+    border-radius: 12px;
+    background: #fff;
+    color: #292925;
+    box-shadow: 0 24px 70px rgba(31, 31, 28, 0.22);
+}
+
+.scrum-board-v3-dialog::backdrop {
+    background: rgba(26, 26, 23, 0.36);
+}
+
+.scrum-board-v3-dialog form {
+    display: grid;
+    gap: 12px;
+    padding: 24px;
+}
+
+.scrum-board-v3-dialog-head span {
+    color: #8c8c85;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+}
+
+.scrum-board-v3-dialog-head h2 {
+    margin: 7px 0 5px;
+    font-size: 21px;
+}
+
+.scrum-board-v3-dialog-head p,
+.scrum-board-v3-dialog label {
+    margin: 0;
+    color: #73736d;
+    font-size: 12px;
+}
+
+.scrum-board-v3-dialog label {
+    color: #42423d;
+    font-weight: 600;
+}
+
+.scrum-board-v3-dialog textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #dcdad4;
+    border-radius: 9px;
+    background: #fafaf8;
+    color: #292925;
+    font: inherit;
+    resize: vertical;
+}
+
+.scrum-board-v3-dialog .project-form-v3-actions {
+    margin-top: 5px;
+}
+
+.qa-history-v3-list {
+    display: grid;
+}
+
+.qa-history-v3-item {
+    display: grid;
+    grid-template-columns: minmax(180px, 0.8fr) minmax(240px, 1.6fr) auto;
+    gap: 18px;
+    align-items: center;
+    padding: 16px 20px;
+    border-top: 1px solid #eceae5;
+}
+
+.qa-history-v3-item > div {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.qa-history-v3-item strong,
+.qa-history-v3-item p,
+.qa-history-v3-item time {
+    margin: 0;
+    font-size: 12px;
+}
+
+.qa-history-v3-item p {
+    color: #555550;
+    white-space: pre-wrap;
+}
+
+.qa-history-v3-item time {
+    color: #8e8e87;
+}
+
+@media (max-width: 720px) {
+    .qa-history-v3-item {
+        grid-template-columns: 1fr;
+        gap: 9px;
+    }
+}
+
+.scrum-board-v3-toast {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 1100;
+    max-width: min(390px, calc(100vw - 32px));
+    padding: 12px 16px;
+    border: 1px solid #d8e1d4;
+    border-radius: 10px;
+    background: #f5f8f2;
+    color: #40523e;
+    box-shadow: 0 12px 30px rgba(31, 31, 28, 0.13);
+    font-size: 13px;
+}
+
+.scrum-board-v3-toast.is-error {
+    border-color: #f0cbc7;
+    background: #fff7f6;
+    color: #8e3d35;
+}
+
+@media (max-width: 1180px) {
+    .scrum-board-v3 {
+        grid-template-columns: repeat(4, 280px);
+    }
+}
+
+@media (max-width: 720px) {
+    .scrum-board-v3 {
+        margin-right: -14px;
+        padding-right: 14px;
+    }
+
+    .scrum-board-v3-toast {
+        right: 16px;
+        bottom: 16px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .scrum-board-v3-card {
+        transition: none;
+    }
+}
+
+.sprint-list-v3 .backlog-row-actions > a:hover,
+.sprint-list-v3 .backlog-row-actions > form button:hover {
+    background: #f4f4f1 !important;
+}
+
+.sprint-list-v3 .backlog-row-actions {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+
+    gap: 8px !important;
+
+    flex-wrap: nowrap !important;
+}
+
+/* ===== END SPRINT ACTION BUTTONS FINAL ===== */
+
+.task-collaboration-v3 {
+    display: grid;
+    gap: 18px;
+}
+
+.task-collaboration-v3-form,
+.task-collaboration-v3-upload {
+    display: grid;
+    gap: 10px;
+}
+
+.task-collaboration-v3-form label,
+.task-collaboration-v3-upload label {
+    font-weight: 700;
+}
+
+.task-collaboration-v3-form textarea,
+.task-collaboration-v3-upload input[type="file"] {
+    width: 100%;
+    border: 1px solid #d8d1c4;
+    border-radius: 10px;
+    background: #fff;
+    color: #171717;
+    padding: 11px 12px;
+    font: inherit;
+}
+
+.task-collaboration-v3-form textarea {
+    resize: vertical;
+}
+
+.task-collaboration-v3-form .projects-v3-primary,
+.task-collaboration-v3-upload .projects-v3-primary {
+    justify-self: start;
+}
+
+.task-collaboration-v3-list {
+    display: grid;
+    gap: 10px;
+}
+
+.task-collaboration-v3-item {
+    display: grid;
+    gap: 9px;
+    padding: 14px;
+    border: 1px solid #e2ddd3;
+    border-radius: 12px;
+    background: #fff;
+}
+
+.task-collaboration-v3-meta,
+.task-collaboration-v3-file,
+.task-collaboration-v3-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.task-collaboration-v3-meta time,
+.task-collaboration-v3-file span {
+    color: #8e8e87;
+    font-size: 12px;
+}
+
+.task-collaboration-v3-content p {
+    margin: 0;
+    overflow-wrap: anywhere;
+}
+
+.task-collaboration-v3-actions form {
+    margin: 0;
+}
+
+@media (max-width: 720px) {
+    .task-collaboration-v3-meta,
+    .task-collaboration-v3-file {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+
+.issue-v3-toolbar {
+    align-items: flex-start;
+}
+
+.issue-v3-filters {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.issue-v3-filters input,
+.issue-v3-filters select,
+.issue-v3-action-form select,
+.issue-v3-action-form textarea {
+    border: 1px solid #d8d1c4;
+    border-radius: 9px;
+    background: #fff;
+    color: #171717;
+    padding: 9px 10px;
+    font: inherit;
+}
+
+.issue-v3-table .projects-v3-row > div:nth-child(2) {
+    display: grid;
+    justify-items: start;
+    gap: 5px;
+}
+
+.issue-v3-table small {
+    color: #8e8e87;
+}
+
+.issue-v3-actions-panel {
+    display: grid;
+    gap: 14px;
+}
+
+.issue-v3-action-form {
+    display: grid;
+    gap: 10px;
+    max-width: 620px;
+}
+
+.issue-v3-action-form label {
+    font-weight: 700;
+}
+
+.issue-v3-action-form .project-form-v3-submit {
+    justify-self: start;
+}
+
+@media (max-width: 900px) {
+    .issue-v3-filters {
+        justify-content: flex-start;
+    }
+}
+
+/* Responsive layouts for shared project rows and dense list controls. */
+.projects-v3-project > div {
+    min-width: 0;
+}
+
+@media (max-width: 1050px) {
+    .sprint-list-v3 .sprint-list-v3-row {
+        grid-template-columns: minmax(0, 1fr) auto !important;
+        column-gap: 12px !important;
+        padding-right: 14px;
+        padding-left: 14px;
+    }
+
+    .sprint-list-v3 .sprint-list-v3-row > :nth-child(2) {
+        display: block !important;
+    }
+
+    .sprint-list-v3 .sprint-list-v3-row > :nth-child(3),
+    .sprint-list-v3 .sprint-list-v3-row > :nth-child(4),
+    .sprint-list-v3 .sprint-list-v3-row > :nth-child(5) {
+        display: none !important;
+    }
+
+    .sprint-list-v3 .sprint-list-v3-row > :nth-child(6) {
+        grid-column: 1 / -1;
+    }
+
+    .sprint-list-v3 .backlog-row-actions {
+        justify-content: flex-start;
+        flex-wrap: wrap !important;
+    }
+}
+
+@media (max-width: 720px) {
+    .issue-v3-filters input,
+    .issue-v3-filters select,
+    .issue-v3-filters > button {
+        min-height: 42px;
+    }
+}
+@media (max-width: 720px) {
+    .projects-v3-row:not(.sprint-list-v3-row):not(.sprint-planning-v3-row) {
+        grid-template-columns: minmax(0, 1fr) auto !important;
+    }
+
+    .projects-v3-row:not(.sprint-list-v3-row):not(.sprint-planning-v3-row) > :last-child {
+        grid-column: 1 / -1;
+        justify-self: end;
+    }
+}
+/* ===== TASK COLLABORATION BUTTONS ===== */
+
+.task-collaboration-v3 button,
+.task-collaboration-v3 input[type="submit"],
+.task-collaboration-v3 input[type="file"]::file-selector-button,
+.task-details-v3 button,
+.task-details-v3 input[type="submit"],
+.task-details-v3 input[type="file"]::file-selector-button,
+form[action*="Comment"] button,
+form[action*="Attachment"] button,
+form[action*="Upload"] button {
+    min-height: 36px !important;
+    padding: 0 14px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    border: 1px solid #d9d9d4 !important;
+    border-radius: 8px !important;
+
+    background: #ffffff !important;
+    color: #171717 !important;
+
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    line-height: 1 !important;
+
+    cursor: pointer !important;
+    transition: background-color .15s ease, border-color .15s ease !important;
+}
+
+.task-collaboration-v3 button:hover,
+.task-collaboration-v3 input[type="submit"]:hover,
+.task-collaboration-v3 input[type="file"]::file-selector-button:hover,
+.task-details-v3 button:hover,
+.task-details-v3 input[type="submit"]:hover,
+.task-details-v3 input[type="file"]::file-selector-button:hover,
+form[action*="Comment"] button:hover,
+form[action*="Attachment"] button:hover,
+form[action*="Upload"] button:hover {
+    background: #f3f3f0 !important;
+    border-color: #c8c8c2 !important;
+}
+
+/* File input */
+.task-collaboration-v3 input[type="file"],
+.task-details-v3 input[type="file"],
+form[action*="Attachment"] input[type="file"],
+form[action*="Upload"] input[type="file"] {
+    width: 100% !important;
+    min-height: 42px !important;
+    padding: 4px !important;
+
+    border: 1px solid #deded8 !important;
+    border-radius: 8px !important;
+
+    background: #ffffff !important;
+    color: #333333 !important;
+
+    font-size: 13px !important;
+}
+
+/* Main submit actions */
+form[action*="Comment"] button[type="submit"],
+form[action*="Upload"] button[type="submit"],
+form[action*="Attachment"] button[type="submit"] {
+    margin-top: 8px !important;
+
+    background: #191919 !important;
+    border-color: #191919 !important;
+    color: #ffffff !important;
+}
+
+form[action*="Comment"] button[type="submit"]:hover,
+form[action*="Upload"] button[type="submit"]:hover,
+form[action*="Attachment"] button[type="submit"]:hover {
+    background: #303030 !important;
+    border-color: #303030 !important;
+}
+
+/* ===== END TASK COLLABORATION BUTTONS ===== */
+
+/* ===== ISSUE FORM LAYOUT FIX ===== */
+
+.issues-form-v3 .project-form-v3-panel {
+    padding: 22px 26px !important;
+}
+
+.issues-form-v3 .project-form-v3-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    column-gap: 22px !important;
+    row-gap: 20px !important;
+}
+
+.issues-form-v3 .project-form-v3-field {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.issues-form-v3 .project-form-v3-wide {
+    grid-column: 1 / -1 !important;
+}
+
+.issues-form-v3 .project-form-v3-field > label {
+    display: block !important;
+    margin: 0 0 8px 0 !important;
+
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    line-height: 1.35 !important;
+
+    color: #242424 !important;
+}
+
+.issues-form-v3 .project-form-v3-field > input,
+.issues-form-v3 .project-form-v3-field > select,
+.issues-form-v3 .project-form-v3-field > textarea {
+    width: 100% !important;
+    margin: 0 !important;
+
+    border: 1px solid #d8d8d2 !important;
+    border-radius: 8px !important;
+
+    background: #ffffff !important;
+    color: #1d1d1d !important;
+
+    font-size: 14px !important;
+}
+
+.issues-form-v3 .project-form-v3-field > input,
+.issues-form-v3 .project-form-v3-field > select {
+    min-height: 44px !important;
+    padding: 0 14px !important;
+}
+
+.issues-form-v3 .project-form-v3-field > textarea {
+    min-height: 150px !important;
+    padding: 12px 14px !important;
+    resize: vertical !important;
+}
+
+.issues-form-v3 .project-form-v3-field > span {
+    display: block !important;
+    margin-top: 5px !important;
+}
+
+@media (max-width: 760px) {
+    .issues-form-v3 .project-form-v3-panel {
+        padding: 20px 24px !important;
+    }
+
+    .issues-form-v3 .project-form-v3-grid {
+        grid-template-columns: minmax(0, 1fr) !important;
+        column-gap: 0 !important;
+        row-gap: 18px !important;
+    }
+
+    .issues-form-v3 .project-form-v3-wide {
+        grid-column: auto !important;
+    }
+}
+
+/* ===== END ISSUE FORM LAYOUT FIX ===== */
+/* =========================================================
+   RESPONSIVE FORM HEADER CONSISTENCY
+   Form headers use the same stacked pattern on compact screens.
+   ========================================================= */
+
+@media (max-width: 720px) {
+    .project-form-v3-header {
+        display: block !important;
+    }
+
+    .project-form-v3-header h1,
+    .project-form-v3-header p {
+        max-width: 100% !important;
+        overflow-wrap: break-word;
+    }
+}

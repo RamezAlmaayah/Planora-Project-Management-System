@@ -1,0 +1,131 @@
+@model Planora.Web.ViewModels.Backlog.BacklogFormViewModel
+@using Planora.Domain.Enums
+
+@{
+    ViewData["Title"] = "Create Backlog Item";
+    Layout = "_AppLayout";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/projects.css" asp-append-version="true" />
+}
+
+<div class="project-form-v3-page">
+
+    <div class="project-form-v3-back">
+        <a asp-action="Index"
+           asp-route-projectId="@Model.ProjectId">
+            &larr; Back to backlog
+        </a>
+    </div>
+
+    <section class="project-form-v3-header">
+        <div>
+            <span class="project-form-v3-kicker">PRODUCT BACKLOG</span>
+            <h1>Create backlog item</h1>
+            <p>@Model.ProjectName</p>
+        </div>
+    </section>
+
+    <form asp-action="Create"
+          method="post"
+          class="project-form-v3">
+
+        <input asp-for="ProjectId" type="hidden" />
+
+        <div asp-validation-summary="ModelOnly"
+             class="project-form-v3-validation"></div>
+
+        <section class="project-form-v3-panel">
+
+            <div class="project-form-v3-panel-head">
+                <div>
+                    <span>BACKLOG ITEM</span>
+                    <h2>Item information</h2>
+                    <p>Define the work item and its initial Scrum status.</p>
+                </div>
+            </div>
+
+            <div class="project-form-v3-fields">
+
+                <div class="project-form-v3-field project-form-v3-full">
+                    <label asp-for="Title">Title</label>
+                    <input asp-for="Title"
+                           placeholder="Enter backlog item title" />
+                    <span asp-validation-for="Title"
+                          class="project-form-v3-error"></span>
+                </div>
+
+                <div class="project-form-v3-field project-form-v3-full">
+                    <label asp-for="Description">Description</label>
+                    <textarea asp-for="Description"
+                              rows="6"
+                              placeholder="Describe this backlog item..."></textarea>
+                    <span asp-validation-for="Description"
+                          class="project-form-v3-error"></span>
+                </div>
+
+            </div>
+
+        </section>
+
+        <section class="project-form-v3-panel">
+
+            <div class="project-form-v3-panel-head">
+                <div>
+                    <span>CONFIGURATION</span>
+                    <h2>Priority & status</h2>
+                    <p>Only Draft and Ready can be selected manually.</p>
+                </div>
+            </div>
+
+            <div class="project-form-v3-fields project-form-v3-two-columns">
+
+                <div class="project-form-v3-field">
+                    <label asp-for="Priority">Priority</label>
+
+                    <div class="project-form-v3-select-wrap">
+                        <select asp-for="Priority"
+                                asp-items="Html.GetEnumSelectList<PriorityLevel>()">
+                        </select>
+                    </div>
+                </div>
+
+                <div class="project-form-v3-field">
+                    <label asp-for="Status">Status</label>
+
+                    <div class="project-form-v3-select-wrap">
+                        <select asp-for="Status">
+                            <option value="@((int)BacklogItemStatus.Draft)">Draft</option>
+                            <option value="@((int)BacklogItemStatus.Ready)">Ready</option>
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+        <div class="project-form-v3-actions">
+
+            <a asp-action="Index"
+               asp-route-projectId="@Model.ProjectId"
+               class="project-form-v3-cancel">
+                Cancel
+            </a>
+
+            <button type="submit"
+                    class="project-form-v3-submit">
+                + Create backlog item
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+

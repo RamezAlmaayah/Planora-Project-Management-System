@@ -1,0 +1,181 @@
+@model Planora.Web.ViewModels.Requirements.AiRequirementGeneratorViewModel
+@using Planora.Application.Common.Ai
+
+@{
+    ViewData["Title"] = "AI Requirement Generator";
+    Layout = "_AppLayout";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/projects.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/requirements.css" asp-append-version="true" />
+}
+
+<div class="project-form-v3-page requirements-v3-page">
+    <div class="project-form-v3-back">
+        <a asp-controller="Requirements" asp-action="Index" asp-route-projectId="@Model.ProjectId">&larr; Back to requirements</a>
+    </div>
+    <section class="project-form-v3-header">
+        <span class="projects-v3-kicker">V-MODEL &middot; GEMINI</span>
+        <h1>AI Requirement Generator</h1>
+        <p>@Model.ProjectName</p>
+    </section>
+
+    @if (!Model.IsConfigured)
+    {
+        <div class="v3-alert" role="status">AI configuration is unavailable. Normal requirement management remains available.</div>
+    }
+    @if (Model.IsReadOnly)
+    {
+        <div class="v3-alert" role="status">AI requirement generation is unavailable because this project is archived.</div>
+    }
+
+    <form asp-action="Generate" asp-route-projectId="@Model.ProjectId" method="post"
+          class="requirements-form-v3 project-form-v3" data-ai-generation-form>
+        @Html.AntiForgeryToken()
+        <input asp-for="ProjectId" type="hidden" />
+        <section class="project-form-v3-panel ai-requirements-v3-panel">
+            <div asp-validation-summary="ModelOnly" class="v3-alert" role="alert"></div>
+            <p class="requirements-v3-ieee-note">Requirement format aligned with IEEE SRS standards.</p>
+            <p class="ai-requirements-v3-advisory">AI-generated requirements are suggestions and must be reviewed before saving.</p>
+
+            <div class="ai-quality-v3-step"><span>Step 1</span><strong>Project Context</strong></div>
+
+            <div class="ai-requirements-v3-context">
+                <article><span>Project</span><strong>@Model.ProjectName</strong></article>
+                <article><span>Description</span><p>@Model.ProjectDescription</p></article>
+                @if (!string.IsNullOrWhiteSpace(Model.ProjectObjectives))
+                {
+                    <article><span>Objectives</span><p>@Model.ProjectObjectives</p></article>
+                }
+                @if (!string.IsNullOrWhiteSpace(Model.ProjectScope))
+                {
+                    <article><span>Scope</span><p>@Model.ProjectScope</p></article>
+                }
+            </div>
+
+            <div class="project-form-v3-grid">
+                <div class="project-form-v3-field">
+                    <label asp-for="Mode">Generation Type</label>
+                    <select asp-for="Mode" asp-items="Html.GetEnumSelectList<AiRequirementGenerationMode>()"></select>
+                    <span asp-validation-for="Mode"></span>
+                </div>
+                <div class="project-form-v3-field">
+                    <label asp-for="SuggestionCount">Number of Suggestions</label>
+                    <input asp-for="SuggestionCount" type="number" min="1" max="10" />
+                    <span asp-validation-for="SuggestionCount"></span>
+                </div>
+                <div class="project-form-v3-field project-form-v3-wide">
+                    <label asp-for="AdditionalContext">Additional Context</label>
+                    <textarea asp-for="AdditionalContext" rows="7" maxlength="3000"
+                              placeholder="Add constraints, actors, workflows, or business rules that Gemini should consider."></textarea>
+                    <span asp-validation-for="AdditionalContext"></span>
+                </div>
+            </div>
+
+            <div class="ai-quality-v3-step"><span>Step 2</span><strong>Analyze Input Quality</strong></div>
+
+            @if (Model.QualityAnalysis is not null)
+            {
+                <section class="ai-quality-v3-result" data-ai-quality-result
+                         aria-labelledby="ai-quality-title" aria-live="polite">
+                    <header>
+                        <div>
+                            <span class="projects-v3-kicker">INPUT QUALITY</span>
+                            <h2 id="ai-quality-title">@Model.QualityAnalysis.QualityScore / 100</h2>
+                        </div>
+                        <strong>@Model.QualityAnalysis.QualityLevel</strong>
+                    </header>
+                    <progress value="@Model.QualityAnalysis.QualityScore" max="100"
+                              aria-label="Input quality score: @Model.QualityAnalysis.QualityScore out of 100">
+                        @Model.QualityAnalysis.QualityScore%
+                    </progress>
+                    <p>@Model.QualityAnalysis.ValidationMessage</p>
+
+                    @if (Model.QualityAnalysis.MissingInformation.Count > 0)
+                    {
+                        <div class="ai-quality-v3-list">
+                            <h3>Missing Information</h3>
+                            <ul>@foreach (string item in Model.QualityAnalysis.MissingInformation) { <li>@item</li> }</ul>
+                        </div>
+                    }
+                    @if (Model.QualityAnalysis.Issues.Count > 0)
+                    {
+                        <div class="ai-quality-v3-list">
+                            <h3>Issues</h3>
+                            <ul>@foreach (string item in Model.QualityAnalysis.Issues) { <li>@item</li> }</ul>
+                        </div>
+                    }
+                    @if (Model.QualityAnalysis.Suggestions.Count > 0)
+                    {
+                        <div class="ai-quality-v3-list">
+                            <h3>Suggestions</h3>
+                            <ul>@foreach (string item in Model.QualityAnalysis.Suggestions) { <li>@item</li> }</ul>
+                        </div>
+                    }
+                </section>
+
+                @if (Model.QualityAnalysis.ImprovementItems.Count > 0)
+                {
+                    <div class="ai-quality-v3-step"><span>Step 3</span><strong>Improve Your Input</strong></div>
+                    <div class="ai-quality-v3-improvements">
+                        @foreach (var item in Model.QualityAnalysis.ImprovementItems)
+                        {
+                            <article data-ai-improvement data-topic="@item.Topic" data-suggested-text="@item.SuggestedText">
+                                <span>@item.Topic</span>
+                                <h3>@item.Question</h3>
+                                @if (item.InputType == AiImprovementInputType.SingleChoice)
+                                {
+                                    <div class="ai-quality-v3-options">
+                                        @for (int optionIndex = 0; optionIndex < item.Options.Count; optionIndex++)
+                                        {
+                                            string option = item.Options[optionIndex];
+                                            string optionId = $"quality-{item.Id}-{optionIndex}";
+                                            <label for="@optionId">
+                                                <input id="@optionId" type="radio" name="quality-@item.Id" value="@option" />
+                                                @option
+                                            </label>
+                                        }
+                                    </div>
+                                }
+                                else
+                                {
+                                    <textarea rows="3" maxlength="1000" data-ai-improvement-answer
+                                              aria-label="Answer for @item.Question"></textarea>
+                                }
+                                <button type="button" class="detail-v3-secondary" data-ai-apply-improvement>Apply</button>
+                                <span class="ai-quality-v3-applied" data-ai-improvement-status aria-live="polite"></span>
+                            </article>
+                        }
+                    </div>
+                }
+            }
+
+            <div class="ai-quality-v3-step"><span>Step 4</span><strong>Generate Requirements</strong></div>
+        </section>
+        <div class="project-form-v3-actions">
+            <a asp-controller="Requirements" asp-action="Index" asp-route-projectId="@Model.ProjectId"
+               class="detail-v3-secondary">Cancel</a>
+            <button type="submit" class="detail-v3-secondary"
+                    asp-action="Analyze" asp-route-projectId="@Model.ProjectId"
+                    disabled="@(!Model.IsConfigured || Model.IsReadOnly ? "disabled" : null)"
+                    data-ai-analyze-button>
+                <span data-ai-button-label>@(Model.QualityAnalysis is null ? "Analyze Input Quality" : "Analyze Again")</span>
+            </button>
+            <button type="submit" class="project-form-v3-submit"
+                    asp-action="Generate" asp-route-projectId="@Model.ProjectId"
+                    disabled="@(!Model.IsConfigured || Model.IsReadOnly || Model.QualityAnalysis?.CanGenerate != true ? "disabled" : null)"
+                    data-ai-generate-button>
+                <span data-ai-button-label>Generate Requirements</span>
+            </button>
+            <span class="ai-requirements-v3-loading" data-ai-loading hidden>
+                <i aria-hidden="true"></i> <span data-ai-loading-text>Working...</span>
+            </span>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/ai-requirements.js" asp-append-version="true"></script>
+}

@@ -1,0 +1,88 @@
+@{
+    string pageTitle =
+        ViewData["Title"]?.ToString() ?? "Planora";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0" />
+
+    <title>@pageTitle - Planora</title>
+
+    <link rel="stylesheet"
+          href="~/css/home.css"
+          asp-append-version="true" />
+
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+
+<body>
+
+    <header class="public-topbar">
+
+        <a asp-controller="Home"
+           asp-action="Index"
+           class="public-brand">
+
+            <img src="~/images/brand/planora-logo.png"
+     asp-append-version="true"
+     alt="Planora"
+     class="public-brand-logo" />
+
+            <span>Planora</span>
+
+        </a>
+
+        <nav class="public-nav">
+
+            <a href="#home">Home</a>
+            <a href="#features">Features</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+
+        </nav>
+
+        <div class="public-auth-actions">
+
+            <a asp-controller="Account"
+               asp-action="Login"
+               class="public-login">
+                Log in
+            </a>
+
+            <a asp-controller="Account"
+               asp-action="Register"
+               class="public-register">
+                Get started
+            </a>
+
+        </div>
+
+    </header>
+
+    <main>
+        @RenderBody()
+    </main>
+
+    <footer class="public-footer">
+
+        <div>
+            <strong>Planora</strong>
+            <span>Project management built for structured delivery.</span>
+        </div>
+
+        <span>
+            &copy; @DateTime.UtcNow.Year Planora
+        </span>
+
+    </footer>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>
+

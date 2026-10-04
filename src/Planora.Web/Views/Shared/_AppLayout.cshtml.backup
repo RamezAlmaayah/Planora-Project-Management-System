@@ -1,0 +1,612 @@
+﻿@{
+    string pageTitle = ViewData["Title"]?.ToString() ?? "Planora";
+
+    string currentController =
+        ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
+
+    string currentAction =
+        ViewContext.RouteData.Values["action"]?.ToString() ?? "";
+
+    bool isAdmin =
+        User.IsInRole("Admin");
+
+    bool isProjectManager =
+        User.IsInRole("Project Manager");
+
+    bool canManageProjects =
+        isAdmin || isProjectManager;
+
+    string fullName =
+        User.Identity?.Name ?? "Member";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0" />
+
+    <title>@pageTitle - Planora</title>
+
+    <link rel="stylesheet"
+          href="~/css/planora-app.css"
+          asp-append-version="true" />
+
+    @await RenderSectionAsync(
+    "Styles",
+    required: false)
+</head>
+
+<body>
+
+    <div class="workspace-shell">
+
+        <!-- =====================================================
+             SIDEBAR
+             ===================================================== -->
+
+        <aside class="workspace-sidebar">
+
+            <!-- BRAND -->
+
+            <div class="sidebar-brand">
+                Planora
+            </div>
+
+
+            <!-- =================================================
+                 MAIN NAVIGATION
+                 ================================================= -->
+
+            <nav class="sidebar-nav">
+
+                <!-- DASHBOARD -->
+
+                <a asp-controller="Dashboard"
+                   asp-action="Index"
+                   class="sidebar-link @(currentController == "Dashboard" ? "active" : "")">
+
+                    <span class="sidebar-link-icon">
+
+                        <svg viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.9"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+
+                            <rect x="3"
+                                  y="3"
+                                  width="7"
+                                  height="7"
+                                  rx="1.5" />
+
+                            <rect x="14"
+                                  y="3"
+                                  width="7"
+                                  height="7"
+                                  rx="1.5" />
+
+                            <rect x="3"
+                                  y="14"
+                                  width="7"
+                                  height="7"
+                                  rx="1.5" />
+
+                            <rect x="14"
+                                  y="14"
+                                  width="7"
+                                  height="7"
+                                  rx="1.5" />
+
+                        </svg>
+
+                    </span>
+
+                    <span class="sidebar-link-text">
+                        Dashboard
+                    </span>
+
+                </a>
+
+
+                <!-- TASKS -->
+
+                <a href="#"
+                   class="sidebar-link sidebar-disabled"
+                   aria-disabled="true">
+
+                    <span class="sidebar-link-icon">
+
+                        <svg viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.9"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+
+                            <rect x="3"
+                                  y="3"
+                                  width="18"
+                                  height="18"
+                                  rx="3" />
+
+                            <path d="m8 12 2.5 2.5L16 9" />
+
+                        </svg>
+
+                    </span>
+
+                    <span class="sidebar-link-text">
+                        Tasks
+                    </span>
+
+                    <span class="sidebar-count">
+                        Soon
+                    </span>
+
+                </a>
+
+
+                <!-- ACTIVITY -->
+
+                <a href="#"
+                   class="sidebar-link sidebar-disabled"
+                   aria-disabled="true">
+
+                    <span class="sidebar-link-icon">
+
+                        <svg viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.9"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+
+                            <path d="M3 12h4l3-7 4 14 3-7h4" />
+
+                        </svg>
+
+                    </span>
+
+                    <span class="sidebar-link-text">
+                        Activity
+                    </span>
+
+                </a>
+
+
+                <!-- PROJECTS -->
+
+                <a asp-controller="Projects"
+                   asp-action="Index"
+                   class="sidebar-link @(currentController == "Projects" || currentController == "ProjectMembers" ? "active" : "")">
+
+                    <span class="sidebar-link-icon">
+
+                        <svg viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.9"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+
+                            <path d="M3 6.5A2.5 2.5 0 0 1 5.5 4H9l2 2h7.5A2.5 2.5 0 0 1 21 8.5v9A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5Z" />
+
+                            <path d="M3 9h18" />
+
+                        </svg>
+
+                    </span>
+
+                    <span class="sidebar-link-text">
+                        Projects
+                    </span>
+
+                </a>
+
+
+                <!-- SETTINGS -->
+
+                <a href="#"
+                   class="sidebar-link sidebar-disabled"
+                   aria-disabled="true">
+
+                    <span class="sidebar-link-icon">
+
+                        <svg viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.9"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+
+                            <circle cx="12"
+                                    cy="12"
+                                    r="3" />
+
+                            <path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-2.83 2.83-.06-.06A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 .6 1.7 1.7 0 0 0-.4 1.1V21H9.6v-.1A1.7 1.7 0 0 0 9 19.4a1.7 1.7 0 0 0-1.88.34l-.06.06-2.83-2.83.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-.6-1 1.7 1.7 0 0 0-1.1-.4H3V9.6h.1A1.7 1.7 0 0 0 4.6 9a1.7 1.7 0 0 0-.34-1.88l-.06-.06 2.83-2.83.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-.6 1.7 1.7 0 0 0 .4-1.1V3h4v.1A1.7 1.7 0 0 0 15 4.6a1.7 1.7 0 0 0 1.88-.34l.06-.06 2.83 2.83-.06.06A1.7 1.7 0 0 0 19.4 9c.2.38.48.7.82.94.33.23.72.36 1.13.36H21v4h-.1a1.7 1.7 0 0 0-1.5.7Z" />
+
+                        </svg>
+
+                    </span>
+
+                    <span class="sidebar-link-text">
+                        Settings
+                    </span>
+
+                </a>
+
+            </nav>
+
+
+            <!-- =================================================
+                 PROJECTS SECTION
+                 ================================================= -->
+
+            <div class="sidebar-section">
+
+                <div class="sidebar-section-heading-row">
+
+                    <span class="sidebar-section-heading">
+                        Projects
+                    </span>
+
+                    <span class="sidebar-section-plus">
+                        +
+                    </span>
+
+                </div>
+
+
+                <!-- ALL PROJECTS -->
+
+                <a asp-controller="Projects"
+                   asp-action="Index"
+                   class="sidebar-small-link">
+
+                    <span class="project-small-icon">
+
+                        <svg viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.9"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+
+                            <path d="M3 6.5A2.5 2.5 0 0 1 5.5 4H9l2 2h7.5A2.5 2.5 0 0 1 21 8.5v9A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5Z" />
+
+                        </svg>
+
+                    </span>
+
+                    <span>
+                        All Projects
+                    </span>
+
+                </a>
+
+
+                <!-- ACTIVE PROJECTS -->
+
+                <a asp-controller="Projects"
+                   asp-action="Index"
+                   asp-route-status="Active"
+                   class="sidebar-small-link">
+
+                    <span class="project-small-icon">
+
+                        <svg viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.9"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+
+                            <path d="M4 17 10 11l4 4 6-8" />
+
+                            <path d="M15 7h5v5" />
+
+                        </svg>
+
+                    </span>
+
+                    <span>
+                        Active Projects
+                    </span>
+
+                </a>
+
+
+                <!-- PROJECT TEAMS -->
+
+                <a asp-controller="Projects"
+                   asp-action="Index"
+                   class="sidebar-small-link">
+
+                    <span class="project-small-icon">
+
+                        <svg viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.9"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+
+                            <circle cx="9"
+                                    cy="7"
+                                    r="4" />
+
+                            <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+
+                        </svg>
+
+                    </span>
+
+                    <span>
+                        Project Teams
+                    </span>
+
+                </a>
+
+            </div>
+
+
+            <!-- =================================================
+                 USER SECTION
+                 ================================================= -->
+
+            <div class="sidebar-member-section">
+
+                <div class="sidebar-section-heading">
+                    Member
+                </div>
+
+                <div class="sidebar-person">
+
+                    <div class="sidebar-person-avatar">
+
+                        @{
+                            string userInitial =
+                                string.IsNullOrWhiteSpace(fullName)
+                                    ? "U"
+                                    : fullName[..1].ToUpperInvariant();
+                        }
+
+                        @userInitial
+
+                    </div>
+
+                    <div class="sidebar-person-copy">
+
+                        <strong>
+                            @fullName
+                        </strong>
+
+                        <span>
+                            @(
+                            isAdmin
+                                ? "Admin"
+                                : isProjectManager
+                                    ? "Project Manager"
+                                    : "Member"
+                        )
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 LOGOUT
+                 ================================================= -->
+
+            <form asp-controller="Auth"
+                  asp-action="Logout"
+                  method="post"
+                  class="sidebar-logout-form">
+
+                <button type="submit"
+                        class="sidebar-logout">
+
+                    <span class="sidebar-logout-icon">
+
+                        <svg viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.9"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+
+                            <path d="M10 17l5-5-5-5" />
+
+                            <path d="M15 12H3" />
+
+                            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+
+                        </svg>
+
+                    </span>
+
+                    <span>
+                        Log out
+                    </span>
+
+                </button>
+
+            </form>
+
+        </aside>
+
+
+        <!-- =====================================================
+             MAIN AREA
+             ===================================================== -->
+
+        <div class="workspace-main">
+
+            <!-- =================================================
+                 TOPBAR
+                 ================================================= -->
+
+            <header class="workspace-topbar">
+
+                <form asp-controller="Projects"
+                      asp-action="Index"
+                      method="get"
+                      class="topbar-search">
+
+                    <span class="topbar-search-icon">
+
+                        <svg viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="2"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+
+                            <circle cx="11"
+                                    cy="11"
+                                    r="7" />
+
+                            <path d="m20 20-3.5-3.5" />
+
+                        </svg>
+
+                    </span>
+
+                    <input type="search"
+                           name="search"
+                           placeholder="Search workspace" />
+
+                </form>
+
+
+                <div class="topbar-actions">
+
+                    <button type="button"
+                            class="topbar-text-button">
+
+                        Sort by
+
+                        <svg viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="2">
+
+                            <path d="m7 10 5 5 5-5" />
+
+                        </svg>
+
+                    </button>
+
+
+                    <button type="button"
+                            class="topbar-text-button">
+
+                        <svg viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.8"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+
+                            <path d="M4 6h16" />
+                            <path d="M7 12h10" />
+                            <path d="M10 18h4" />
+
+                        </svg>
+
+                        Filters
+
+                    </button>
+
+
+                    <button type="button"
+                            class="topbar-me">
+
+                        <span class="topbar-me-avatar">
+                            @userInitial
+                        </span>
+
+                        <span>
+                            Me
+                        </span>
+
+                        <svg viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="2">
+
+                            <path d="m7 10 5 5 5-5" />
+
+                        </svg>
+
+                    </button>
+
+
+                    @if (canManageProjects)
+                    {
+                        <a asp-controller="Projects"
+                           asp-action="Create"
+                           class="topbar-primary-button">
+
+                            <svg viewBox="0 0 24 24"
+                                 fill="none"
+                                 stroke="currentColor"
+                                 stroke-width="2"
+                                 stroke-linecap="round">
+
+                                <path d="M12 5v14" />
+                                <path d="M5 12h14" />
+
+                            </svg>
+
+                            <span>
+                                Add project
+                            </span>
+
+                        </a>
+                    }
+
+                </div>
+
+            </header>
+
+
+            <!-- =================================================
+                 PAGE CONTENT
+                 ================================================= -->
+
+            <main class="workspace-content">
+
+                @RenderBody()
+
+            </main>
+
+        </div>
+
+    </div>
+
+
+    <script src="~/js/planora-app.js"
+            asp-append-version="true">
+    </script>
+
+    @await RenderSectionAsync(
+    "Scripts",
+    required: false)
+
+</body>
+
+</html>

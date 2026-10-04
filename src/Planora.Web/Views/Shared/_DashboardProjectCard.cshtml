@@ -1,0 +1,50 @@
+﻿@model Planora.Application.Common.Projects.ProjectSummary
+
+<a asp-controller="Projects"
+   asp-action="Details"
+   asp-route-id="@Model.Id"
+   class="project-board-card">
+
+    <div class="card-title-row">
+
+        <strong>
+            @Model.Name
+        </strong>
+
+        <span>
+            ⋮
+        </span>
+
+    </div>
+
+    <p>
+        @(string.IsNullOrWhiteSpace(Model.Description)
+            ? "Planora project workspace."
+            : Model.Description)
+    </p>
+
+    <div class="project-card-footer">
+
+        <span class="date-chip">
+
+            ▣
+
+            @Model.StartDate.ToString("dd MMM")
+
+        </span>
+
+        <div>
+
+            <span>
+                ◌ @Model.MemberCount
+            </span>
+
+            <span>
+                ◇
+            </span>
+
+        </div>
+
+    </div>
+
+</a>

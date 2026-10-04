@@ -1,0 +1,141 @@
+@model Planora.Web.ViewModels.Requirements.CreateRequirementViewModel
+@using Planora.Domain.Enums
+
+@{
+    ViewData["Title"] = "New Requirement";
+    Layout = "_AppLayout";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/projects.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/requirements.css" asp-append-version="true" />
+}
+
+<div class="project-form-v3-page">
+    <div class="project-form-v3-back">
+        <a asp-action="Index" asp-route-projectId="@Model.ProjectId">&larr; Back to requirements</a>
+    </div>
+    <section class="project-form-v3-header">
+        <span class="projects-v3-kicker">V-MODEL</span>
+        <h1>New requirement</h1>
+        <p>@Model.ProjectName</p>
+    </section>
+    <form class="requirements-form-v3 project-form-v3" asp-action="Create"
+          asp-route-projectId="@Model.ProjectId" method="post"
+          data-single-submit data-requirement-form>
+        @Html.AntiForgeryToken()
+        <input asp-for="ProjectId" type="hidden" />
+        <section class="project-form-v3-panel">
+            <div asp-validation-summary="ModelOnly" class="v3-alert" role="alert"></div>
+            <p class="requirements-v3-ieee-note">
+                Requirement format aligned with IEEE SRS standards.
+            </p>
+            <div class="project-form-v3-grid">
+                <div class="project-form-v3-field project-form-v3-wide">
+                    <label asp-for="Type">Requirement type</label>
+                    <select asp-for="Type" asp-items="Html.GetEnumSelectList<RequirementType>()"
+                            data-requirement-type></select>
+                    <span asp-validation-for="Type"></span>
+                </div>
+
+                <div class="project-form-v3-field project-form-v3-wide requirements-v3-id-preview">
+                    <span data-type-section="functional">
+                        <small>Requirement ID</small>
+                        <strong>@Model.FunctionalIdentifierPreview</strong>
+                    </span>
+                    <span data-type-section="nonfunctional">
+                        <small>Non-functional Requirement ID</small>
+                        <strong>@Model.NonFunctionalIdentifierPreview</strong>
+                    </span>
+                    <em>The final identifier is confirmed by the server when saved.</em>
+                </div>
+
+                <div class="project-form-v3-field project-form-v3-wide"
+                     data-type-section="functional">
+                    <label asp-for="Title">Requirement Name</label>
+                    <input asp-for="Title" maxlength="200" autocomplete="off" />
+                    <span asp-validation-for="Title"></span>
+                </div>
+
+                <div class="project-form-v3-field project-form-v3-wide"
+                     data-type-section="nonfunctional">
+                    <label asp-for="NfrCategory">NFR Category</label>
+                    <select asp-for="NfrCategory" asp-items="Html.GetEnumSelectList<NfrCategory>()">
+                        <option value="">Select category</option>
+                    </select>
+                    <span asp-validation-for="NfrCategory"></span>
+                </div>
+
+                <div class="project-form-v3-field project-form-v3-wide">
+                    <label asp-for="Description" data-fr-label="Description"
+                           data-nfr-label="Requirement Description">Description</label>
+                    <textarea asp-for="Description" rows="8" maxlength="4000"></textarea>
+                    <span asp-validation-for="Description"></span>
+                </div>
+                <div class="project-form-v3-field">
+                    <label asp-for="Priority">Priority</label>
+                    <select asp-for="Priority" asp-items="Html.GetEnumSelectList<PriorityLevel>()"></select>
+                    <span asp-validation-for="Priority"></span>
+                </div>
+                <div class="project-form-v3-field project-form-v3-wide">
+                    <label asp-for="Rationale" data-fr-label="Business Rationale"
+                           data-nfr-label="Rationale">Business Rationale</label>
+                    <textarea asp-for="Rationale" rows="5" maxlength="3000"></textarea>
+                    <span asp-validation-for="Rationale"></span>
+                </div>
+
+                <div class="project-form-v3-field project-form-v3-wide"
+                     data-type-section="functional">
+                    <label asp-for="Preconditions">Dependency / Preconditions</label>
+                    <textarea asp-for="Preconditions" rows="5" maxlength="2000"
+                              placeholder="The authenticated user must have the Admin role."></textarea>
+                    <span asp-validation-for="Preconditions"></span>
+                </div>
+
+                <div class="project-form-v3-field project-form-v3-wide"
+                     data-type-section="functional">
+                    <label asp-for="ExceptionScenario">Exception Scenario</label>
+                    <textarea asp-for="ExceptionScenario" rows="5" maxlength="2000"
+                              placeholder="Describe the alternate or error scenario."></textarea>
+                    <span asp-validation-for="ExceptionScenario"></span>
+                </div>
+
+                <div class="project-form-v3-field project-form-v3-wide"
+                     data-type-section="nonfunctional">
+                    <label>Related Functional Requirements</label>
+                    <div class="requirements-v3-fr-picker">
+                        <input type="search" data-fr-search aria-label="Search functional requirements"
+                               placeholder="Search functional requirements..."
+                               aria-label="Search functional requirements" autocomplete="off" />
+                        <div class="requirements-v3-fr-options">
+                            @if (Model.FunctionalRequirementOptions.Count == 0)
+                            {
+                                <p>No functional requirements are available in this project.</p>
+                            }
+                            @foreach (var option in Model.FunctionalRequirementOptions)
+                            {
+                                <label data-fr-option>
+                                    <input type="checkbox" name="RelatedFunctionalRequirementIds"
+                                           value="@option.Id"
+                                           checked="@(Model.RelatedFunctionalRequirementIds.Contains(option.Id) ? "checked" : null)" />
+                                    <span><strong>@option.Identifier</strong> &mdash; @option.Title</span>
+                                </label>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="project-form-v3-actions">
+            <a asp-action="Index" asp-route-projectId="@Model.ProjectId"
+               class="detail-v3-secondary">Cancel</a>
+            <button type="submit" class="project-form-v3-submit">Create requirement</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/task-collaboration.js" asp-append-version="true"></script>
+    <script src="~/js/requirement-form.js" asp-append-version="true"></script>
+}

@@ -1,0 +1,4 @@
+@microsoft/signalr JavaScript client 10.0.11
+Copyright Microsoft Corporation. All rights reserved.
+License: MIT. License text: https://github.com/dotnet/aspnetcore/blob/main/LICENSE.txt
+Package source: https://www.npmjs.com/package/@microsoft/signalr

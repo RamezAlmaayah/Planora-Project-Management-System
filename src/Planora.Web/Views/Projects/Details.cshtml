@@ -1,0 +1,550 @@
+@model Planora.Web.ViewModels.Projects.ProjectDetailsViewModel
+@using System.Globalization
+
+@{
+    ViewData["Title"] = Model.Name;
+    Layout = "_AppLayout";
+
+    string methodology =
+        Model.Methodology.ToString() == "VModel"
+            ? "V-Model"
+            : Model.Methodology.ToString();
+
+    string statusClass =
+        Model.Status
+            .ToString()
+            .ToLowerInvariant();
+
+    string startDate =
+        Model.StartDate.ToString(
+            "dd MMM yyyy",
+            CultureInfo.InvariantCulture);
+
+    string endDate =
+        Model.EndDate.HasValue
+            ? Model.EndDate.Value.ToString(
+                "dd MMM yyyy",
+                CultureInfo.InvariantCulture)
+            : "No end date";
+
+    string createdDate =
+        Model.CreatedAt.ToString(
+            "dd MMM yyyy",
+            CultureInfo.InvariantCulture);
+}
+
+@section Styles
+{
+    <link rel="stylesheet"
+          href="~/css/projects.css"
+          asp-append-version="true" />
+}
+
+<div class="project-detail-v3">
+
+    <!-- =====================================================
+         BACK
+         ===================================================== -->
+
+    <div class="detail-v3-back">
+
+        <a asp-controller="Projects"
+           asp-action="Index">
+            ? Back to projects
+        </a>
+
+    </div>
+
+
+    <!-- =====================================================
+         PROJECT HEADER
+         ===================================================== -->
+
+    <section class="detail-v3-header">
+
+        <div class="detail-v3-heading">
+
+            <div class="detail-v3-tags">
+
+                <span class="projects-v3-method">
+                    @methodology
+                </span>
+
+                <span class="projects-v3-status status-@statusClass">
+                    @Model.Status
+                </span>
+
+            </div>
+
+
+            <h1>
+                @Model.Name
+            </h1>
+
+
+            @if (!string.IsNullOrWhiteSpace(Model.Description))
+            {
+                <p>
+                    @Model.Description
+                </p>
+            }
+
+        </div>
+
+
+        @if (Model.CanManage)
+        {
+            <div class="detail-v3-actions">
+
+                <a asp-controller="ProjectMembers"
+                   asp-action="Manage"
+                   asp-route-projectId="@Model.Id"
+                   class="detail-v3-secondary">
+                    Team members
+                </a>
+
+
+                @if (Model.Status.ToString() != "Archived")
+                {
+                    <a asp-controller="Projects"
+                       asp-action="Edit"
+                       asp-route-id="@Model.Id"
+                       class="detail-v3-secondary">
+                        Edit project
+                    </a>
+
+
+                    <a asp-controller="Projects"
+                       asp-action="ConfirmArchive"
+                       asp-route-id="@Model.Id"
+                       class="detail-v3-danger">
+                        Archive
+                    </a>
+                }
+
+            </div>
+        }
+
+    </section>
+
+
+    <!-- =====================================================
+         PROJECT INFORMATION
+         ===================================================== -->
+
+    <section class="detail-v3-info-grid">
+
+        <!-- METHODOLOGY -->
+
+        <article>
+
+            <span>
+                Methodology
+            </span>
+
+            <strong>
+                @methodology
+            </strong>
+
+        </article>
+
+
+        <!-- STATUS -->
+
+        <article>
+
+            <span>
+                Status
+            </span>
+
+            <strong>
+                @Model.Status
+            </strong>
+
+        </article>
+
+
+        <!-- START -->
+
+        <article>
+
+            <span>
+                Start date
+            </span>
+
+            <strong>
+                @startDate
+            </strong>
+
+        </article>
+
+
+        <!-- END -->
+
+        <article>
+
+            <span>
+                End date
+            </span>
+
+            <strong>
+                @endDate
+            </strong>
+
+        </article>
+
+
+        <!-- MEMBERS -->
+
+        <article>
+
+            <span>
+                Members
+            </span>
+
+            <strong>
+                @Model.MemberCount
+            </strong>
+
+        </article>
+
+
+        <!-- CREATED -->
+
+        <article>
+
+            <span>
+                Created
+            </span>
+
+            <strong>
+                @createdDate
+            </strong>
+
+        </article>
+
+    </section>
+
+
+    <!-- =====================================================
+         PROJECT WORKSPACE
+         ===================================================== -->
+
+    <section class="detail-v3-workspace">
+
+        <div class="detail-v3-section-head">
+
+            <div>
+
+                <span>
+                    PROJECT WORKSPACE
+                </span>
+
+                <h2>
+                    Modules
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             TEAM MEMBERS
+             ================================================= -->
+
+        @if (Model.CanManage)
+        {
+        <div class="detail-v3-module">
+
+            <div class="module-v3-icon">
+
+                <svg viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="1.9"
+                     stroke-linecap="round"
+                     stroke-linejoin="round">
+
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+
+                    <circle cx="9"
+                            cy="7"
+                            r="4" />
+
+                    <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+
+                </svg>
+
+            </div>
+
+
+            <div class="module-v3-copy">
+
+                <strong>
+                    Team members
+                </strong>
+
+                <span>
+                    Manage project members and project-level roles.
+                </span>
+
+            </div>
+
+
+            <a asp-controller="ProjectMembers"
+   asp-action="Manage"
+   asp-route-projectId="@Model.Id"
+   class="module-v3-action">
+    Open &rarr;
+</a>
+
+        </div>
+        }
+
+
+        <!-- =================================================
+             SCRUM WORKSPACE
+             ================================================= -->
+
+        @if (Model.Methodology.ToString() == "Scrum")
+        {
+            <div class="detail-v3-module">
+
+                <div class="module-v3-icon">
+
+                    <svg viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="1.9"
+                         stroke-linecap="round"
+                         stroke-linejoin="round">
+
+                        <rect x="3"
+                              y="4"
+                              width="7"
+                              height="7"
+                              rx="1.5" />
+
+                        <rect x="14"
+                              y="4"
+                              width="7"
+                              height="7"
+                              rx="1.5" />
+
+                        <rect x="3"
+                              y="13"
+                              width="7"
+                              height="7"
+                              rx="1.5" />
+
+                        <path d="M14 16h7" />
+
+                        <path d="M14 20h5" />
+
+                    </svg>
+
+                </div>
+
+
+                <div class="module-v3-copy">
+
+                    <strong>
+                        Scrum workspace
+                    </strong>
+
+                    <span>
+                        Sprints, backlog items and task workflow.
+                    </span>
+
+                </div>
+
+
+                <div class="scrum-module-actions">
+
+    <a asp-controller="Backlog"
+       asp-action="Index"
+       asp-route-projectId="@Model.Id">
+        Product Backlog &rarr;
+    </a>
+
+    <a asp-controller="Sprints"
+       asp-action="Index"
+       asp-route-projectId="@Model.Id">
+        Sprints &rarr;
+    </a>
+
+</div>
+
+            </div>
+        }
+
+
+        @if (Model.Methodology.ToString() == "VModel")
+        {
+            <!-- =================================================
+                 REQUIREMENTS
+                 ================================================= -->
+
+            <div class="detail-v3-module">
+
+                <div class="module-v3-icon">
+
+                    <svg viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="1.9"
+                         stroke-linecap="round"
+                         stroke-linejoin="round">
+
+                        <path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9Z" />
+                        <path d="M14 3v6h6" />
+                        <path d="M8 13h8" />
+                        <path d="M8 17h6" />
+
+                    </svg>
+
+                </div>
+
+                <div class="module-v3-copy">
+
+                    <strong>Requirements</strong>
+                    <span>Requirements management and traceability.</span>
+
+                </div>
+
+                <a asp-controller="Requirements"
+                   asp-action="Index"
+                   asp-route-projectId="@Model.Id"
+                   class="module-v3-action">
+                    Open &rarr;
+                </a>
+
+            </div>
+
+            <div class="detail-v3-module">
+                <div class="module-v3-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 20h16" /><path d="M6 16 12 4l6 12" /><path d="M8 12h8" />
+                    </svg>
+                </div>
+                <div class="module-v3-copy"><strong>Design</strong><span>Map Approved requirements to system, architecture and detailed designs.</span></div>
+                <a asp-controller="DesignArtifacts" asp-action="Index" asp-route-projectId="@Model.Id" class="module-v3-action">Open &rarr;</a>
+            </div>
+
+            <div class="detail-v3-module">
+                <div class="module-v3-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m8 9-4 3 4 3" /><path d="m16 9 4 3-4 3" /><path d="m14 5-4 14" />
+                    </svg>
+                </div>
+                <div class="module-v3-copy"><strong>Implementation</strong><span>Link development artifacts to the project design.</span></div>
+                <a asp-controller="ImplementationArtifacts" asp-action="Index" asp-route-projectId="@Model.Id" class="module-v3-action">Open &rarr;</a>
+            </div>
+
+            <div class="detail-v3-module"><div class="module-v3-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M5 4h14v16H5z"/><path d="m8 12 2 2 5-5"/></svg></div><div class="module-v3-copy"><strong>Testing</strong><span>Manage V-Model test cases, phases and verification history.</span></div><a asp-controller="VModelTesting" asp-action="Index" asp-route-projectId="@Model.Id" class="module-v3-action">Open &rarr;</a></div>
+            <div class="detail-v3-module"><div class="module-v3-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg></div><div class="module-v3-copy"><strong>Validation</strong><span>Review completed phases and preserve validation history.</span></div><a asp-controller="VModelTesting" asp-action="Validation" asp-route-projectId="@Model.Id" class="module-v3-action">Open &rarr;</a></div>
+            <div class="detail-v3-module"><div class="module-v3-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M6 3h9l3 3v15H6z"/><path d="M15 3v4h4M9 11h6M9 15h6"/></svg></div><div class="module-v3-copy"><strong>SRS</strong><span>Generate, review and export saved software requirements specifications.</span></div><a asp-controller="Srs" asp-action="Index" asp-route-projectId="@Model.Id" class="module-v3-action">Open &rarr;</a></div>
+            <div class="detail-v3-module"><div class="module-v3-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 6h6M14 6h6M7 6v12M17 6v12M7 12h10"/></svg></div><div class="module-v3-copy"><strong>Traceability</strong><span>Follow Requirements through Design, Implementation, Verification and Validation.</span></div><a asp-controller="Requirements" asp-action="Traceability" asp-route-projectId="@Model.Id" class="module-v3-action">Open &rarr;</a></div>
+        }
+
+
+        <!-- =================================================
+             ISSUES
+             ================================================= -->
+
+        <div class="detail-v3-module">
+
+            <div class="module-v3-icon">
+
+                <svg viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="1.9"
+                     stroke-linecap="round"
+                     stroke-linejoin="round">
+
+                    <path d="M12 9v4" />
+
+                    <path d="M12 17h.01" />
+
+                    <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z" />
+
+                </svg>
+
+            </div>
+
+
+            <div class="module-v3-copy">
+
+                <strong>
+                    Issues
+                </strong>
+
+                <span>
+                    Track project issues and defects.
+                </span>
+
+            </div>
+
+
+            <a asp-controller="Issues"
+               asp-action="Index"
+               asp-route-projectId="@Model.Id"
+               class="module-v3-action">
+                Open &rarr;
+            </a>
+
+        </div>
+
+
+        <!-- =================================================
+             PROGRESS REPORTS
+             ================================================= -->
+
+        <div class="detail-v3-module">
+
+            <div class="module-v3-icon">
+
+                <svg viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="1.9"
+                     stroke-linecap="round"
+                     stroke-linejoin="round">
+
+                    <path d="M3 3v18h18" />
+
+                    <path d="M7 15 11 11l3 3 5-6" />
+
+                </svg>
+
+            </div>
+
+
+            <div class="module-v3-copy">
+
+                <strong>
+                    Progress reports
+                </strong>
+
+                <span>
+                    Track project performance and reporting history.
+                </span>
+
+            </div>
+
+
+            <span class="module-v3-state">
+                Coming soon
+            </span>
+
+        </div>
+
+    </section>
+
+</div>
+
+

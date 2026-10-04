@@ -1,0 +1,17 @@
+@model Planora.Web.ViewModels.VModel.ImplementationArtifactIndexViewModel
+@using System.Globalization
+@{ ViewData["Title"] = "Implementation"; Layout = "_AppLayout"; }
+@section Styles { <link rel="stylesheet" href="~/css/projects.css" asp-append-version="true" /><link rel="stylesheet" href="~/css/requirements.css" asp-append-version="true" /> }
+<div class="projects-v3-page">
+    <div class="project-form-v3-back"><a asp-controller="Projects" asp-action="Details" asp-route-id="@Model.ProjectId">&larr; Back to project</a></div>
+    @if (Model.IsReadOnly) { <div class="v3-alert">Implementation artifacts are read-only because this project is archived.</div> }
+    <section class="projects-v3-header"><div><span class="projects-v3-kicker">V-MODEL IMPLEMENTATION</span><h1>Implementation artifacts</h1><p>@Model.ProjectName</p></div>@if (Model.CanCreate) { <a asp-action="Create" asp-route-projectId="@Model.ProjectId" class="project-form-v3-submit">+ New implementation</a> }</section>
+    <section class="projects-v3-panel">
+        <div class="projects-v3-toolbar requirement-v3-toolbar"><div><h2>Implementation catalog</h2><span>@Model.Artifacts.Count artifacts</span></div><form asp-action="Index" method="get" class="requirement-v3-filters"><input type="hidden" name="projectId" value="@Model.ProjectId" /><input type="search" name="search" value="@Model.Search" maxlength="200" placeholder="Search implementation..." aria-label="Search implementation artifacts" /><button class="backlog-action backlog-action-edit" type="submit">Search</button></form></div>
+        @if (Model.Artifacts.Count == 0) { <div class="projects-v3-empty"><strong>No implementation artifacts</strong><p>Implementation artifacts linked to project designs will appear here.</p></div> } else {
+            <div class="projects-v3-table artifact-v3-table"><div class="projects-v3-table-head"><span>Implementation</span><span>Type</span><span>Designs</span><span>Created / updated</span><span></span></div>
+            @foreach (var item in Model.Artifacts) { <div class="projects-v3-row"><div class="projects-v3-project"><div class="projects-v3-avatar">I</div><div><strong>@item.Identifier</strong><span>@item.Title</span></div></div><div><span class="projects-v3-method">@item.Type</span></div><div>@item.LinkedDesignCount linked</div><div class="projects-v3-timeline"><strong>@item.CreatorName</strong><span>@(item.UpdatedAt ?? item.CreatedAt).ToString("dd MMM yyyy", CultureInfo.InvariantCulture)</span></div><div><a asp-action="Details" asp-route-projectId="@Model.ProjectId" asp-route-id="@item.Id" class="backlog-action backlog-action-edit">View</a></div></div> }
+            </div>
+        }
+    </section>
+</div>

@@ -1,0 +1,625 @@
+@{
+    ViewData["Title"] = "Contact Us";
+    Layout = "_PublicLayout";
+}
+
+<style>
+
+    .contact-page {
+        min-height: calc(100vh - 88px);
+
+        padding: 70px 7% 90px;
+
+        display: grid;
+        grid-template-columns:
+            minmax(0, 1fr)
+            minmax(420px, .9fr);
+
+        align-items: center;
+        gap: 90px;
+
+        background: #f7f7f5;
+    }
+
+
+    /* ========================================
+       LEFT CONTENT
+       ======================================== */
+
+    .contact-kicker {
+        display: block;
+
+        margin-bottom: 18px;
+
+        color: #777771;
+
+        font-size: 12px;
+        font-weight: 700;
+
+        letter-spacing: .14em;
+    }
+
+    .contact-copy h1 {
+        max-width: 720px;
+
+        margin: 0;
+
+        color: #171717;
+
+        font-size: clamp(48px, 5vw, 72px);
+        font-weight: 600;
+
+        line-height: 1.02;
+
+        letter-spacing: -.05em;
+    }
+
+    .contact-copy > p {
+        max-width: 640px;
+
+        margin: 24px 0 0;
+
+        color: #666660;
+
+        font-size: 16px;
+        line-height: 1.75;
+    }
+
+
+    /* ========================================
+       CONTACT DETAILS
+       ======================================== */
+
+    .contact-details {
+        margin-top: 42px;
+
+        display: grid;
+        gap: 12px;
+    }
+
+    .contact-item {
+        min-height: 72px;
+
+        padding: 14px 16px;
+
+        display: flex;
+        align-items: center;
+        gap: 15px;
+
+        border: 1px solid #e2e1dc;
+        border-radius: 12px;
+
+        background: #ffffff;
+
+        text-decoration: none;
+
+        transition:
+            background-color 140ms ease,
+            border-color 140ms ease;
+    }
+
+    a.contact-item:hover {
+        background: #f2f2ef;
+        border-color: #d8d7d2;
+    }
+
+    .contact-icon {
+        width: 42px;
+        height: 42px;
+
+        min-width: 42px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 10px;
+
+        background: #f1f1ee;
+        color: #171717;
+    }
+
+    .contact-icon svg {
+        width: 19px;
+        height: 19px;
+    }
+
+    .contact-item-content {
+        min-width: 0;
+
+        display: grid;
+        gap: 3px;
+    }
+
+    .contact-item-content span {
+        color: #8a8a84;
+
+        font-size: 11px;
+        font-weight: 600;
+
+        letter-spacing: .06em;
+
+        text-transform: uppercase;
+    }
+
+    .contact-item-content strong {
+        color: #171717;
+
+        font-size: 15px;
+        font-weight: 600;
+
+        word-break: break-word;
+    }
+
+
+    /* ========================================
+       SOCIAL ICONS
+       ======================================== */
+
+    .contact-social-block {
+        margin-top: 30px;
+    }
+
+    .contact-social-label {
+        display: block;
+
+        margin-bottom: 12px;
+
+        color: #8a8a84;
+
+        font-size: 11px;
+        font-weight: 700;
+
+        letter-spacing: .1em;
+
+        text-transform: uppercase;
+    }
+
+    .contact-socials {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .contact-social {
+        width: 44px;
+        height: 44px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border: 1px solid #deded9;
+        border-radius: 10px;
+
+        background: #ffffff;
+        color: #171717;
+
+        cursor: default;
+    }
+
+    .contact-social svg {
+        width: 19px;
+        height: 19px;
+    }
+
+
+    /* ========================================
+       PERSON IMAGE
+       ======================================== */
+
+    .contact-visual {
+        min-height: 610px;
+
+        position: relative;
+
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+
+        overflow: hidden;
+
+        border: 1px solid #e1e0db;
+        border-radius: 22px;
+
+        background:
+            radial-gradient(
+                circle at 50% 40%,
+                #ffffff 0%,
+                #f1f1ed 58%,
+                #e9e9e4 100%
+            );
+    }
+
+    .contact-visual::before {
+        content: "";
+
+        width: 360px;
+        height: 360px;
+
+        position: absolute;
+
+        left: 50%;
+        top: 50%;
+
+        transform: translate(-50%, -50%);
+
+        border-radius: 50%;
+
+        background: rgba(255,255,255,.72);
+    }
+
+    .contact-person {
+        width: min(520px, 100%);
+        max-height: 590px;
+
+        position: relative;
+        z-index: 1;
+
+        display: block;
+
+        object-fit: contain;
+        object-position: center bottom;
+    }
+
+    .contact-visual-note {
+        position: absolute;
+
+        right: 24px;
+        bottom: 24px;
+
+        z-index: 2;
+
+        padding: 10px 13px;
+
+        border: 1px solid rgba(0,0,0,.08);
+        border-radius: 10px;
+
+        background: rgba(255,255,255,.88);
+
+        color: #666660;
+
+        font-size: 12px;
+
+        backdrop-filter: blur(10px);
+    }
+
+
+    /* ========================================
+       RESPONSIVE
+       ======================================== */
+
+    @@media (max-width: 1000px) {
+
+        .contact-page {
+            grid-template-columns: 1fr;
+        }
+
+        .contact-visual {
+            min-height: 520px;
+        }
+    }
+
+    @@media (max-width: 650px) {
+
+        .contact-page {
+            padding:
+                50px
+                24px
+                70px;
+        }
+
+        .contact-copy h1 {
+            font-size: 44px;
+        }
+
+        .contact-visual {
+            min-height: 420px;
+        }
+    }
+
+
+    /* ===== CONTACT IMAGE FINAL ===== */
+
+    .contact-visual {
+        min-height: 610px !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+
+        display: block !important;
+
+        border: 1px solid #e1e0db !important;
+        border-radius: 22px !important;
+
+        background: #ffffff !important;
+    }
+
+    .contact-visual::before {
+        display: none !important;
+        content: none !important;
+    }
+
+    .contact-person {
+        width: 100% !important;
+        height: 100% !important;
+        min-height: 610px !important;
+        max-height: none !important;
+
+        display: block !important;
+
+        object-fit: cover !important;
+        object-position: center !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        border-radius: 21px !important;
+    }
+
+    /* ===== END CONTACT IMAGE FINAL ===== */
+</style>
+
+
+<section class="contact-page">
+
+    <div class="contact-copy">
+
+        <span class="contact-kicker">
+            CONTACT PLANORA
+        </span>
+
+        <h1>
+            Let's start a conversation.
+        </h1>
+
+        <p>
+            Have a question about Planora, need support,
+            or want to know more about the project?
+            You can reach us using the contact information below.
+        </p>
+
+
+        <div class="contact-details">
+
+
+            <!-- EMAIL -->
+
+            <a href="mailto:ramezmayaa@gmail.com"
+               class="contact-item">
+
+                <span class="contact-icon">
+
+                    <svg viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="1.8"
+                         stroke-linecap="round"
+                         stroke-linejoin="round">
+
+                        <rect x="3"
+                              y="5"
+                              width="18"
+                              height="14"
+                              rx="2" />
+
+                        <path d="m3 7 9 6 9-6" />
+
+                    </svg>
+
+                </span>
+
+                <span class="contact-item-content">
+
+                    <span>Email</span>
+
+                    <strong>
+                        ramezmayaa@gmail.com
+                    </strong>
+
+                </span>
+
+            </a>
+
+
+            <!-- PHONE / WHATSAPP -->
+
+            <a href="tel:0779149585"
+               class="contact-item">
+
+                <span class="contact-icon">
+
+                    <svg viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="1.8"
+                         stroke-linecap="round"
+                         stroke-linejoin="round">
+
+                        <path d="
+                            M22 16.92v3
+                            a2 2 0 0 1-2.18 2
+                            19.79 19.79 0 0 1-8.63-3.07
+                            19.5 19.5 0 0 1-6-6
+                            19.79 19.79 0 0 1-3.07-8.67
+                            A2 2 0 0 1 4.11 2h3
+                            a2 2 0 0 1 2 1.72
+                            12.84 12.84 0 0 0 .7 2.81
+                            2 2 0 0 1-.45 2.11
+                            L8.09 9.91
+                            a16 16 0 0 0 6 6
+                            l1.27-1.27
+                            a2 2 0 0 1 2.11-.45
+                            12.84 12.84 0 0 0 2.81.7
+                            A2 2 0 0 1 22 16.92Z" />
+
+                    </svg>
+
+                </span>
+
+                <span class="contact-item-content">
+
+                    <span>Phone / WhatsApp</span>
+
+                    <strong>
+                        0779149585
+                    </strong>
+
+                </span>
+
+            </a>
+
+
+            <!-- LOCATION -->
+
+            <div class="contact-item">
+
+                <span class="contact-icon">
+
+                    <svg viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="1.8"
+                         stroke-linecap="round"
+                         stroke-linejoin="round">
+
+                        <path d="
+                            M20 10
+                            c0 5-8 12-8 12
+                            S4 15 4 10
+                            a8 8 0 1 1 16 0Z" />
+
+                        <circle cx="12"
+                                cy="10"
+                                r="2.5" />
+
+                    </svg>
+
+                </span>
+
+                <span class="contact-item-content">
+
+                    <span>Location</span>
+
+                    <strong>
+                        Madaba, Jordan
+                    </strong>
+
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- SOCIAL ICONS -->
+
+        <div class="contact-social-block">
+
+            <span class="contact-social-label">
+                Social
+            </span>
+
+            <div class="contact-socials">
+
+
+                <!-- LINKEDIN -->
+
+                <span class="contact-social"
+                      title="LinkedIn">
+
+                    <svg viewBox="0 0 24 24"
+                         fill="currentColor">
+
+                        <path d="
+                            M6.5 8.5H3.5V21H6.5V8.5ZM5 3
+                            A1.75 1.75 0 1 0 5 6.5
+                            A1.75 1.75 0 0 0 5 3ZM21 13.8
+                            C21 10.1 19 8.2 16.1 8.2
+                            C14 8.2 13 9.3 12.4 10.2
+                            V8.5H9.4V21H12.4V14.8
+                            C12.4 13.1 13.1 12 14.6 12
+                            C16.1 12 16.7 13 16.7 14.8
+                            V21H21V13.8Z" />
+
+                    </svg>
+
+                </span>
+
+
+                <!-- INSTAGRAM -->
+
+                <span class="contact-social"
+                      title="Instagram">
+
+                    <svg viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="1.8">
+
+                        <rect x="3"
+                              y="3"
+                              width="18"
+                              height="18"
+                              rx="5" />
+
+                        <circle cx="12"
+                                cy="12"
+                                r="4" />
+
+                        <circle cx="17.5"
+                                cy="6.5"
+                                r="1" />
+
+                    </svg>
+
+                </span>
+
+
+                <!-- X -->
+
+                <span class="contact-social"
+                      title="X">
+
+                    <svg viewBox="0 0 24 24"
+                         fill="currentColor">
+
+                        <path d="
+                            M18.4 3H21
+                            L15.3 9.5
+                            L22 21H16.7
+                            L12.6 15.6
+                            L7.9 21H5.3
+                            L11.4 14
+                            L5 3H10.4
+                            L14.1 7.9
+                            L18.4 3ZM17.5 19H18.9
+                            L9.6 4.9H8.1
+                            L17.5 19Z" />
+
+                    </svg>
+
+                </span>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- PERSON -->
+
+    <div class="contact-visual">
+
+        <img src="~/images/contact/contact-person.png"
+             asp-append-version="true"
+             alt="Planora contact"
+             class="contact-person" />
+
+        
+
+    </div>
+
+</section>
+

@@ -1,0 +1,467 @@
+﻿@model Planora.Web.ViewModels.Projects.ProjectFormViewModel
+@using Planora.Domain.Enums
+
+@{
+    ViewData["Title"] = "Edit Project";
+    Layout = "_AppLayout";
+}
+
+@section Styles
+{
+    <link rel="stylesheet"
+          href="~/css/projects.css"
+          asp-append-version="true" />
+}
+
+<div class="project-form-v3-page">
+
+    <!-- =====================================================
+         BACK
+         ===================================================== -->
+
+    <div class="project-form-v3-back">
+
+        <a asp-controller="Projects"
+           asp-action="Details"
+           asp-route-id="@Model.Id">
+            ← Back to project
+        </a>
+
+    </div>
+
+
+    <!-- =====================================================
+         HEADER
+         ===================================================== -->
+
+    <section class="project-form-v3-header">
+
+        <div>
+
+            <span class="project-form-v3-kicker">
+                PROJECT MANAGEMENT
+            </span>
+
+            <h1>
+                Edit project
+            </h1>
+
+            <p>
+                Update the project information, methodology, status and timeline.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         FORM
+         ===================================================== -->
+
+    <form asp-controller="Projects"
+          asp-action="Edit"
+          asp-route-id="@Model.Id"
+          method="post"
+          class="project-form-v3">
+
+        <input asp-for="Id"
+               type="hidden" />
+
+
+        <!-- VALIDATION -->
+
+        <div asp-validation-summary="ModelOnly"
+             class="project-form-v3-validation">
+        </div>
+
+
+        <!-- =================================================
+             BASIC INFORMATION
+             ================================================= -->
+
+        <section class="project-form-v3-panel">
+
+            <div class="project-form-v3-panel-head">
+
+                <div class="project-form-v3-panel-icon">
+
+                    <svg viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="1.8"
+                         stroke-linecap="round"
+                         stroke-linejoin="round">
+
+                        <path d="M3 6.5A2.5 2.5 0 0 1 5.5 4H9l2 2h7.5A2.5 2.5 0 0 1 21 8.5v9A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5Z" />
+
+                        <path d="M3 9h18" />
+
+                    </svg>
+
+                </div>
+
+                <div>
+
+                    <span>
+                        PROJECT DETAILS
+                    </span>
+
+                    <h2>
+                        Basic information
+                    </h2>
+
+                    <p>
+                        Update the main information used to identify this project.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="project-form-v3-fields">
+
+                <!-- NAME -->
+
+                <div class="project-form-v3-field project-form-v3-full">
+
+                    <label asp-for="Name">
+                        Project name
+                    </label>
+
+                    <input asp-for="Name"
+                           autocomplete="off" />
+
+                    <span asp-validation-for="Name"
+                          class="project-form-v3-error">
+                    </span>
+
+                </div>
+
+
+                <!-- DESCRIPTION -->
+
+                <div class="project-form-v3-field project-form-v3-full">
+
+                    <div class="project-form-v3-label-row">
+
+                        <label asp-for="Description">
+                            Description
+                        </label>
+
+                        <span>
+                            Project overview
+                        </span>
+
+                    </div>
+
+                    <textarea asp-for="Description"
+                              rows="6"></textarea>
+
+                    <span asp-validation-for="Description"
+                          class="project-form-v3-error">
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             PROJECT CONFIGURATION
+             ================================================= -->
+
+        <section class="project-form-v3-panel">
+
+            <div class="project-form-v3-panel-head">
+
+                <div class="project-form-v3-panel-icon">
+
+                    <svg viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="1.8"
+                         stroke-linecap="round"
+                         stroke-linejoin="round">
+
+                        <circle cx="12"
+                                cy="12"
+                                r="3" />
+
+                        <path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-2.83 2.83-.06-.06A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 .6 1.7 1.7 0 0 0-.4 1.1V21H9.6v-.1A1.7 1.7 0 0 0 9 19.4a1.7 1.7 0 0 0-1.88.34l-.06.06-2.83-2.83.06-.06A1.7 1.7 0 0 0 4.6 15" />
+
+                    </svg>
+
+                </div>
+
+                <div>
+
+                    <span>
+                        CONFIGURATION
+                    </span>
+
+                    <h2>
+                        Project setup
+                    </h2>
+
+                    <p>
+                        Update the methodology and current project status.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="project-form-v3-fields project-form-v3-two-columns">
+
+                <!-- METHODOLOGY -->
+
+                <div class="project-form-v3-field">
+
+                    <label asp-for="Methodology">
+                        Methodology
+                    </label>
+
+                    <div class="project-form-v3-select-wrap">
+
+                        <select asp-for="Methodology"
+                                asp-items="Html.GetEnumSelectList<ProjectMethodology>()">
+                        </select>
+
+                        <svg viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="2"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+
+                            <path d="m7 10 5 5 5-5" />
+
+                        </svg>
+
+                    </div>
+
+                    <span asp-validation-for="Methodology"
+                          class="project-form-v3-error">
+                    </span>
+
+                </div>
+
+
+                <!-- STATUS -->
+
+                <div class="project-form-v3-field">
+
+                    <div class="project-form-v3-label-row">
+
+                        <label asp-for="Status">
+                            Project status
+                        </label>
+
+                        <span>
+                            Archive separately
+                        </span>
+
+                    </div>
+
+                    <div class="project-form-v3-select-wrap">
+
+                        <select asp-for="Status">
+
+                            <option value="@((int)ProjectStatus.Planning)">
+                                Planning
+                            </option>
+
+                            <option value="@((int)ProjectStatus.Active)">
+                                Active
+                            </option>
+
+                            <option value="@((int)ProjectStatus.Completed)">
+                                Completed
+                            </option>
+
+                        </select>
+
+                        <svg viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="2"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+
+                            <path d="m7 10 5 5 5-5" />
+
+                        </svg>
+
+                    </div>
+
+                    <span asp-validation-for="Status"
+                          class="project-form-v3-error">
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             TIMELINE
+             ================================================= -->
+
+        <section class="project-form-v3-panel">
+
+            <div class="project-form-v3-panel-head">
+
+                <div class="project-form-v3-panel-icon">
+
+                    <svg viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="1.8"
+                         stroke-linecap="round"
+                         stroke-linejoin="round">
+
+                        <rect x="3"
+                              y="5"
+                              width="18"
+                              height="16"
+                              rx="2" />
+
+                        <path d="M16 3v4" />
+
+                        <path d="M8 3v4" />
+
+                        <path d="M3 11h18" />
+
+                    </svg>
+
+                </div>
+
+                <div>
+
+                    <span>
+                        TIMELINE
+                    </span>
+
+                    <h2>
+                        Project schedule
+                    </h2>
+
+                    <p>
+                        Update the project start date and expected completion date.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="project-form-v3-fields project-form-v3-two-columns">
+
+                <!-- START DATE -->
+
+                <div class="project-form-v3-field">
+
+                    <div class="project-form-v3-label-row">
+
+                        <label asp-for="StartDate">
+                            Start date
+                        </label>
+
+                        <span>
+                            Past dates allowed
+                        </span>
+
+                    </div>
+
+                    <input asp-for="StartDate"
+                           type="date" />
+
+                    <span asp-validation-for="StartDate"
+                          class="project-form-v3-error">
+                    </span>
+
+                </div>
+
+
+                <!-- END DATE -->
+
+                <div class="project-form-v3-field">
+
+                    <div class="project-form-v3-label-row">
+
+                        <label asp-for="EndDate">
+                            End date
+                        </label>
+
+                        <span>
+                            Optional
+                        </span>
+
+                    </div>
+
+                    <input asp-for="EndDate"
+                           type="date" />
+
+                    <span asp-validation-for="EndDate"
+                          class="project-form-v3-error">
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             ACTIONS
+             ================================================= -->
+
+        <div class="project-form-v3-actions">
+
+            <a asp-controller="Projects"
+               asp-action="Details"
+               asp-route-id="@Model.Id"
+               class="project-form-v3-cancel">
+
+                Cancel
+
+            </a>
+
+
+            <button type="submit"
+                    class="project-form-v3-submit">
+
+                <svg viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="1.9"
+                     stroke-linecap="round"
+                     stroke-linejoin="round">
+
+                    <path d="M20 6 9 17l-5-5" />
+
+                </svg>
+
+                Save changes
+
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}

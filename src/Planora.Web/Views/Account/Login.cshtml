@@ -1,0 +1,403 @@
+@model Planora.Web.ViewModels.Account.LoginViewModel
+
+@{
+    ViewData["Title"] = "Sign In";
+    Layout = "_AuthLayout";
+}
+
+@section Styles
+{
+    <link rel="stylesheet"
+          href="~/css/auth.css"
+          asp-append-version="true" />
+}
+
+<div class="auth-v3-shell"
+     data-auth-page="login">
+
+    <!-- =====================================================
+         LEFT SIDE
+         ===================================================== -->
+
+    <section class="auth-v3-showcase">
+
+        <div class="auth-v3-brand">
+
+            <div class="auth-v3-brand-icon auth-v3-brand-logo-box">
+    <img src="~/images/brand/planora-logo.png"
+         asp-append-version="true"
+         alt="Planora"
+         class="auth-v3-brand-logo" />
+</div>
+
+<span>Planora</span>
+
+        </div>
+
+
+        <div class="auth-v3-showcase-content">
+
+            <span class="auth-v3-kicker">
+                INTELLIGENT PROJECT MANAGEMENT
+            </span>
+
+            <h1>
+                Plan. Manage. Deliver.
+            </h1>
+
+            <p>
+                One workspace for managing projects,
+                Scrum workflows, requirements, QA,
+                issues and team progress.
+            </p>
+
+
+            <div class="auth-v3-features">
+
+                <article>
+
+                    <div class="auth-v3-feature-icon">
+
+                        <svg viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.8"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+
+                            <rect x="3"
+                                  y="4"
+                                  width="7"
+                                  height="7"
+                                  rx="1.5" />
+
+                            <rect x="14"
+                                  y="4"
+                                  width="7"
+                                  height="7"
+                                  rx="1.5" />
+
+                            <rect x="3"
+                                  y="13"
+                                  width="7"
+                                  height="7"
+                                  rx="1.5" />
+
+                            <path d="M14 16h7" />
+
+                        </svg>
+
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Scrum & Projects
+                        </strong>
+
+                        <span>
+                            Plan and manage delivery workflows.
+                        </span>
+
+                    </div>
+
+                </article>
+
+
+                <article>
+
+                    <div class="auth-v3-feature-icon">
+
+                        <svg viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.8"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+
+                            <path d="m8 12 2.5 2.5L16 9" />
+
+                            <circle cx="12"
+                                    cy="12"
+                                    r="9" />
+
+                        </svg>
+
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Controlled QA
+                        </strong>
+
+                        <span>
+                            Structured review and testing workflows.
+                        </span>
+
+                    </div>
+
+                </article>
+
+
+                <article>
+
+                    <div class="auth-v3-feature-icon">
+
+                        <svg viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.8"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+
+                            <path d="M4 19V5" />
+
+                            <path d="M4 12h6" />
+
+                            <path d="M10 7v10" />
+
+                            <path d="M10 7h5" />
+
+                            <path d="M10 17h5" />
+
+                            <path d="M15 7l5 5-5 5" />
+
+                        </svg>
+
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            V-Model
+                        </strong>
+
+                        <span>
+                            Requirements and delivery traceability.
+                        </span>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+        </div>
+
+
+        <div class="auth-v3-showcase-footer">
+            Secure project management with Planora.
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         LOGIN SIDE
+         ===================================================== -->
+
+    <section class="auth-v3-form-side">
+
+        <div class="auth-v3-form-wrapper">
+
+            <div class="auth-v3-mobile-brand">
+    <img src="~/images/brand/planora-logo.png"
+         asp-append-version="true"
+         alt="Planora"
+         class="auth-v3-mobile-logo" />
+    <span>Planora</span>
+</div>
+
+
+            <header class="auth-v3-form-header">
+
+                <span>
+                    WELCOME BACK
+                </span>
+
+                <h2>
+                    Sign in to Planora
+                </h2>
+
+                <p>
+                    Enter your account details to continue to your workspace.
+                </p>
+
+            </header>
+
+
+            <form asp-controller="Account"
+                  asp-action="Login"
+                  asp-route-returnUrl="@ViewData["ReturnUrl"]"
+                  method="post"
+                  class="auth-v3-form">
+
+                @Html.AntiForgeryToken()
+
+
+                <div asp-validation-summary="ModelOnly"
+                     class="auth-v3-validation">
+                </div>
+
+
+                <!-- EMAIL -->
+
+                <div class="auth-v3-field">
+
+                    <label asp-for="Email">
+                        Email address
+                    </label>
+
+                    <div class="auth-v3-input-wrap">
+
+                        <svg viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.8"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+
+                            <rect x="3"
+                                  y="5"
+                                  width="18"
+                                  height="14"
+                                  rx="2" />
+
+                            <path d="m3 7 9 6 9-6" />
+
+                        </svg>
+
+                        <input asp-for="Email"
+                               autocomplete="email"
+                               placeholder="name@example.com" />
+
+                    </div>
+
+                    <span asp-validation-for="Email"
+                          class="auth-v3-field-error">
+                    </span>
+
+                </div>
+
+
+                <!-- PASSWORD -->
+
+                <div class="auth-v3-field">
+
+                    <label asp-for="Password">
+                        Password
+                    </label>
+
+                    <div class="auth-v3-input-wrap">
+
+                        <svg viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.8"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+
+                            <rect x="5"
+                                  y="10"
+                                  width="14"
+                                  height="11"
+                                  rx="2" />
+
+                            <path d="M8 10V7a4 4 0 0 1 8 0v3" />
+
+                        </svg>
+
+                        <input asp-for="Password"
+                               autocomplete="current-password"
+                               placeholder="Enter your password" />
+
+                    </div>
+
+                    <span asp-validation-for="Password"
+                          class="auth-v3-field-error">
+                    </span>
+
+                </div>
+
+
+                <!-- OPTIONS -->
+
+                <div class="auth-v3-options">
+
+                    <label class="auth-v3-checkbox">
+
+                        <input asp-for="RememberMe" />
+
+                        <span>
+                            Remember me
+                        </span>
+
+                    </label>
+
+
+                    <a asp-controller="Account"
+                       asp-action="ForgotPassword">
+                        Forgot password?
+                    </a>
+
+                </div>
+
+
+                <!-- SIGN IN -->
+
+                <button type="submit"
+                        class="auth-v3-submit">
+
+                    Sign in
+
+                    <svg viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="1.9"
+                         stroke-linecap="round"
+                         stroke-linejoin="round">
+
+                        <path d="M5 12h14" />
+
+                        <path d="m14 7 5 5-5 5" />
+
+                    </svg>
+
+                </button>
+
+
+                <!-- REGISTER -->
+
+                <div class="auth-v3-switch">
+
+                    <span>
+                        Don't have an account?
+                    </span>
+
+                    <a asp-controller="Account"
+                       asp-action="Register"
+                       class="auth-v3-transition-link"
+                       data-auth-target="register">
+                        Create account
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </section>
+
+</div>
+
+
+@section Scripts
+{
+<partial name="_ValidationScriptsPartial" />
+
+<script src="~/js/auth-transition.js"
+        asp-append-version="true">
+</script>
+}

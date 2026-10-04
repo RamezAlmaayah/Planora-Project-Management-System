@@ -1,0 +1,175 @@
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0" />
+
+    <title>403 - Access Denied | Planora</title>
+
+    <link rel="stylesheet"
+          href="/css/access-denied.css"
+          asp-append-version="true" />
+</head>
+
+<body>
+
+<header class="ad-topbar">
+
+    <a asp-controller="Home"
+       asp-action="Index"
+       class="ad-logo">
+    <img src="~/images/brand/planora-logo.png"
+         asp-append-version="true"
+         alt="Planora"
+         class="ad-brand-logo" />
+    <span>Planora</span>
+</a>
+
+    <nav class="ad-nav">
+
+        <a asp-controller="Home"
+           asp-action="Index">
+            Home
+        </a>
+
+        <a asp-controller="Home"
+           asp-action="Index"
+           asp-fragment="features">
+            Features
+        </a>
+
+        <a asp-controller="Home"
+           asp-action="Index"
+           asp-fragment="about">
+            About
+        </a>
+
+        <a asp-controller="Home"
+           asp-action="Contact">
+            Contact
+        </a>
+
+    </nav>
+
+    <div class="ad-account">
+
+        @if (User.Identity?.IsAuthenticated == true)
+        {
+            <a asp-controller="Dashboard"
+               asp-action="Index"
+               class="ad-dashboard">
+                Dashboard
+            </a>
+        }
+        else
+        {
+            <a asp-controller="Account"
+               asp-action="Login"
+               class="ad-login">
+                Log in
+            </a>
+        }
+
+    </div>
+
+</header>
+
+
+<main class="ad-main">
+
+    <section class="ad-content">
+
+        <div class="ad-visual">
+
+            <svg viewBox="0 0 240 220"
+                 xmlns="http://www.w3.org/2000/svg"
+                 fill="none"
+                 stroke="currentColor"
+                 stroke-width="5"
+                 stroke-linecap="round"
+                 stroke-linejoin="round">
+
+                <path d="
+                    M70 92
+                    V67
+                    C70 39 92 18 120 18
+                    C148 18 170 39 170 67
+                    V92" />
+
+                <rect x="48"
+                      y="88"
+                      width="144"
+                      height="112"
+                      rx="18" />
+
+                <circle cx="120"
+                        cy="137"
+                        r="14" />
+
+                <path d="M120 151V174" />
+
+            </svg>
+
+        </div>
+
+        <div class="ad-code">
+            403
+        </div>
+
+        <h1>
+            Access Denied
+        </h1>
+
+        <p>
+            You do not have permission to access this page.
+            Your current role or project membership does not allow
+            this action.
+        </p>
+
+        <div class="ad-actions">
+
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                <a asp-controller="Dashboard"
+                   asp-action="Index"
+                   class="ad-primary">
+                    Go to Dashboard
+                </a>
+            }
+            else
+            {
+                <a asp-controller="Account"
+                   asp-action="Login"
+                   class="ad-primary">
+                    Log in
+                </a>
+            }
+
+            <a asp-controller="Home"
+               asp-action="Index"
+               class="ad-secondary">
+                Back Home
+            </a>
+
+        </div>
+
+        <div class="ad-note">
+            If you believe you should have access, contact your
+            Project Manager or Planora Administrator.
+        </div>
+
+    </section>
+
+</main>
+
+</body>
+
+</html>
+

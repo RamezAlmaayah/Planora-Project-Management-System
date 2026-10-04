@@ -1,0 +1,106 @@
+@model Planora.Web.ViewModels.Sprints.SprintFormViewModel
+
+@{
+    ViewData["Title"] = "Create Sprint";
+    Layout = "_AppLayout";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/projects.css" asp-append-version="true" />
+}
+
+<div class="project-form-v3-page">
+
+    <div class="project-form-v3-back">
+        <a asp-action="Index"
+           asp-route-projectId="@Model.ProjectId">
+            &larr; Back to sprints
+        </a>
+    </div>
+
+    <section class="project-form-v3-header">
+        <div>
+            <span class="project-form-v3-kicker">SCRUM</span>
+            <h1>Create sprint</h1>
+            <p>@Model.ProjectName</p>
+        </div>
+    </section>
+
+    <form asp-action="Create"
+          method="post"
+          class="project-form-v3">
+
+        <input asp-for="ProjectId" type="hidden" />
+
+        <div asp-validation-summary="ModelOnly"
+             class="project-form-v3-validation"></div>
+
+        <section class="project-form-v3-panel">
+
+            <div class="project-form-v3-fields">
+
+                <div class="project-form-v3-field project-form-v3-full">
+                    <label asp-for="Name">Sprint name</label>
+                    <input asp-for="Name"
+                           placeholder="Example: Sprint 1" />
+                    <span asp-validation-for="Name"
+                          class="project-form-v3-error"></span>
+                </div>
+
+                <div class="project-form-v3-field project-form-v3-full">
+                    <label asp-for="Goal">Sprint goal</label>
+                    <textarea asp-for="Goal"
+                              rows="5"
+                              placeholder="What should this sprint achieve?"></textarea>
+                    <span asp-validation-for="Goal"
+                          class="project-form-v3-error"></span>
+                </div>
+
+            </div>
+
+        </section>
+
+        <section class="project-form-v3-panel">
+
+            <div class="project-form-v3-fields project-form-v3-two-columns">
+
+                <div class="project-form-v3-field">
+                    <label asp-for="StartDate">Start date</label>
+                    <input asp-for="StartDate" type="date" />
+                </div>
+
+                <div class="project-form-v3-field">
+                    <label asp-for="EndDate">End date</label>
+                    <input asp-for="EndDate" type="date" />
+                    <span asp-validation-for="EndDate"
+                          class="project-form-v3-error"></span>
+                </div>
+
+            </div>
+
+        </section>
+
+        <div class="project-form-v3-actions">
+
+            <a asp-action="Index"
+               asp-route-projectId="@Model.ProjectId"
+               class="project-form-v3-cancel">
+                Cancel
+            </a>
+
+            <button type="submit"
+                    class="project-form-v3-submit">
+                + Create sprint
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+

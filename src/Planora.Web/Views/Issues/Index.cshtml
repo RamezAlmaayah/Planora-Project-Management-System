@@ -1,0 +1,141 @@
+@model Planora.Web.ViewModels.Issues.IssueIndexViewModel
+@using Planora.Domain.Enums
+@using System.Globalization
+
+@{
+    ViewData["Title"] = "Issues";
+    Layout = "_AppLayout";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/projects.css" asp-append-version="true" />
+}
+
+<div class="projects-v3-page">
+    <div class="project-form-v3-back">
+        <a asp-controller="Projects" asp-action="Details" asp-route-id="@Model.ProjectId">
+            &larr; Back to project
+        </a>
+    </div>
+
+    @if (TempData["SuccessMessage"] is string success)
+    {
+        <div class="v3-alert v3-alert-success" role="status">@success</div>
+    }
+    @if (Model.IsReadOnly)
+    {
+        <div class="v3-alert">Issues are read-only because this project is archived.</div>
+    }
+
+    <section class="projects-v3-header">
+        <div>
+            <span class="projects-v3-kicker">PROJECT ISSUES</span>
+            <h1>Issues</h1>
+            <p>@Model.ProjectName</p>
+        </div>
+        @if (!Model.IsReadOnly)
+        {
+            <a asp-action="Create" asp-route-projectId="@Model.ProjectId"
+               class="project-form-v3-submit">+ Report issue</a>
+        }
+    </section>
+
+    <section class="projects-v3-panel">
+        <div class="projects-v3-toolbar issue-v3-toolbar">
+            <div>
+                <h2>Project issues</h2>
+                <span>@Model.Issues.Count issues</span>
+            </div>
+            <form asp-action="Index" method="get" class="issue-v3-filters" role="search">
+                <input type="hidden" name="projectId" value="@Model.ProjectId" />
+                <input type="search" name="search" value="@Model.Search"
+                       placeholder="Search issues..." aria-label="Search issues"
+                       maxlength="200" autocomplete="off" />
+                <select name="status" aria-label="Filter by status">
+                    <option value="">All statuses</option>
+                    @foreach (IssueStatus value in Enum.GetValues<IssueStatus>())
+                    {
+                        <option value="@value" selected="@(Model.Status == value ? "selected" : null)">@value</option>
+                    }
+                </select>
+                <select name="severity" aria-label="Filter by severity">
+                    <option value="">All severities</option>
+                    @foreach (IssueSeverity value in Enum.GetValues<IssueSeverity>())
+                    {
+                        <option value="@value" selected="@(Model.Severity == value ? "selected" : null)">@value</option>
+                    }
+                </select>
+                <select name="priority" aria-label="Filter by priority">
+                    <option value="">All priorities</option>
+                    @foreach (PriorityLevel value in Enum.GetValues<PriorityLevel>())
+                    {
+                        <option value="@value" selected="@(Model.Priority == value ? "selected" : null)">@value</option>
+                    }
+                </select>
+                <select name="assignedUserId" aria-label="Filter by assignee">
+                    <option value="">All assignees</option>
+                    @foreach (var assignee in Model.Assignees)
+                    {
+                        <option value="@assignee.UserId"
+                                selected="@(Model.AssignedUserId == assignee.UserId ? "selected" : null)">@assignee.DisplayName</option>
+                    }
+                </select>
+                <button type="submit" class="backlog-action backlog-action-edit">Filter</button>
+                @if (!string.IsNullOrWhiteSpace(Model.Search) || Model.Status.HasValue ||
+                     Model.Severity.HasValue || Model.Priority.HasValue ||
+                     !string.IsNullOrWhiteSpace(Model.AssignedUserId))
+                {
+                    <a asp-action="Index" asp-route-projectId="@Model.ProjectId">Clear</a>
+                }
+            </form>
+        </div>
+
+        @if (Model.Issues.Count == 0)
+        {
+            <div class="projects-v3-empty">
+                <strong>No issues found</strong>
+                <p>Reported project issues will appear here.</p>
+            </div>
+        }
+        else
+        {
+            <div class="projects-v3-table issue-v3-table">
+                <div class="projects-v3-table-head">
+                    <span>Issue / task</span>
+                    <span>Severity</span>
+                    <span>Status</span>
+                    <span>Assignee</span>
+                    <span>Reporter / created</span>
+                    <span></span>
+                </div>
+                @foreach (var issue in Model.Issues)
+                {
+                    <div class="projects-v3-row">
+                        <div class="projects-v3-project">
+                            <div class="projects-v3-avatar">@(issue.Title[..1].ToUpperInvariant())</div>
+                            <div>
+                                <strong>@issue.Title</strong>
+                                <span>@(issue.TaskTitle ?? "Project issue")</span>
+                            </div>
+                        </div>
+                        <div>
+                            <span class="projects-v3-method">@issue.Severity</span>
+                            <small>@issue.Priority priority</small>
+                        </div>
+                        <div><span class="projects-v3-status">@issue.Status</span></div>
+                        <div>@(issue.AssigneeName ?? "Unassigned")</div>
+                        <div class="projects-v3-timeline">
+                            <strong>@issue.ReporterName</strong>
+                            <span>@issue.CreatedAt.ToString("dd MMM yyyy", CultureInfo.InvariantCulture)</span>
+                        </div>
+                        <div class="backlog-row-actions">
+                            <a asp-action="Details" asp-route-projectId="@Model.ProjectId"
+                               asp-route-id="@issue.Id"
+                               class="backlog-action backlog-action-edit">View</a>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </section>
+</div>

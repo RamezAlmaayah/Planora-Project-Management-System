@@ -1,0 +1,588 @@
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    background: #f7f7f5;
+    color: #171717;
+    font-family:
+        ui-sans-serif,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+a {
+    color: inherit;
+}
+
+.public-topbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    min-height: 76px;
+    padding: 0 6%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+    background: rgba(255, 255, 255, .94);
+    border-bottom: 1px solid #e9e8e4;
+    backdrop-filter: blur(14px);
+}
+
+.public-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 20px;
+    font-weight: 650;
+    text-decoration: none;
+}
+
+.public-brand-mark {
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: #171717;
+    color: #fff;
+    font-size: 17px;
+}
+
+.public-nav {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.public-nav a {
+    padding: 9px 12px;
+    border-radius: 8px;
+    color: #5f5f5a;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background-color 140ms ease, color 140ms ease;
+}
+
+.public-nav a:hover {
+    background: #f1f1ee;
+    color: #171717;
+}
+
+.public-auth-actions {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.public-login,
+.public-register {
+    min-height: 40px;
+    padding: 0 15px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.public-login {
+    border: 1px solid #dfdfdc;
+    background: #fff;
+}
+
+.public-register {
+    background: #171717;
+    color: #fff;
+}
+
+.landing-hero {
+    min-height: calc(100vh - 76px);
+    padding: 100px 7%;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(480px, .95fr);
+    align-items: center;
+    gap: 80px;
+    overflow: hidden;
+}
+
+.landing-kicker,
+.landing-section-heading > span {
+    display: block;
+    margin-bottom: 20px;
+    color: #777771;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .14em;
+}
+
+.landing-hero h1 {
+    max-width: 760px;
+    margin: 0;
+    font-size: clamp(52px, 6vw, 86px);
+    line-height: .98;
+    letter-spacing: -.055em;
+    font-weight: 600;
+}
+
+.landing-hero h1 span {
+    color: #94948e;
+}
+
+.landing-hero-copy > p {
+    max-width: 650px;
+    margin: 32px 0 0;
+    color: #65655f;
+    font-size: 18px;
+    line-height: 1.7;
+}
+
+.landing-hero-actions {
+    margin-top: 36px;
+    display: flex;
+    gap: 12px;
+}
+
+.landing-primary,
+.landing-secondary {
+    min-height: 48px;
+    padding: 0 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.landing-primary {
+    background: #171717;
+    color: white;
+}
+
+.landing-secondary {
+    border: 1px solid #deded9;
+    background: white;
+}
+
+.landing-trust {
+    margin-top: 42px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.landing-trust span {
+    padding: 7px 11px;
+    border: 1px solid #e3e2de;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .65);
+    color: #686862;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.landing-visual {
+    position: relative;
+}
+
+.landing-visual::before {
+    content: "";
+    position: absolute;
+    inset: 12% -10% -16% 16%;
+    z-index: 0;
+    border-radius: 50%;
+    background: #e7f3f8;
+    filter: blur(2px);
+}
+
+.landing-dashboard-card {
+    position: relative;
+    z-index: 1;
+    padding: 26px;
+    border: 1px solid #dfded9;
+    border-radius: 18px;
+    background: white;
+    box-shadow: 0 24px 70px rgba(0, 0, 0, .07);
+    transform: rotate(1deg);
+}
+
+.landing-card-top,
+.landing-progress-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.landing-card-top div {
+    display: grid;
+    gap: 5px;
+}
+
+.landing-card-top span,
+.landing-mini-grid span,
+.landing-board > div > span {
+    color: #85857f;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .09em;
+}
+
+.landing-card-top strong {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.landing-status {
+    padding: 7px 10px;
+    border-radius: 999px;
+    background: #edf7f1;
+    color: #317a4e !important;
+    letter-spacing: 0 !important;
+}
+
+.landing-progress-block {
+    margin-top: 28px;
+}
+
+.landing-progress-heading {
+    font-size: 13px;
+}
+
+.landing-progress-heading strong {
+    font-size: 15px;
+}
+
+.landing-progress-track {
+    height: 8px;
+    margin-top: 10px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: #efefec;
+}
+
+.landing-progress-track span {
+    display: block;
+    width: 72%;
+    height: 100%;
+    border-radius: inherit;
+    background: #171717;
+}
+
+.landing-mini-grid {
+    margin-top: 26px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.landing-mini-grid article {
+    padding: 15px;
+    display: grid;
+    gap: 5px;
+    border: 1px solid #ecebe7;
+    border-radius: 11px;
+    background: #fafaf8;
+}
+
+.landing-mini-grid strong {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.landing-mini-grid small {
+    color: #777771;
+    font-size: 11px;
+}
+
+.landing-board {
+    margin-top: 24px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.landing-board > div {
+    min-height: 180px;
+    padding: 12px;
+    border-radius: 11px;
+    background: #f6f6f3;
+}
+
+.landing-board article {
+    margin-top: 9px;
+    padding: 11px;
+    border: 1px solid #e5e4df;
+    border-radius: 8px;
+    background: white;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.landing-section {
+    padding: 110px 7%;
+    background: white;
+}
+
+.landing-section-heading {
+    max-width: 760px;
+}
+
+.landing-section-heading h2,
+.landing-about h2,
+.landing-contact h2 {
+    margin: 0;
+    font-size: clamp(38px, 4vw, 58px);
+    line-height: 1.08;
+    letter-spacing: -.04em;
+    font-weight: 600;
+}
+
+.landing-section-heading p {
+    max-width: 620px;
+    color: #70706a;
+    font-size: 16px;
+    line-height: 1.7;
+}
+
+.landing-feature-grid {
+    margin-top: 60px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-top: 1px solid #e8e7e3;
+    border-left: 1px solid #e8e7e3;
+}
+
+.landing-feature-grid article {
+    min-height: 240px;
+    padding: 30px;
+    border-right: 1px solid #e8e7e3;
+    border-bottom: 1px solid #e8e7e3;
+}
+
+.landing-feature-number {
+    color: #999994;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.landing-feature-grid h3 {
+    margin: 48px 0 10px;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.landing-feature-grid p {
+    margin: 0;
+    color: #70706a;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.landing-about {
+    padding: 110px 7%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 100px;
+}
+
+.landing-about > div:last-child {
+    padding-top: 34px;
+}
+
+.landing-about p {
+    color: #64645f;
+    font-size: 17px;
+    line-height: 1.8;
+}
+
+.landing-contact {
+    margin: 0 7% 90px;
+    padding: 58px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 60px;
+    border-radius: 18px;
+    background: #ecebe6;
+}
+
+.landing-contact p {
+    max-width: 620px;
+    color: #666660;
+    line-height: 1.7;
+}
+
+.public-footer {
+    min-height: 120px;
+    padding: 30px 7%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+    border-top: 1px solid #e2e1dc;
+    background: white;
+    color: #70706a;
+    font-size: 13px;
+}
+
+.public-footer > div {
+    display: grid;
+    gap: 5px;
+}
+
+.public-footer strong {
+    color: #171717;
+    font-size: 16px;
+}
+
+@media (max-width: 1050px) {
+    .landing-hero {
+        grid-template-columns: 1fr;
+    }
+
+    .landing-visual {
+        max-width: 720px;
+    }
+
+    .landing-feature-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 780px) {
+    .public-nav {
+        display: none;
+    }
+
+    .public-topbar {
+        padding: 0 20px;
+    }
+
+    .landing-hero,
+    .landing-section,
+    .landing-about {
+        padding-left: 24px;
+        padding-right: 24px;
+    }
+
+    .landing-hero {
+        padding-top: 70px;
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .landing-dashboard-card {
+        padding: 18px;
+    }
+
+    .landing-mini-grid,
+    .landing-board,
+    .landing-feature-grid,
+    .landing-about {
+        grid-template-columns: 1fr;
+    }
+
+    .landing-contact {
+        margin: 0 24px 60px;
+        padding: 34px;
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .public-footer {
+        padding: 28px 24px;
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+
+/* ========================================
+   PUBLIC TOPBAR - LARGER
+   ======================================== */
+
+.public-topbar {
+    min-height: 88px !important;
+    padding: 0 7% !important;
+    gap: 38px !important;
+}
+
+.public-brand {
+    gap: 12px !important;
+    font-size: 23px !important;
+}
+
+.public-brand-mark {
+    width: 42px !important;
+    height: 42px !important;
+    font-size: 19px !important;
+    border-radius: 11px !important;
+}
+
+.public-nav {
+    gap: 12px !important;
+}
+
+.public-nav a {
+    padding: 11px 14px !important;
+    font-size: 15px !important;
+    font-weight: 600 !important;
+}
+
+.public-auth-actions {
+    gap: 10px !important;
+}
+
+.public-login,
+.public-register {
+    min-height: 44px !important;
+    padding: 0 18px !important;
+    font-size: 15px !important;
+    border-radius: 10px !important;
+}
+
+/* ===== PLANORA BRAND LOGO ===== */
+
+.public-brand-logo {
+    width: 42px !important;
+    height: 42px !important;
+    min-width: 42px !important;
+
+    display: block !important;
+    object-fit: contain !important;
+}
+
+/* ===== END PLANORA BRAND LOGO ===== */
+
+/* ===== PLANORA LOGO FINAL SIZE ===== */
+
+.public-brand-logo {
+    width: 50px !important;
+    height: 50px !important;
+    min-width: 50px !important;
+    object-fit: contain !important;
+}
+
+.public-brand {
+    gap: 11px !important;
+}
+
+.public-brand > span {
+    font-size: 23px !important;
+}
+
+/* ===== END PLANORA LOGO FINAL SIZE ===== */

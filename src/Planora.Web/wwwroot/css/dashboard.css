@@ -1,0 +1,583 @@
+.crm-dashboard {
+    width: 100%;
+    min-height: calc(100vh - 82px);
+    background: #ffffff;
+}
+
+/* =========================================================
+   ANALYTICS BAND
+   ========================================================= */
+
+.analytics-band {
+    min-height: 185px;
+    display: grid;
+    grid-template-columns: 180px minmax(260px, 1.35fr) minmax(230px, 1fr) minmax(145px, 0.65fr) minmax(145px, 0.7fr);
+    align-items: center;
+    gap: 30px;
+    padding: 25px 30px;
+    background: #f7f7ef;
+    border-bottom: 1px solid #eeeeE8;
+}
+
+/* =========================================================
+   PROJECT SELECTOR
+   ========================================================= */
+
+.analytics-project-select label {
+    display: block;
+    margin-bottom: 10px;
+    color: #363632;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.analytics-project-select form {
+    margin: 0;
+}
+
+.analytics-project-select select {
+    width: 100%;
+    min-height: 40px;
+    padding: 0 11px;
+    border: 1px solid #deded8;
+    border-radius: 7px;
+    background: rgba(255, 255, 255, 0.72);
+    outline: 0;
+    color: #242420;
+    font-size: 12px;
+}
+
+/* =========================================================
+   MINI TASK CHART
+   ========================================================= */
+
+.analytics-block-title {
+    margin-bottom: 12px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.mini-chart {
+    height: 98px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    align-items: end;
+    gap: 12px;
+}
+
+.mini-chart-column {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 7px;
+}
+
+.mini-chart-bar {
+    width: 100%;
+    max-width: 22px;
+    height: 70px;
+    display: flex;
+    align-items: flex-end;
+}
+
+    .mini-chart-bar span {
+        display: block;
+        width: 100%;
+        height: 20%;
+        border-radius: 4px 4px 0 0;
+        background: #21211f;
+        transition: height 0.35s ease;
+    }
+
+.mini-chart-column.striped
+.mini-chart-bar span {
+    background: repeating-linear-gradient( -45deg, #babAb3, #babAb3 2px, transparent 2px, transparent 5px );
+}
+
+.mini-chart-column small {
+    color: #555550;
+    font-size: 10px;
+}
+
+/* =========================================================
+   SEGMENTED HALF GAUGE
+   ========================================================= */
+
+.analytics-gauge-block {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.half-gauge {
+    position: relative;
+    width: 220px;
+    height: 125px;
+    overflow: hidden;
+}
+
+/*
+    This is now ONLY the container.
+    JavaScript creates the individual lines.
+*/
+
+.half-gauge-lines {
+    position: absolute;
+    left: 50%;
+    bottom: -82px;
+    width: 190px;
+    height: 190px;
+    transform: translateX(-50%);
+    border-radius: 50%;
+}
+
+.gauge-tick {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 3px;
+    height: 17px;
+    border-radius: 999px;
+    background: #d5d5ce;
+    transform-origin: 50% 95px;
+    transform: translateX(-50%) rotate(var(--angle));
+    transition: background 0.2s ease, height 0.2s ease;
+}
+
+    .gauge-tick.is-active {
+        background: #222220;
+    }
+
+.half-gauge-center {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 8px;
+    z-index: 2;
+    text-align: center;
+}
+
+    .half-gauge-center strong {
+        display: block;
+        font-size: 28px;
+        line-height: 1;
+        font-weight: 600;
+        letter-spacing: -0.04em;
+    }
+
+    .half-gauge-center span {
+        display: block;
+        margin-top: 8px;
+        color: #5d5d57;
+        font-size: 10px;
+    }
+
+/* =========================================================
+   KPI NUMBERS
+   ========================================================= */
+
+.analytics-number-block {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    column-gap: 9px;
+}
+
+    .analytics-number-block > strong {
+        grid-column: 1 / -1;
+        margin-bottom: 17px;
+        font-size: 30px;
+        line-height: 1;
+        font-weight: 500;
+        letter-spacing: -0.04em;
+    }
+
+    .analytics-number-block div span {
+        display: block;
+        color: #4f4f4a;
+        font-size: 11px;
+        line-height: 1.45;
+    }
+
+.analytics-arrow {
+    font-size: 20px;
+}
+
+/* =========================================================
+   BOARD
+   ========================================================= */
+
+.project-board {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(225px, 1fr));
+    gap: 18px;
+    padding: 23px 20px 48px;
+}
+
+.board-column {
+    min-width: 0;
+}
+
+.board-heading {
+    min-height: 47px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 4px 0 5px;
+}
+
+    .board-heading h2 {
+        margin: 0;
+        font-size: 17px;
+        font-weight: 500;
+        letter-spacing: -0.03em;
+    }
+
+    .board-heading > span {
+        min-width: 34px;
+        min-height: 26px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #deded8;
+        border-radius: 5px;
+        color: #575752;
+        font-size: 11px;
+    }
+
+.board-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* =========================================================
+   PROJECT CARD
+   ========================================================= */
+
+.project-board-card {
+    min-height: 172px;
+    display: flex;
+    flex-direction: column;
+    padding: 16px 16px 13px;
+    border: 1px solid #deded9;
+    border-radius: 9px;
+    background: #ffffff;
+    color: #242421;
+    text-decoration: none;
+    transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+    .project-board-card:hover {
+        border-color: #bdbdb7;
+        transform: translateY(-2px);
+    }
+
+    .project-board-card.selected-card {
+        background: #20201e;
+        border-color: #20201e;
+        color: #ffffff;
+    }
+
+    .project-board-card.archived-card {
+        background: #f8f8f6;
+    }
+
+.card-title-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+    .card-title-row strong {
+        font-size: 14px;
+        font-weight: 650;
+    }
+
+    .card-title-row > span {
+        color: #6e6e68;
+        font-size: 17px;
+        line-height: 1;
+    }
+
+.selected-card
+.card-title-row > span {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.project-board-card p {
+    display: -webkit-box;
+    margin: 13px 0 14px;
+    overflow: hidden;
+    color: #60605b;
+    font-size: 11px;
+    line-height: 1.55;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+
+.selected-card p {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.project-card-footer {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.date-chip {
+    min-height: 28px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 0 8px;
+    border: 1px solid #e0e0dc;
+    border-radius: 5px;
+    color: #444440;
+    font-size: 10px;
+}
+
+.selected-card
+.date-chip {
+    border-color: rgba(255, 255, 255, 0.22);
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.project-card-footer > div {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #62625d;
+    font-size: 10px;
+}
+
+.selected-card
+.project-card-footer > div {
+    color: rgba(255, 255, 255, 0.72);
+}
+
+.trend-data {
+    display: none;
+}
+
+/* =========================
+   DASHBOARD SCALE UP
+   ========================= */
+
+.analytics-band {
+    min-height: 210px;
+    grid-template-columns: 195px minmax(290px, 1.35fr) minmax(250px, 1fr) minmax(155px, 0.7fr) minmax(155px, 0.7fr);
+    gap: 34px;
+    padding: 28px 34px;
+}
+
+.analytics-project-select label,
+.analytics-block-title {
+    font-size: 14px;
+}
+
+.analytics-project-select select {
+    min-height: 44px;
+    font-size: 13px;
+    border-radius: 8px;
+}
+
+.mini-chart {
+    height: 108px;
+    gap: 14px;
+}
+
+.mini-chart-bar {
+    max-width: 24px;
+    height: 78px;
+}
+
+.mini-chart-column small {
+    font-size: 11px;
+}
+
+.half-gauge {
+    width: 245px;
+    height: 138px;
+}
+
+.half-gauge-lines {
+    width: 210px;
+    height: 210px;
+    bottom: -90px;
+}
+
+.gauge-tick {
+    width: 3px;
+    height: 19px;
+    transform-origin: 50% 105px;
+}
+
+.half-gauge-center strong {
+    font-size: 31px;
+}
+
+.half-gauge-center span {
+    font-size: 11px;
+}
+
+.analytics-number-block > strong {
+    font-size: 34px;
+}
+
+.analytics-number-block div span {
+    font-size: 12px;
+}
+
+.analytics-arrow {
+    font-size: 22px;
+}
+
+.project-board {
+    grid-template-columns: repeat(4, minmax(245px, 1fr));
+    gap: 20px;
+    padding: 26px 24px 52px;
+}
+
+.board-heading {
+    min-height: 50px;
+}
+
+    .board-heading h2 {
+        font-size: 19px;
+    }
+
+    .board-heading > span {
+        min-width: 36px;
+        min-height: 28px;
+        font-size: 12px;
+    }
+
+.board-cards {
+    gap: 14px;
+}
+
+.project-board-card {
+    min-height: 185px;
+    padding: 17px 17px 14px;
+    border-radius: 10px;
+}
+
+.card-title-row strong {
+    font-size: 15px;
+}
+
+.card-title-row > span {
+    font-size: 18px;
+}
+
+.project-board-card p {
+    font-size: 12px;
+    line-height: 1.6;
+    margin: 14px 0 15px;
+}
+
+.date-chip {
+    min-height: 30px;
+    font-size: 11px;
+    padding: 0 9px;
+}
+
+.project-card-footer > div {
+    font-size: 11px;
+    gap: 11px;
+}
+
+/* FINAL READABILITY PASS */
+
+.analytics-project-select label,
+.analytics-block-title {
+    font-size: 15px;
+}
+
+.mini-chart-column small {
+    font-size: 12px;
+}
+
+.half-gauge-center strong {
+    font-size: 34px;
+}
+
+.half-gauge-center span {
+    font-size: 12px;
+}
+
+.analytics-number-block > strong {
+    font-size: 36px;
+}
+
+.analytics-number-block div span {
+    font-size: 13px;
+}
+
+.board-heading h2 {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.board-heading > span {
+    font-size: 12px;
+}
+
+.card-title-row strong {
+    font-size: 15px;
+}
+
+.project-board-card p {
+    font-size: 12.5px;
+}
+
+.date-chip,
+.project-card-footer > div {
+    font-size: 11px;
+}
+
+/* =========================================================
+   RESPONSIVE DASHBOARD
+   Kept after readability rules so the grid remains bounded.
+   ========================================================= */
+
+@media (max-width: 1500px) {
+    .analytics-band {
+        grid-template-columns: 180px minmax(0, 1fr) 220px;
+    }
+
+    .analytics-number-block {
+        display: none;
+    }
+}
+
+@media (max-width: 1150px) {
+    .project-board {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 760px) {
+    .analytics-band {
+        grid-template-columns: 1fr;
+        gap: 22px;
+        padding: 24px 20px;
+    }
+
+    .analytics-gauge-block {
+        justify-content: flex-start;
+    }
+
+    .project-board {
+        grid-template-columns: 1fr;
+        padding-left: 14px;
+        padding-right: 14px;
+    }
+}

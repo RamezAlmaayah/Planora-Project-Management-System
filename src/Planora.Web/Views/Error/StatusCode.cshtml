@@ -1,0 +1,112 @@
+@{
+    Layout = "_ErrorLayout";
+
+    int code =
+        ViewData["StatusCode"] is int status
+            ? status
+            : 404;
+
+    string title =
+        code switch
+        {
+            404 => "Page not found",
+            401 => "Authentication required",
+            403 => "Access denied",
+            _ => "Something went wrong"
+        };
+
+    string message =
+        code switch
+        {
+            404 => "The page you are looking for does not exist, may have moved, or the address may be incorrect.",
+            401 => "You need to sign in before you can access this resource.",
+            403 => "Your current role or project membership does not allow access to this resource.",
+            _ => "We could not complete your request."
+        };
+
+    ViewData["Title"] = code.ToString();
+}
+
+<section class="error-shell">
+
+    <div class="error-copy">
+
+        <span class="error-kicker">
+            PLANORA ERROR
+        </span>
+
+        <div class="error-code">
+            @code
+        </div>
+
+        <h1>@title</h1>
+
+        <p>
+            @message
+        </p>
+
+        <div class="error-actions">
+
+            <a asp-controller="Home"
+               asp-action="Index"
+               class="error-primary">
+                Back to Planora
+            </a>
+
+            @if (code == 401)
+            {
+                <a asp-controller="Account"
+                   asp-action="Login"
+                   class="error-secondary">
+                    Log in
+                </a>
+            }
+
+        </div>
+
+    </div>
+
+
+    <div class="error-visual">
+
+        <div class="error-illustration">
+
+            <div class="error-window">
+
+                <div class="error-window-top">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+
+                <div class="error-window-body">
+
+                    <div class="error-search-line"></div>
+
+                    <div class="error-disconnected">
+
+                        <span class="error-node"></span>
+
+                        <div class="error-wire"></div>
+
+                        <span class="error-node error-node-end"></span>
+
+                    </div>
+
+                    <strong>
+                        Connection interrupted
+                    </strong>
+
+                    <small>
+                        We could not find the requested destination.
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>

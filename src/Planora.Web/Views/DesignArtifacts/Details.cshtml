@@ -1,0 +1,20 @@
+@model Planora.Web.ViewModels.VModel.DesignArtifactDetailsViewModel
+@using System.Globalization
+@{ ViewData["Title"] = Model.Artifact.Title; Layout = "_AppLayout"; }
+@section Styles { <link rel="stylesheet" href="~/css/projects.css" asp-append-version="true" /><link rel="stylesheet" href="~/css/requirements.css" asp-append-version="true" /> }
+<div class="project-detail-v3">
+    <div class="detail-v3-back"><a asp-action="Index" asp-route-projectId="@Model.Artifact.ProjectId">&larr; Back to design</a></div>
+    @if (TempData["SuccessMessage"] is string success) { <div class="v3-alert v3-alert-success">@success</div> }
+    @if (Model.IsReadOnly) { <div class="v3-alert">Design artifacts are read-only because this project is archived.</div> }
+    <section class="detail-v3-header"><div class="detail-v3-heading"><div class="detail-v3-tags"><span class="projects-v3-method">@Model.Artifact.Type</span></div><h1>@Model.Artifact.Identifier &mdash; @Model.Artifact.Title</h1><p>@Model.Artifact.ProjectName</p></div>@if (Model.CanEdit) { <div class="detail-v3-actions"><a asp-action="Edit" asp-route-projectId="@Model.Artifact.ProjectId" asp-route-id="@Model.Artifact.Id" class="detail-v3-secondary">Edit design</a></div> }</section>
+    <section class="detail-v3-info-grid">
+        <article><span>Identifier</span><strong>@Model.Artifact.Identifier</strong></article><article><span>Type</span><strong>@Model.Artifact.Type</strong></article><article><span>Created by</span><strong>@Model.Artifact.CreatorName</strong></article><article><span>Created</span><strong>@Model.Artifact.CreatedAt.ToString("dd MMM yyyy HH:mm", CultureInfo.InvariantCulture)</strong></article><article><span>Updated</span><strong>@(Model.Artifact.UpdatedAt?.ToString("dd MMM yyyy HH:mm", CultureInfo.InvariantCulture) ?? "Not updated")</strong></article>
+    </section>
+    <section class="project-form-v3-panel"><div class="project-form-v3-panel-head"><div><span>DESIGN</span><h2>Description</h2></div></div><div class="artifact-v3-copy">@foreach (var line in Model.Artifact.Description.Replace("\r\n", "\n").Split('\n')) { <p>@line</p> }</div></section>
+    <section class="project-form-v3-panel"><div class="project-form-v3-panel-head"><div><span>TRACEABILITY</span><h2>Linked Requirements</h2></div></div>
+        @if (Model.Artifact.Requirements.Count == 0) { <p class="artifact-v3-empty">No linked requirements.</p> } else { <div class="artifact-v3-links">@foreach (var requirement in Model.Artifact.Requirements) { <a asp-controller="Requirements" asp-action="Details" asp-route-projectId="@Model.Artifact.ProjectId" asp-route-id="@requirement.Id"><strong>@requirement.Identifier</strong><span>@requirement.Title</span><em>@requirement.Status</em></a> }</div> }
+    </section>
+    <section class="project-form-v3-panel"><div class="project-form-v3-panel-head"><div><span>IMPLEMENTATION</span><h2>Linked Implementation Artifacts</h2></div></div>
+        @if (Model.Artifact.ImplementationArtifacts.Count == 0) { <p class="artifact-v3-empty">No linked implementation artifacts.</p> } else { <div class="artifact-v3-links">@foreach (var item in Model.Artifact.ImplementationArtifacts) { <a asp-controller="ImplementationArtifacts" asp-action="Details" asp-route-projectId="@Model.Artifact.ProjectId" asp-route-id="@item.Id"><strong>@item.Identifier</strong><span>@item.Title</span><em>@item.Type</em></a> }</div> }
+    </section>
+</div>

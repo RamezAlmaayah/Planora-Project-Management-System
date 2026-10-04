@@ -1,0 +1,77 @@
+@model Planora.Web.ViewModels.Notifications.NotificationIndexViewModel
+@using System.Globalization
+
+@{
+    ViewData["Title"] = "Notifications";
+    Layout = "_AppLayout";
+}
+
+<div class="notifications-page">
+    <section class="notifications-header">
+        <div>
+            <span>WORKSPACE</span>
+            <h1>Notifications</h1>
+            <p>Updates from your projects and assigned work.</p>
+        </div>
+        @if (Model.Page.Items.Any(notification => !notification.IsRead))
+        {
+            <form asp-action="MarkAllRead" method="post">
+                @Html.AntiForgeryToken()
+                <button type="submit" class="notifications-secondary">Mark all as read</button>
+            </form>
+        }
+    </section>
+
+    <section class="notifications-panel">
+        @if (Model.Page.Items.Count == 0)
+        {
+            <div class="notifications-empty">
+                <strong>No notifications yet</strong>
+                <p>Relevant task, QA, issue, and sprint updates will appear here.</p>
+            </div>
+        }
+        else
+        {
+            @foreach (var notification in Model.Page.Items)
+            {
+                <article class="notification-row @(notification.IsRead ? "" : "is-unread")">
+                    <span class="notification-dot" aria-hidden="true"></span>
+                    <div class="notification-copy">
+                        <div>
+                            <strong>@notification.Title</strong>
+                            <small>@notification.CreatedAt.ToString("dd MMM yyyy HH:mm", CultureInfo.InvariantCulture)</small>
+                        </div>
+                        <p>@notification.Message</p>
+                        @if (!string.IsNullOrWhiteSpace(notification.TargetUrl))
+                        {
+                            <a href="@notification.TargetUrl">Open related item</a>
+                        }
+                    </div>
+                    @if (!notification.IsRead)
+                    {
+                        <form asp-action="MarkRead" method="post">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@notification.Id" />
+                            <button type="submit" class="notifications-secondary">Mark read</button>
+                        </form>
+                    }
+                </article>
+            }
+        }
+    </section>
+
+    @if (Model.Page.TotalPages > 1)
+    {
+        <nav class="notifications-pagination" aria-label="Notification pages">
+            @if (Model.Page.Page > 1)
+            {
+                <a asp-action="Index" asp-route-page="@(Model.Page.Page - 1)">&larr; Previous</a>
+            }
+            <span>Page @Model.Page.Page of @Model.Page.TotalPages</span>
+            @if (Model.Page.Page < Model.Page.TotalPages)
+            {
+                <a asp-action="Index" asp-route-page="@(Model.Page.Page + 1)">Next &rarr;</a>
+            }
+        </nav>
+    }
+</div>

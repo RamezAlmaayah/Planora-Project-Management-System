@@ -1,0 +1,155 @@
+@model Planora.Web.ViewModels.Tasks.TaskBoardViewModel
+@using Planora.Domain.Enums
+@using System.Globalization
+
+@{
+    ViewData["Title"] = "Scrum Board";
+    Layout = "_AppLayout";
+    var columns = new[]
+    {
+        (Status: TaskItemStatus.ToDo, Title: "To Do"),
+        (Status: TaskItemStatus.InProgress, Title: "In Progress"),
+        (Status: TaskItemStatus.InReview, Title: "In Review"),
+        (Status: TaskItemStatus.Done, Title: "Done")
+    };
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/projects.css" asp-append-version="true" />
+}
+
+<div class="projects-v3-page scrum-board-v3-page">
+    <div class="project-form-v3-back">
+        <a asp-action="Index" asp-route-projectId="@Model.ProjectId" asp-route-sprintId="@Model.SprintId">
+            &larr; Back to tasks
+        </a>
+    </div>
+
+    @if (Model.IsReadOnly)
+    {
+        <div class="v3-alert" role="status">
+            This board is read-only because the project is archived or the sprint is completed.
+        </div>
+    }
+
+    <section class="projects-v3-header">
+        <div>
+            <span class="projects-v3-kicker">SCRUM BOARD</span>
+            <h1>@Model.SprintName</h1>
+            <p>@Model.ProjectName</p>
+        </div>
+        <a asp-action="Index" asp-route-projectId="@Model.ProjectId" asp-route-sprintId="@Model.SprintId"
+           class="project-form-v3-submit">Task list</a>
+    </section>
+
+    <form class="scrum-board-v3-token" aria-hidden="true">
+        @Html.AntiForgeryToken()
+    </form>
+
+    <div class="scrum-board-v3"
+         data-scrum-board
+         data-project-id="@Model.ProjectId"
+         data-sprint-id="@Model.SprintId"
+         data-update-url="@Url.Action("UpdateStatus", "Tasks")"
+         data-qa-url="@Url.Action("QaReview", "Tasks")"
+         data-read-only="@Model.IsReadOnly.ToString().ToLowerInvariant()">
+        @foreach (var column in columns)
+        {
+            var columnTasks = Model.Tasks.Where(task => task.Status == column.Status).ToList();
+            <section class="scrum-board-v3-column" data-board-column="@((int)column.Status)"
+                     aria-labelledby="board-column-@((int)column.Status)">
+                <header class="scrum-board-v3-column-head">
+                    <h2 id="board-column-@((int)column.Status)">@column.Title</h2>
+                    <span data-column-count>@columnTasks.Count</span>
+                </header>
+
+                <div class="scrum-board-v3-list" data-board-list="@((int)column.Status)">
+                    <div class="scrum-board-v3-empty" data-column-empty hidden="@(columnTasks.Count > 0)">
+                        No tasks in this column
+                    </div>
+                    @foreach (var task in columnTasks)
+                    {
+                        bool canMove = task.CanTransition && !Model.IsReadOnly;
+                        TaskItemStatus? nextStatus = task.Status switch
+                        {
+                            TaskItemStatus.ToDo => TaskItemStatus.InProgress,
+                            TaskItemStatus.InProgress => TaskItemStatus.InReview,
+                            _ => null
+                        };
+                        <article class="scrum-board-v3-card"
+                                 draggable="@canMove.ToString().ToLowerInvariant()"
+                                 data-task-card
+                                 data-task-id="@task.Id"
+                                 data-status="@((int)task.Status)"
+                                 data-transition-enabled="@canMove.ToString().ToLowerInvariant()">
+                            <div class="scrum-board-v3-card-head">
+                                <span class="projects-v3-method">@task.Priority</span>
+                                @if (canMove)
+                                {
+                                    <span class="scrum-board-v3-drag-hint" aria-hidden="true">Drag</span>
+                                }
+                            </div>
+                            <h3>
+                                <a asp-action="Details" asp-route-projectId="@Model.ProjectId"
+                                   asp-route-sprintId="@Model.SprintId" asp-route-id="@task.Id">
+                                    @task.Title
+                                </a>
+                            </h3>
+                            <dl class="scrum-board-v3-meta">
+                                <div><dt>Backlog</dt><dd>@task.BacklogTitle</dd></div>
+                                <div><dt>Assignee</dt><dd>@(task.AssigneeName ?? "Unassigned")</dd></div>
+                                @if (task.Deadline.HasValue)
+                                {
+                                    <div><dt>Deadline</dt><dd>@task.Deadline.Value.ToString("dd MMM yyyy", CultureInfo.InvariantCulture)</dd></div>
+                                }
+                            </dl>
+                            @if (canMove && nextStatus.HasValue)
+                            {
+                                <button type="button" class="backlog-action backlog-action-edit scrum-board-v3-action"
+                                        data-transition-action data-source-status="@((int)task.Status)"
+                                        data-target-status="@((int)nextStatus.Value)">
+                                    @(task.Status == TaskItemStatus.ToDo ? "Start task" : "Submit for review")
+                                </button>
+                            }
+                            @if (task.CanQaReview)
+                            {
+                                <div class="scrum-board-v3-qa-actions">
+                                    <button type="button" class="backlog-action backlog-action-edit"
+                                            data-qa-action="pass">QA Pass</button>
+                                    <button type="button" class="backlog-action backlog-action-delete"
+                                            data-qa-action="fail">QA Fail</button>
+                                </div>
+                            }
+                        </article>
+                    }
+                </div>
+            </section>
+        }
+    </div>
+
+    <dialog class="scrum-board-v3-dialog" data-qa-dialog aria-labelledby="qa-fail-title">
+        <form data-qa-fail-form>
+            <div class="scrum-board-v3-dialog-head">
+                <span>QA REVIEW</span>
+                <h2 id="qa-fail-title" data-qa-title>QA review</h2>
+                <p>Add test evidence for this review. A failure also needs a note.</p>
+            </div>
+            <label for="qaEvidenceFiles">Test evidence (PNG, JPG, MP4, PDF, TXT or LOG; max 10 MB each)</label>
+            <input id="qaEvidenceFiles" type="file" data-qa-evidence multiple accept=".png,.jpg,.jpeg,.mp4,.pdf,.txt,.log" />
+            <label for="qaFailureNotes">QA notes</label>
+            <textarea id="qaFailureNotes" data-qa-failure-notes rows="5" maxlength="3000"
+                      placeholder="Required when the task fails QA."></textarea>
+            <span class="project-form-v3-error" data-qa-note-error></span>
+            <div class="project-form-v3-actions">
+                <button type="button" class="project-form-v3-cancel" data-qa-cancel>Cancel</button>
+                <button type="submit" class="archive-v3-confirm" data-qa-fail-submit>Fail review</button>
+            </div>
+        </form>
+    </dialog>
+
+    <div class="scrum-board-v3-toast" data-board-toast role="status" aria-live="polite" hidden></div>
+</div>
+
+@section Scripts {
+    <script type="module" src="~/js/scrum-board.js" asp-append-version="true"></script>
+}

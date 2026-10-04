@@ -1,0 +1,78 @@
+@{
+    string pageTitle =
+        ViewData["Title"]?.ToString() ?? "Planora";
+
+    bool authenticated =
+        User.Identity?.IsAuthenticated == true;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0" />
+
+    <title>@pageTitle - Planora</title>
+
+    <link rel="stylesheet"
+          href="~/css/errors.css"
+          asp-append-version="true" />
+</head>
+
+<body>
+
+    <header class="error-topbar">
+
+        <a asp-controller="Home"
+           asp-action="Index"
+           class="error-brand">
+
+            <img src="~/images/brand/planora-logo.png"
+     asp-append-version="true"
+     alt="Planora"
+     class="error-brand-logo" />
+
+            <span>Planora</span>
+
+        </a>
+
+        <div class="error-topbar-actions">
+
+            @if (authenticated)
+            {
+                <a asp-controller="Home"
+                   asp-action="Index"
+                   class="error-topbar-link">
+                    Dashboard
+                </a>
+            }
+            else
+            {
+                <a asp-controller="Home"
+                   asp-action="Index"
+                   class="error-topbar-link">
+                    Home
+                </a>
+
+                <a asp-controller="Account"
+                   asp-action="Login"
+                   class="error-topbar-primary">
+                    Log in
+                </a>
+            }
+
+        </div>
+
+    </header>
+
+    <main class="error-page">
+        @RenderBody()
+    </main>
+
+</body>
+
+</html>
+

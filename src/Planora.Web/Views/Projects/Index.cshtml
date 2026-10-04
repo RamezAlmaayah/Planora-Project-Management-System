@@ -1,0 +1,266 @@
+@model Planora.Web.ViewModels.Projects.ProjectIndexViewModel
+@using System.Globalization
+
+@{
+    ViewData["Title"] = "Projects";
+    Layout = "_AppLayout";
+}
+
+@section Styles
+{
+    <link rel="stylesheet"
+          href="~/css/projects.css"
+          asp-append-version="true" />
+}
+
+<div class="projects-v3-page">
+
+    @if (TempData["SuccessMessage"] is string successMessage)
+    {
+        <div class="v3-alert v3-alert-success">
+            @successMessage
+        </div>
+    }
+
+    <section class="projects-v3-header">
+
+        <div>
+
+            <span class="projects-v3-kicker">
+                PROJECTS
+            </span>
+
+            <h1>
+                Project workspace
+            </h1>
+
+            <p>
+                View, search and manage the projects
+                you are authorized to access.
+            </p>
+
+        </div>
+
+    </section>
+
+    <section class="projects-v3-stats">
+
+        <article>
+
+            <span>
+                Total projects
+            </span>
+
+            <strong>
+                @Model.TotalProjects
+            </strong>
+
+        </article>
+
+        <article>
+
+            <span>
+                Scrum
+            </span>
+
+            <strong>
+                @Model.ScrumProjects
+            </strong>
+
+        </article>
+
+        <article>
+
+            <span>
+                V-Model
+            </span>
+
+            <strong>
+                @Model.VModelProjects
+            </strong>
+
+        </article>
+
+    </section>
+
+    <section class="projects-v3-panel">
+
+        <div class="projects-v3-toolbar">
+
+            <div>
+
+                <h2>
+                    All projects
+                </h2>
+
+                <span>
+                    @Model.TotalProjects projects
+                </span>
+
+            </div>
+
+            <form asp-controller="Projects"
+                  asp-action="Index"
+                  method="get"
+                  class="projects-v3-search">
+
+                <span>
+                    ○
+                </span>
+
+                <input type="hidden" name="status" value="@Model.Status" />
+
+                <input type="search"
+                       name="search"
+                       value="@Model.Search"
+                       placeholder="Search project..."
+                       aria-label="Search projects"
+                       autocomplete="off" />
+
+                @if (!string.IsNullOrWhiteSpace(Model.Search))
+                {
+                    <a asp-controller="Projects"
+                       asp-action="Index"
+                       asp-route-status="@Model.Status">
+                        Clear
+                    </a>
+                }
+
+            </form>
+
+        </div>
+
+        @if (Model.Projects.Count == 0)
+        {
+            <div class="projects-v3-empty">
+
+                <strong>
+                    No projects found
+                </strong>
+
+                <p>
+                    There are no projects matching this view.
+                </p>
+
+            </div>
+        }
+        else
+        {
+            <div class="projects-v3-table">
+
+                <div class="projects-v3-table-head">
+
+                    <span>Project</span>
+                    <span>Methodology</span>
+                    <span>Status</span>
+                    <span>Timeline</span>
+                    <span>Members</span>
+                    <span></span>
+
+                </div>
+
+                @foreach (var project in Model.Projects)
+                {
+                    string methodology =
+                        project.Methodology.ToString() == "VModel"
+                            ? "V-Model"
+                            : project.Methodology.ToString();
+
+                    string statusClass =
+                        project.Status
+                            .ToString()
+                            .ToLowerInvariant();
+
+                    string projectInitial =
+                        string.IsNullOrWhiteSpace(project.Name)
+                            ? "P"
+                            : project.Name[..1].ToUpperInvariant();
+
+                    string startDate =
+                        project.StartDate.ToString(
+                            "dd MMM yyyy",
+                            CultureInfo.InvariantCulture);
+
+                    string endDate =
+                        project.EndDate.HasValue
+                            ? project.EndDate.Value.ToString(
+                                "dd MMM yyyy",
+                                CultureInfo.InvariantCulture)
+                            : "No end date";
+
+                    <div class="projects-v3-row">
+
+                        <div class="projects-v3-project">
+
+                            <div class="projects-v3-avatar">
+                                @projectInitial
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    @project.Name
+                                </strong>
+
+                                <span>
+                                    @(string.IsNullOrWhiteSpace(project.Description)
+                                        ? "No project description."
+                                        : project.Description)
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                        <div>
+
+                            <span class="projects-v3-method">
+                                @methodology
+                            </span>
+
+                        </div>
+
+                        <div>
+
+                            <span class="projects-v3-status status-@statusClass">
+                                @project.Status
+                            </span>
+
+                        </div>
+
+                        <div class="projects-v3-timeline">
+
+                            <strong>
+                                @startDate
+                            </strong>
+
+                            <span>
+                                @endDate
+                            </span>
+
+                        </div>
+
+                        <div class="projects-v3-member-count">
+                            @project.MemberCount
+                        </div>
+
+                        <div>
+
+                            <a asp-controller="Projects"
+                               asp-action="Details"
+                               asp-route-id="@project.Id"
+                               class="projects-v3-view">
+                                View
+                            </a>
+
+                        </div>
+
+                    </div>
+                }
+
+            </div>
+        }
+
+    </section>
+
+</div>

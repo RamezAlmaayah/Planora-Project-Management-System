@@ -1,0 +1,111 @@
+@model Planora.Web.ViewModels.Backlog.BacklogFormViewModel
+@using Planora.Domain.Enums
+
+@{
+    ViewData["Title"] = "Edit Backlog Item";
+    Layout = "_AppLayout";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/projects.css" asp-append-version="true" />
+}
+
+<div class="project-form-v3-page">
+
+    <div class="project-form-v3-back">
+        <a asp-action="Index"
+           asp-route-projectId="@Model.ProjectId">
+            &larr; Back to backlog
+        </a>
+    </div>
+
+    <section class="project-form-v3-header">
+        <div>
+            <span class="project-form-v3-kicker">PRODUCT BACKLOG</span>
+            <h1>Edit backlog item</h1>
+            <p>@Model.ProjectName</p>
+        </div>
+    </section>
+
+    <form asp-action="Edit"
+          asp-route-projectId="@Model.ProjectId"
+          asp-route-id="@Model.Id"
+          method="post"
+          class="project-form-v3">
+
+        <input asp-for="Id" type="hidden" />
+        <input asp-for="ProjectId" type="hidden" />
+
+        <div asp-validation-summary="ModelOnly"
+             class="project-form-v3-validation"></div>
+
+        <section class="project-form-v3-panel">
+
+            <div class="project-form-v3-fields">
+
+                <div class="project-form-v3-field project-form-v3-full">
+                    <label asp-for="Title">Title</label>
+                    <input asp-for="Title" />
+                    <span asp-validation-for="Title"
+                          class="project-form-v3-error"></span>
+                </div>
+
+                <div class="project-form-v3-field project-form-v3-full">
+                    <label asp-for="Description">Description</label>
+                    <textarea asp-for="Description" rows="6"></textarea>
+                    <span asp-validation-for="Description"
+                          class="project-form-v3-error"></span>
+                </div>
+
+            </div>
+
+        </section>
+
+        <section class="project-form-v3-panel">
+
+            <div class="project-form-v3-fields project-form-v3-two-columns">
+
+                <div class="project-form-v3-field">
+                    <label asp-for="Priority">Priority</label>
+
+                    <select asp-for="Priority"
+                            asp-items="Html.GetEnumSelectList<PriorityLevel>()">
+                    </select>
+                </div>
+
+                <div class="project-form-v3-field">
+                    <label asp-for="Status">Status</label>
+
+                    <select asp-for="Status">
+                        <option value="@((int)BacklogItemStatus.Draft)">Draft</option>
+                        <option value="@((int)BacklogItemStatus.Ready)">Ready</option>
+                    </select>
+                </div>
+
+            </div>
+
+        </section>
+
+        <div class="project-form-v3-actions">
+
+            <a asp-action="Index"
+               asp-route-projectId="@Model.ProjectId"
+               class="project-form-v3-cancel">
+                Cancel
+            </a>
+
+            <button type="submit"
+                    class="project-form-v3-submit">
+                Save changes
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+

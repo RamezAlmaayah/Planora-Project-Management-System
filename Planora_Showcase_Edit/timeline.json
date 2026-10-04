@@ -1,0 +1,200 @@
+{
+  "fps": 60,
+  "width": 1920,
+  "height": 1080,
+  "transition_seconds": 0.35,
+  "scenes": [
+    {
+      "title": "PLANORA",
+      "subtitle": "Intelligent Project Management",
+      "duration": 3,
+      "kind": "intro"
+    },
+    {
+      "title": "ONE WORKSPACE",
+      "subtitle": "Plan. Manage. Deliver.",
+      "duration": 3.5,
+      "kind": "video",
+      "crop": [
+        0,
+        0,
+        1350,
+        710
+      ]
+    },
+    {
+      "title": "WELCOME TO PLANORA",
+      "subtitle": "Your workspace starts here",
+      "duration": 2.5,
+      "source": "account",
+      "crop": [
+        0,
+        0,
+        1350,
+        754
+      ]
+    },
+    {
+      "title": "PROJECT MANAGEMENT",
+      "subtitle": "Dashboard & progress",
+      "duration": 5,
+      "source": "211232",
+      "crop": [
+        0,
+        0,
+        1350,
+        570
+      ]
+    },
+    {
+      "title": "PROJECT WORKSPACE",
+      "subtitle": "Your projects, organized",
+      "duration": 4,
+      "source": "211445",
+      "crop": [
+        168,
+        69,
+        1188,
+        654
+      ]
+    },
+    {
+      "title": "TEAM COLLABORATION",
+      "subtitle": "Members & project roles",
+      "duration": 3.5,
+      "source": "211507",
+      "crop": [
+        168,
+        83,
+        1188,
+        640
+      ]
+    },
+    {
+      "title": "SCRUM WORKFLOW",
+      "subtitle": "Product backlog",
+      "duration": 3.5,
+      "source": "211622",
+      "crop": [
+        0,
+        0,
+        1350,
+        565
+      ]
+    },
+    {
+      "title": "SCRUM WORKFLOW",
+      "subtitle": "Task creation",
+      "duration": 3,
+      "source": "211800",
+      "crop": [
+        168,
+        0,
+        1188,
+        760
+      ]
+    },
+    {
+      "title": "SCRUM WORKFLOW",
+      "subtitle": "The Kanban board",
+      "duration": 4.5,
+      "source": "211707",
+      "crop": [
+        168,
+        76,
+        1188,
+        487
+      ]
+    },
+    {
+      "title": "ISSUE MANAGEMENT",
+      "subtitle": "Project issues",
+      "duration": 2,
+      "source": "225407",
+      "crop": [
+        168,
+        73,
+        1188,
+        560
+      ]
+    },
+    {
+      "title": "V-MODEL DEVELOPMENT",
+      "subtitle": "A structured project lifecycle",
+      "duration": 3.5,
+      "source": "225240",
+      "crop": [
+        168,
+        72,
+        1188,
+        660
+      ]
+    },
+    {
+      "title": "TESTING & VALIDATION",
+      "subtitle": "The V-Model sequence",
+      "duration": 3.5,
+      "source": "225308",
+      "crop": [
+        168,
+        74,
+        1188,
+        640
+      ]
+    },
+    {
+      "title": "REQUIREMENT TRACEABILITY",
+      "subtitle": "Relationships, dependencies & references",
+      "duration": 4.5,
+      "source": "225810",
+      "crop": [
+        168,
+        72,
+        1188,
+        530
+      ]
+    },
+    {
+      "title": "AI-ASSISTED SRS",
+      "subtitle": "Software Requirements Specifications",
+      "duration": 4.5,
+      "source": "225330",
+      "crop": [
+        168,
+        76,
+        1188,
+        539
+      ]
+    },
+    {
+      "title": "ADMIN & SECURITY",
+      "subtitle": "Users & access roles",
+      "duration": 4,
+      "source": "211429",
+      "crop": [
+        168,
+        72,
+        1188,
+        533
+      ]
+    },
+    {
+      "title": "BUILT FOR TEAMS",
+      "subtitle": "Connect with Planora",
+      "duration": 2,
+      "source": "225905",
+      "crop": [
+        0,
+        0,
+        1350,
+        735
+      ]
+    },
+    {
+      "title": "PLANORA",
+      "subtitle": "Plan. Manage. Deliver.",
+      "duration": 3.5,
+      "kind": "outro"
+    }
+  ]
+}

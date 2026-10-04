@@ -1,0 +1,11 @@
+@model Planora.Web.ViewModels.VModel.ImplementationArtifactFormViewModel
+@using Planora.Domain.Enums
+<div asp-validation-summary="ModelOnly" class="v3-alert" role="alert"></div>
+<div class="project-form-v3-grid">
+    <div class="project-form-v3-field project-form-v3-wide artifact-v3-id"><label>Implementation identifier</label><strong>@Model.Identifier</strong><small>Generated and protected by the server.</small></div>
+    <div class="project-form-v3-field project-form-v3-wide"><label asp-for="Title">Title</label><input asp-for="Title" maxlength="200" autocomplete="off" /><span asp-validation-for="Title"></span></div>
+    <div class="project-form-v3-field"><label asp-for="Type">Implementation type</label><select asp-for="Type" asp-items="Html.GetEnumSelectList<ImplementationArtifactType>()"></select><span asp-validation-for="Type"></span></div>
+    <div class="project-form-v3-field project-form-v3-wide"><label asp-for="Description">Description</label><textarea asp-for="Description" rows="8" maxlength="4000"></textarea><span asp-validation-for="Description"></span></div>
+    <div class="project-form-v3-field project-form-v3-wide"><label asp-for="SourceReference">Source Reference</label><input asp-for="SourceReference" maxlength="500" placeholder="src/Planora.Infrastructure/Services/ExampleService.cs" autocomplete="off" /><span asp-validation-for="SourceReference"></span></div>
+    <div class="project-form-v3-field project-form-v3-wide"><label>Linked Design Artifacts</label><div class="requirements-v3-fr-picker" data-artifact-picker><input type="search" data-artifact-search placeholder="Search design artifacts..." aria-label="Search design artifacts" autocomplete="off" /><div class="requirements-v3-fr-options">@if (Model.DesignOptions.Count == 0) { <p>No design artifacts are available.</p> } @foreach (var option in Model.DesignOptions) { <label data-artifact-option><input type="checkbox" name="DesignArtifactIds" value="@option.Id" checked="@(Model.DesignArtifactIds.Contains(option.Id) ? "checked" : null)" /><span><strong>@option.Identifier</strong> &mdash; @option.Title</span></label> }</div></div></div>
+</div>

@@ -1,0 +1,117 @@
+@model Planora.Web.ViewModels.Requirements.AiRequirementReviewViewModel
+@using Planora.Domain.Enums
+
+@{
+    ViewData["Title"] = "Review AI Requirements";
+    Layout = "_AppLayout";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/projects.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/requirements.css" asp-append-version="true" />
+}
+
+<div class="projects-v3-page requirements-v3-page">
+    <div class="project-form-v3-back">
+        <a asp-action="Index" asp-route-projectId="@Model.ProjectId">&larr; Generate again</a>
+    </div>
+    <section class="projects-v3-header">
+        <div>
+            <span class="projects-v3-kicker">V-MODEL &middot; AI REVIEW</span>
+            <h1>Review generated requirements</h1>
+            <p>@Model.ProjectName</p>
+        </div>
+    </section>
+
+    <div class="v3-alert" role="status">Nothing has been added to the project yet. Edit the drafts, select the requirements you want, then save them explicitly.</div>
+    @foreach (string warning in Model.Warnings)
+    {
+        <div class="v3-alert" role="status">@warning</div>
+    }
+
+    <form asp-action="SaveSelected" asp-route-projectId="@Model.ProjectId" method="post" data-single-submit>
+        @Html.AntiForgeryToken()
+        <input asp-for="ProjectId" type="hidden" />
+        <div asp-validation-summary="ModelOnly" class="v3-alert" role="alert"></div>
+
+        @if (Model.FunctionalRequirements.Count > 0)
+        {
+            <section class="project-form-v3-panel ai-requirements-v3-review-section">
+                <div class="project-form-v3-panel-head"><div><span>FUNCTIONAL</span><h2>Functional requirement drafts</h2></div></div>
+                <div class="ai-requirements-v3-drafts">
+                    @for (int index = 0; index < Model.FunctionalRequirements.Count; index++)
+                    {
+                        <article class="ai-requirements-v3-draft" data-ai-draft>
+                            <header>
+                                <label><input asp-for="FunctionalRequirements[index].Include" /> Include</label>
+                                <span>Identifier assigned by Planora when saved</span>
+                                <button type="button" class="backlog-action backlog-action-delete" data-remove-ai-draft>Remove suggestion</button>
+                            </header>
+                            <div class="project-form-v3-grid">
+                                <div class="project-form-v3-field project-form-v3-wide"><label asp-for="FunctionalRequirements[index].RequirementName">Requirement Name</label><input asp-for="FunctionalRequirements[index].RequirementName" maxlength="200" /></div>
+                                <div class="project-form-v3-field"><label asp-for="FunctionalRequirements[index].Priority">Priority</label><select asp-for="FunctionalRequirements[index].Priority" asp-items="Html.GetEnumSelectList<PriorityLevel>()"></select></div>
+                                <div class="project-form-v3-field project-form-v3-wide"><label asp-for="FunctionalRequirements[index].Description">Description</label><textarea asp-for="FunctionalRequirements[index].Description" rows="6" maxlength="4000"></textarea></div>
+                                <div class="project-form-v3-field project-form-v3-wide"><label asp-for="FunctionalRequirements[index].BusinessRationale">Business Rationale</label><textarea asp-for="FunctionalRequirements[index].BusinessRationale" rows="4" maxlength="3000"></textarea></div>
+                                <div class="project-form-v3-field project-form-v3-wide"><label asp-for="FunctionalRequirements[index].Preconditions">Dependency / Preconditions</label><textarea asp-for="FunctionalRequirements[index].Preconditions" rows="4" maxlength="2000"></textarea></div>
+                                <div class="project-form-v3-field project-form-v3-wide"><label asp-for="FunctionalRequirements[index].ExceptionScenario">Exception Scenario</label><textarea asp-for="FunctionalRequirements[index].ExceptionScenario" rows="4" maxlength="2000"></textarea></div>
+                            </div>
+                        </article>
+                    }
+                </div>
+            </section>
+        }
+
+        @if (Model.NonFunctionalRequirements.Count > 0)
+        {
+            <section class="project-form-v3-panel ai-requirements-v3-review-section">
+                <div class="project-form-v3-panel-head"><div><span>NON-FUNCTIONAL</span><h2>Non-functional requirement drafts</h2></div></div>
+                <div class="ai-requirements-v3-drafts">
+                    @for (int index = 0; index < Model.NonFunctionalRequirements.Count; index++)
+                    {
+                        <article class="ai-requirements-v3-draft" data-ai-draft>
+                            <header>
+                                <label><input asp-for="NonFunctionalRequirements[index].Include" /> Include</label>
+                                <span>Identifier assigned by Planora when saved</span>
+                                <button type="button" class="backlog-action backlog-action-delete" data-remove-ai-draft>Remove suggestion</button>
+                            </header>
+                            <div class="project-form-v3-grid">
+                                <div class="project-form-v3-field"><label asp-for="NonFunctionalRequirements[index].Category">NFR Category</label><select asp-for="NonFunctionalRequirements[index].Category" asp-items="Html.GetEnumSelectList<NfrCategory>()"></select></div>
+                                <div class="project-form-v3-field"><label asp-for="NonFunctionalRequirements[index].Priority">Priority</label><select asp-for="NonFunctionalRequirements[index].Priority" asp-items="Html.GetEnumSelectList<PriorityLevel>()"></select></div>
+                                <div class="project-form-v3-field project-form-v3-wide"><label asp-for="NonFunctionalRequirements[index].RequirementDescription">Requirement Description</label><textarea asp-for="NonFunctionalRequirements[index].RequirementDescription" rows="7" maxlength="4000"></textarea></div>
+                                <div class="project-form-v3-field project-form-v3-wide"><label asp-for="NonFunctionalRequirements[index].Rationale">Rationale</label><textarea asp-for="NonFunctionalRequirements[index].Rationale" rows="4" maxlength="3000"></textarea></div>
+                                <div class="project-form-v3-field project-form-v3-wide">
+                                    <label>Related Functional Requirements</label>
+                                    <div class="requirements-v3-fr-picker">
+                                        @if (Model.FunctionalRequirementOptions.Count == 0)
+                                        {
+                                            <p>No functional requirements are currently available in this project.</p>
+                                        }
+                                        @foreach (var option in Model.FunctionalRequirementOptions)
+                                        {
+                                            <label>
+                                                <input type="checkbox" name="NonFunctionalRequirements[@index].RelatedFunctionalRequirements"
+                                                       value="@option.Identifier"
+                                                       checked="@(Model.NonFunctionalRequirements[index].RelatedFunctionalRequirements.Contains(option.Identifier, StringComparer.OrdinalIgnoreCase) ? "checked" : null)" />
+                                                <span><strong>@option.Identifier</strong> &mdash; @option.Title</span>
+                                            </label>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    }
+                </div>
+            </section>
+        }
+
+        <div class="project-form-v3-actions">
+            <a asp-action="Index" asp-route-projectId="@Model.ProjectId" class="detail-v3-secondary">Cancel</a>
+            <button type="submit" class="project-form-v3-submit">Save Selected Requirements</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script src="~/js/task-collaboration.js" asp-append-version="true"></script>
+    <script src="~/js/ai-requirements.js" asp-append-version="true"></script>
+}

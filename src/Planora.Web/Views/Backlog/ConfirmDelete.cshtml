@@ -1,0 +1,93 @@
+@model Planora.Web.ViewModels.Backlog.BacklogDeleteViewModel
+
+@{
+    ViewData["Title"] = "Delete Backlog Item";
+    Layout = "_AppLayout";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/projects.css" asp-append-version="true" />
+}
+
+<div class="archive-v3-page">
+
+    <div class="archive-v3-back">
+        <a asp-action="Index"
+           asp-route-projectId="@Model.ProjectId">
+            &larr; Back to backlog
+        </a>
+    </div>
+
+    <section class="archive-v3-header">
+        <span class="archive-v3-kicker">PRODUCT BACKLOG</span>
+        <h1>Delete backlog item</h1>
+        <p>Review this item before deleting it.</p>
+    </section>
+
+    <section class="archive-v3-panel">
+
+        <div class="archive-v3-warning">
+
+            <div>
+                <span>CONFIRM DELETE</span>
+                <h2>Delete @Model.Title?</h2>
+
+                <p>
+                    This backlog item will be permanently removed.
+                </p>
+            </div>
+
+        </div>
+
+        <div class="archive-v3-summary">
+
+            <article>
+                <span>Item</span>
+                <strong>@Model.Title</strong>
+            </article>
+
+            <article>
+                <span>Priority</span>
+                <strong>@Model.Priority</strong>
+            </article>
+
+            <article>
+                <span>Status</span>
+                <strong>@Model.Status</strong>
+            </article>
+
+            <article>
+                <span>Sprint</span>
+                <strong>
+                    @(Model.IsAssignedToSprint ? "Assigned" : "Not assigned")
+                </strong>
+            </article>
+
+        </div>
+
+        <div class="archive-v3-actions">
+
+            <a asp-action="Index"
+               asp-route-projectId="@Model.ProjectId"
+               class="archive-v3-cancel">
+                Cancel
+            </a>
+
+            <form asp-action="Delete"
+                  asp-route-projectId="@Model.ProjectId"
+                  asp-route-id="@Model.Id"
+                  method="post">
+
+                <button type="submit"
+                        class="archive-v3-confirm">
+                    Delete item
+                </button>
+
+            </form>
+
+        </div>
+
+    </section>
+
+</div>
+

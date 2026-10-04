@@ -1,0 +1,183 @@
+@model Planora.Web.ViewModels.Issues.IssueDetailsViewModel
+@using Planora.Domain.Enums
+@using System.Globalization
+
+@{
+    ViewData["Title"] = Model.Issue.Title;
+    Layout = "_AppLayout";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/projects.css" asp-append-version="true" />
+}
+
+<div class="project-detail-v3">
+    <div class="detail-v3-back">
+        <a asp-action="Index" asp-route-projectId="@Model.Issue.ProjectId">&larr; Back to issues</a>
+    </div>
+
+    @if (TempData["SuccessMessage"] is string success)
+    {
+        <div class="v3-alert v3-alert-success" role="status">@success</div>
+    }
+    @if (Model.IsReadOnly)
+    {
+        <div class="v3-alert">Issues are read-only because this project is archived.</div>
+    }
+
+    <section class="detail-v3-header">
+        <div class="detail-v3-heading">
+            <div class="detail-v3-tags">
+                <span class="projects-v3-method">@Model.Issue.Severity</span>
+                <span class="projects-v3-status">@Model.Issue.Status</span>
+            </div>
+            <h1>@Model.Issue.Title</h1>
+            <p>@Model.Issue.ProjectName</p>
+        </div>
+        @if (Model.CanEdit)
+        {
+            <div class="detail-v3-actions">
+                <a asp-action="Edit" asp-route-projectId="@Model.Issue.ProjectId"
+                   asp-route-id="@Model.Issue.Id" class="detail-v3-secondary">Edit issue</a>
+            </div>
+        }
+    </section>
+
+    <section class="detail-v3-info-grid">
+        <article><span>Status</span><strong>@Model.Issue.Status</strong></article>
+        <article><span>Severity</span><strong>@Model.Issue.Severity</strong></article>
+        <article><span>Priority</span><strong>@Model.Issue.Priority</strong></article>
+        <article><span>Reporter</span><strong>@Model.Issue.ReporterName</strong></article>
+        <article><span>Assignee</span><strong>@(Model.Issue.AssigneeName ?? "Unassigned")</strong></article>
+        <article><span>Created</span><strong>@Model.Issue.CreatedAt.ToString("dd MMM yyyy HH:mm", CultureInfo.InvariantCulture)</strong></article>
+        <article><span>Updated</span><strong>@(Model.Issue.UpdatedAt?.ToString("dd MMM yyyy HH:mm", CultureInfo.InvariantCulture) ?? "Not updated")</strong></article>
+        <article>
+            <span>Related task</span>
+            @if (Model.Issue.TaskItemId.HasValue && Model.Issue.TaskSprintId.HasValue)
+            {
+                <a asp-controller="Tasks" asp-action="Details"
+                   asp-route-projectId="@Model.Issue.ProjectId"
+                   asp-route-sprintId="@Model.Issue.TaskSprintId"
+                   asp-route-id="@Model.Issue.TaskItemId"><strong>@Model.Issue.TaskTitle</strong></a>
+            }
+            else
+            {
+                <strong>No related task</strong>
+            }
+        </article>
+    </section>
+
+    <section class="project-form-v3-panel">
+        <div class="project-form-v3-panel-head">
+            <div><span>DESCRIPTION</span><h2>Issue report</h2></div>
+        </div>
+        <div class="detail-v3-heading">
+            @foreach (var line in Model.Issue.Description.Replace("\r\n", "\n").Split('\n'))
+            {
+                <p>@line</p>
+            }
+        </div>
+    </section>
+
+    @if (!string.IsNullOrWhiteSpace(Model.Issue.ResolutionNotes))
+    {
+        <section class="project-form-v3-panel">
+            <div class="project-form-v3-panel-head">
+                <div><span>RESOLUTION</span><h2>Resolution notes</h2></div>
+            </div>
+            <div class="detail-v3-heading">
+                @foreach (var line in Model.Issue.ResolutionNotes.Replace("\r\n", "\n").Split('\n'))
+                {
+                    <p>@line</p>
+                }
+            </div>
+        </section>
+    }
+
+    @if (Model.CanAssign || Model.CanStart || Model.CanResolve || Model.CanClose || Model.CanReopen)
+    {
+        <section class="project-form-v3-panel issue-v3-actions-panel">
+            <div class="project-form-v3-panel-head">
+                <div><span>WORKFLOW</span><h2>Issue actions</h2></div>
+            </div>
+
+            @if (Model.CanAssign)
+            {
+                <form asp-action="Assign" method="post" class="issue-v3-action-form" data-single-submit>
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="ProjectId" value="@Model.Issue.ProjectId" />
+                    <input type="hidden" name="IssueId" value="@Model.Issue.Id" />
+                    <input type="hidden" name="ExpectedStatus" value="@Model.Issue.Status" />
+                    <input type="hidden" name="ExpectedAssignedUserId" value="@Model.Issue.AssignedUserId" />
+                    <label for="issue-assignee">Assign project Developer</label>
+                    <select id="issue-assignee" name="AssignedUserId" required>
+                        <option value="">Select Developer</option>
+                        @foreach (var assignee in Model.Assignees)
+                        {
+                            <option value="@assignee.UserId"
+                                    selected="@(assignee.UserId == Model.Issue.AssignedUserId ? "selected" : null)">
+                                @assignee.DisplayName
+                            </option>
+                        }
+                    </select>
+                    <button type="submit" class="project-form-v3-submit">Assign</button>
+                </form>
+            }
+
+            @if (Model.CanStart)
+            {
+                <form asp-action="Transition" method="post" data-single-submit>
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="ProjectId" value="@Model.Issue.ProjectId" />
+                    <input type="hidden" name="IssueId" value="@Model.Issue.Id" />
+                    <input type="hidden" name="ExpectedStatus" value="@Model.Issue.Status" />
+                    <input type="hidden" name="TargetStatus" value="@IssueStatus.InProgress" />
+                    <button type="submit" class="project-form-v3-submit">Start issue</button>
+                </form>
+            }
+
+            @if (Model.CanResolve)
+            {
+                <form asp-action="Transition" method="post" class="issue-v3-action-form" data-single-submit>
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="ProjectId" value="@Model.Issue.ProjectId" />
+                    <input type="hidden" name="IssueId" value="@Model.Issue.Id" />
+                    <input type="hidden" name="ExpectedStatus" value="@Model.Issue.Status" />
+                    <input type="hidden" name="TargetStatus" value="@IssueStatus.Resolved" />
+                    <label for="resolution-notes">Resolution notes</label>
+                    <textarea id="resolution-notes" name="ResolutionNotes"
+                              rows="4" maxlength="3000" required></textarea>
+                    <button type="submit" class="project-form-v3-submit">Resolve issue</button>
+                </form>
+            }
+
+            @if (Model.CanClose)
+            {
+                <form asp-action="Transition" method="post" data-single-submit>
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="ProjectId" value="@Model.Issue.ProjectId" />
+                    <input type="hidden" name="IssueId" value="@Model.Issue.Id" />
+                    <input type="hidden" name="ExpectedStatus" value="@Model.Issue.Status" />
+                    <input type="hidden" name="TargetStatus" value="@IssueStatus.Closed" />
+                    <button type="submit" class="project-form-v3-submit">QA close</button>
+                </form>
+            }
+
+            @if (Model.CanReopen)
+            {
+                <form asp-action="Transition" method="post" data-single-submit>
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="ProjectId" value="@Model.Issue.ProjectId" />
+                    <input type="hidden" name="IssueId" value="@Model.Issue.Id" />
+                    <input type="hidden" name="ExpectedStatus" value="@Model.Issue.Status" />
+                    <input type="hidden" name="TargetStatus" value="@IssueStatus.Reopened" />
+                    <button type="submit" class="detail-v3-secondary">Reopen issue</button>
+                </form>
+            }
+        </section>
+    }
+</div>
+
+@section Scripts {
+    <script src="~/js/task-collaboration.js" asp-append-version="true"></script>
+}

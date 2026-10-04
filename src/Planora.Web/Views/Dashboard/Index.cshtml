@@ -1,0 +1,529 @@
+﻿@model Planora.Web.ViewModels.Dashboard.DashboardViewModel
+@using Planora.Domain.Enums
+@using System.Text.Json
+
+@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "_AppLayout";
+
+    var analytics =
+        Model.Analytics;
+
+    decimal progress =
+        analytics?.ProgressPercentage
+        ?? 0;
+
+    var planningProjects =
+        Model.Projects
+            .Where(x =>
+                x.Status == ProjectStatus.Planning)
+            .ToList();
+
+    var activeProjects =
+        Model.Projects
+            .Where(x =>
+                x.Status == ProjectStatus.Active)
+            .ToList();
+
+    var completedProjects =
+        Model.Projects
+            .Where(x =>
+                x.Status == ProjectStatus.Completed)
+            .ToList();
+
+    var archivedProjects =
+        Model.Projects
+            .Where(x =>
+                x.Status == ProjectStatus.Archived)
+            .ToList();
+
+    string trendLabels =
+        analytics is null
+            ? "[]"
+            : JsonSerializer.Serialize(
+                analytics.ProgressHistory
+                    .Select(x =>
+                        x.RecordedAt.ToString("dd MMM")));
+
+    string trendValues =
+        analytics is null
+            ? "[]"
+            : JsonSerializer.Serialize(
+                analytics.ProgressHistory
+                    .Select(x =>
+                        x.ProgressPercentage));
+}
+
+@section Styles
+{
+    <link rel="stylesheet"
+          href="~/css/dashboard.css"
+          asp-append-version="true" />
+}
+
+<div class="crm-dashboard">
+
+    <!-- ===================================================
+         TOP ANALYTICS BAND
+         =================================================== -->
+
+    <section class="analytics-band">
+
+        <div class="analytics-project-select">
+
+            <label for="projectSelector">
+                Project overview
+            </label>
+
+            @if (Model.Projects.Count > 0)
+            {
+                <form asp-controller="Dashboard"
+                      asp-action="Index"
+                      method="get"
+                      id="projectSelectorForm">
+
+                    <select id="projectSelector"
+                            name="projectId">
+
+                        @foreach (var project in Model.Projects)
+                        {
+                            if (project.Id ==
+                                Model.SelectedProjectId)
+                            {
+                                <option value="@project.Id"
+                                        selected>
+                                    @project.Name
+                                </option>
+                            }
+                            else
+                            {
+                                <option value="@project.Id">
+                                    @project.Name
+                                </option>
+                            }
+                        }
+
+                    </select>
+
+                </form>
+            }
+
+        </div>
+
+        <div class="analytics-flow-block">
+
+            <div class="analytics-block-title">
+                Task activity
+            </div>
+
+            <div class="mini-chart"
+                 id="miniTaskChart"
+                 data-todo="@(analytics?.ToDoTasks ?? 0)"
+                 data-progress="@(analytics?.InProgressTasks ?? 0)"
+                 data-review="@(analytics?.InReviewTasks ?? 0)"
+                 data-done="@(analytics?.CompletedTasks ?? 0)"
+                 data-issues="@(analytics?.OpenIssues ?? 0)">
+
+                <div class="mini-chart-column">
+
+                    <div class="mini-chart-bar">
+                        <span></span>
+                    </div>
+
+                    <small>
+                        Todo
+                    </small>
+
+                </div>
+
+                <div class="mini-chart-column striped">
+
+                    <div class="mini-chart-bar">
+                        <span></span>
+                    </div>
+
+                    <small>
+                        Doing
+                    </small>
+
+                </div>
+
+                <div class="mini-chart-column">
+
+                    <div class="mini-chart-bar">
+                        <span></span>
+                    </div>
+
+                    <small>
+                        Review
+                    </small>
+
+                </div>
+
+                <div class="mini-chart-column striped">
+
+                    <div class="mini-chart-bar">
+                        <span></span>
+                    </div>
+
+                    <small>
+                        Done
+                    </small>
+
+                </div>
+
+                <div class="mini-chart-column">
+
+                    <div class="mini-chart-bar">
+                        <span></span>
+                    </div>
+
+                    <small>
+                        Issues
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="analytics-gauge-block">
+
+            <div class="half-gauge"
+                 data-progress="@progress">
+
+                <div class="half-gauge-lines">
+                </div>
+
+                <div class="half-gauge-center">
+
+                    <strong>
+                        @progress.ToString("0.#")%
+                    </strong>
+
+                    <span>
+                        Project progress
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="analytics-number-block">
+
+            <strong>
+                @(analytics?.InProgressTasks ?? 0)
+            </strong>
+
+            <div>
+
+                <span>
+                    Tasks
+                </span>
+
+                <span>
+                    in progress
+                </span>
+
+            </div>
+
+            <span class="analytics-arrow">
+                →
+            </span>
+
+        </div>
+
+        <div class="analytics-number-block">
+
+            <strong>
+                @(analytics?.OpenIssues ?? 0)
+            </strong>
+
+            <div>
+
+                <span>
+                    Open
+                </span>
+
+                <span>
+                    issues
+                </span>
+
+            </div>
+
+            <span class="analytics-arrow">
+                →
+            </span>
+
+        </div>
+
+    </section>
+
+    <!-- ===================================================
+         BOARD
+         =================================================== -->
+
+    <section class="project-board">
+
+        <!-- PLANNING -->
+
+        <div class="board-column">
+
+            <div class="board-heading">
+
+                <h2>
+                    Planning
+                </h2>
+
+                <span>
+                    @planningProjects.Count
+                </span>
+
+            </div>
+
+            <div class="board-cards">
+
+                @foreach (var project in planningProjects)
+                {
+                    <partial name="_DashboardProjectCard"
+                             model="project" />
+                }
+
+            </div>
+
+        </div>
+
+        <!-- ACTIVE -->
+
+        <div class="board-column">
+
+            <div class="board-heading">
+
+                <h2>
+                    Active
+                </h2>
+
+                <span>
+                    @activeProjects.Count
+                </span>
+
+            </div>
+
+            <div class="board-cards">
+
+                @foreach (var project in activeProjects)
+                {
+                    bool selected =
+                        project.Id ==
+                        Model.SelectedProjectId;
+
+                    <a asp-controller="Projects"
+                       asp-action="Details"
+                       asp-route-id="@project.Id"
+                       class="project-board-card @(selected ? "selected-card" : "")">
+
+                        <div class="card-title-row">
+
+                            <strong>
+                                @project.Name
+                            </strong>
+
+                            <span>
+                                ⋮
+                            </span>
+
+                        </div>
+
+                        <p>
+                            @(string.IsNullOrWhiteSpace(project.Description)
+                                ? "No description available."
+                                : project.Description)
+                        </p>
+
+                        <div class="project-card-footer">
+
+                            <span class="date-chip">
+                                ▣
+                                @project.StartDate.ToString("dd MMM")
+                            </span>
+
+                            <div>
+
+                                <span>
+                                    ◌ @project.MemberCount
+                                </span>
+
+                                <span>
+                                    ◇
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </a>
+                }
+
+            </div>
+
+        </div>
+
+        <!-- COMPLETED -->
+
+        <div class="board-column">
+
+            <div class="board-heading">
+
+                <h2>
+                    Completed
+                </h2>
+
+                <span>
+                    @completedProjects.Count
+                </span>
+
+            </div>
+
+            <div class="board-cards">
+
+                @foreach (var project in completedProjects)
+                {
+                    <a asp-controller="Projects"
+                       asp-action="Details"
+                       asp-route-id="@project.Id"
+                       class="project-board-card">
+
+                        <div class="card-title-row">
+
+                            <strong>
+                                @project.Name
+                            </strong>
+
+                            <span>
+                                ⋮
+                            </span>
+
+                        </div>
+
+                        <p>
+                            @(string.IsNullOrWhiteSpace(project.Description)
+                                ? "Completed Planora project."
+                                : project.Description)
+                        </p>
+
+                        <div class="project-card-footer">
+
+                            <span class="date-chip">
+                                ▣
+                                @(project.EndDate.HasValue
+                                    ? project.EndDate.Value.ToString("dd MMM")
+                                    : project.StartDate.ToString("dd MMM"))
+                            </span>
+
+                            <div>
+
+                                <span>
+                                    ◌ @project.MemberCount
+                                </span>
+
+                                <span>
+                                    ✓
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </a>
+                }
+
+            </div>
+
+        </div>
+
+        <!-- ARCHIVED -->
+
+        <div class="board-column">
+
+            <div class="board-heading">
+
+                <h2>
+                    Archived
+                </h2>
+
+                <span>
+                    @archivedProjects.Count
+                </span>
+
+            </div>
+
+            <div class="board-cards">
+
+                @foreach (var project in archivedProjects)
+                {
+                    <a asp-controller="Projects"
+                       asp-action="Details"
+                       asp-route-id="@project.Id"
+                       class="project-board-card archived-card">
+
+                        <div class="card-title-row">
+
+                            <strong>
+                                @project.Name
+                            </strong>
+
+                            <span>
+                                ⋮
+                            </span>
+
+                        </div>
+
+                        <p>
+                            @(string.IsNullOrWhiteSpace(project.Description)
+                                ? "Archived project."
+                                : project.Description)
+                        </p>
+
+                        <div class="project-card-footer">
+
+                            <span class="date-chip">
+                                ▣
+                                @project.StartDate.ToString("dd MMM")
+                            </span>
+
+                            <div>
+
+                                <span>
+                                    ◌ @project.MemberCount
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </a>
+                }
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <div class="trend-data"
+         id="trendData"
+         data-labels="@trendLabels"
+         data-values="@trendValues">
+    </div>
+
+</div>
+
+@section Scripts
+{
+    <script src="~/js/dashboard.js"
+            asp-append-version="true">
+    </script>
+}

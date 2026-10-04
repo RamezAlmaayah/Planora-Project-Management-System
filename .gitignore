@@ -1,0 +1,66 @@
+# .NET build output
+[Bb]in/
+[Oo]bj/
+/artifacts/
+
+# Test results and coverage
+**/TestResults/
+coverage/
+coverage.*
+*.coverage
+*.coveragexml
+
+# Visual Studio and VS Code local state
+.vs/
+.idea/
+.vscode/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.rsuser
+
+# Logs and temporary files
+[Ll]ogs/
+*.log
+/tmp/
+*.tmp
+*.temp
+~$*
+
+# Python render tooling cache
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Local secrets and user-specific settings
+.env
+.env.*
+!.env.example
+**/secrets.json
+**/secrets.*.json
+**/*.secrets.json
+**/appsettings.Local.json
+*.pfx
+*.p12
+*.publishsettings
+*.pubxml.user
+
+# Local databases and database backups
+*.db
+*.sqlite
+*.sqlite3
+*.mdf
+*.ldf
+*.bak
+*.db-shm
+*.db-wal
+
+# User uploads and local QA evidence
+src/Planora.Web/App_Data/
+src/Planora.Web/wwwroot/uploads/
+
+# Generated showcase review artifacts
+Planora_Showcase_Edit/checks/
+Planora_Showcase_Edit/validation.json

@@ -1,0 +1,60 @@
+@model Planora.Application.Common.Identity.AdminUserDetails
+@using Planora.Application.Common.Security
+@{
+    ViewData["Title"] = "User Details";
+    Layout = "_AppLayout";
+    string currentUserId = ViewData["CurrentUserId"] as string ?? string.Empty;
+    bool isSelf = currentUserId == Model.Id;
+}
+@section Styles { <link rel="stylesheet" href="~/css/projects.css" asp-append-version="true" /><link rel="stylesheet" href="~/css/admin-users.css" asp-append-version="true" /> }
+
+<div class="detail-v3-page admin-users-v3-page">
+    @if (TempData["SuccessMessage"] is string success) { <div class="app-alert app-alert-success">@success</div> }
+    @if (TempData["ErrorMessage"] is string error) { <div class="app-alert app-alert-error">@error</div> }
+    <div class="detail-v3-back"><a asp-action="Index">&larr; Back to users</a></div>
+    <section class="detail-v3-hero">
+        <div><span class="projects-v3-kicker">USER ACCOUNT</span><h1>@Model.FullName</h1><p>@Model.Email</p></div>
+        <span class="admin-users-v3-status @(Model.IsDisabled ? "is-disabled" : "is-enabled")">@(Model.IsDisabled ? "Disabled" : "Enabled")</span>
+    </section>
+
+    <section class="detail-v3-section">
+        <div class="detail-v3-section-head"><div><span>ACCOUNT</span><h2>Account details</h2></div></div>
+        <div class="admin-users-v3-account-grid">
+            <article><span>Global role</span><strong>@Model.GlobalRole</strong></article>
+            <article><span>Email confirmation</span><strong>@(Model.EmailConfirmed ? "Confirmed" : "Pending")</strong></article>
+            <article><span>Project memberships</span><strong>@Model.ProjectMembershipCount</strong></article>
+            <article><span>Created</span><strong>@Model.CreatedAt.ToString("dd MMM yyyy")</strong></article>
+            <article><span>Presence</span><strong>@(Model.IsOnline ? "Online" : $"Offline · {Model.LastSeenAt?.ToLocalTime().ToString("dd MMM yyyy HH:mm") ?? "Never"}")</strong></article>
+        </div>
+        <div class="admin-users-v3-actions">
+            <form asp-action="ChangeRole" asp-route-id="@Model.Id" method="post">
+                <label for="globalRole">Global role</label><select id="globalRole" name="globalRole" disabled="@isSelf">@foreach (string role in SystemRoles.All) { <option value="@role" selected="@(Model.GlobalRole == role)">@role</option> }</select><button type="submit" class="detail-v3-secondary" disabled="@isSelf">Update role</button>
+            </form>
+            @if (!isSelf)
+            {
+                if (Model.IsDisabled) { <form asp-action="Enable" asp-route-id="@Model.Id" method="post"><button class="detail-v3-secondary" type="submit">Enable account</button></form> }
+                else { <form asp-action="Disable" asp-route-id="@Model.Id" method="post" data-confirm="Disable this user and invalidate active sessions?"><button class="detail-v3-danger" type="submit">Disable account</button></form> }
+                <form asp-action="Delete" asp-route-id="@Model.Id" method="post" data-confirm="Permanently delete this user only if no historical records exist?"><button class="detail-v3-danger" type="submit">Delete permanently</button></form>
+            }
+            else { <p class="admin-users-v3-note">Self role changes, disable, and delete actions are protected.</p> }
+        </div>
+    </section>
+
+    <section class="detail-v3-section">
+        <div class="detail-v3-section-head"><div><span>PROJECT ACCESS</span><h2>Project memberships</h2></div></div>
+        @if (Model.ProjectMemberships.Count == 0) { <div class="projects-v3-empty"><strong>No project memberships</strong><p>This user is not currently assigned to a project.</p></div> }
+        else
+        {
+            <div class="admin-users-v3-memberships">
+                @foreach (var membership in Model.ProjectMemberships)
+                {
+                    <article><div><strong>@membership.ProjectName</strong><span>@(membership.Methodology == Planora.Domain.Enums.ProjectMethodology.VModel ? "V-Model" : membership.Methodology) · @membership.ProjectStatus</span></div><span class="projects-v3-method">@FormatRole(membership.ProjectRole)</span><a asp-controller="ProjectMembers" asp-action="Manage" asp-route-projectId="@membership.ProjectId" class="detail-v3-secondary">Manage membership</a></article>
+                }
+            </div>
+        }
+    </section>
+</div>
+@section Scripts { <script src="~/js/admin-users.js" asp-append-version="true"></script> }
+@functions {
+    private static string FormatRole(Planora.Domain.Enums.ProjectMemberRole role) => role switch { Planora.Domain.Enums.ProjectMemberRole.ProjectManager => "Project Manager", Planora.Domain.Enums.ProjectMemberRole.ScrumMaster => "Scrum Master", Planora.Domain.Enums.ProjectMemberRole.QaTester => "QA Tester", _ => role.ToString() };
+}

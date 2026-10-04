@@ -1,0 +1,393 @@
+﻿@model Planora.Web.ViewModels.AdminLogs.SystemLogsViewModel
+
+@{
+    ViewData["Title"] = "System Logs";
+    Layout = "_AppLayout";
+}
+
+@section Styles {
+    <link rel="stylesheet"
+          href="~/css/admin-logs.css"
+          asp-append-version="true" />
+}
+
+<div class="logs-page">
+
+    <header class="logs-header">
+
+        <div>
+            <span class="logs-kicker">ADMINISTRATION</span>
+
+            <h1>
+                System Logs
+            </h1>
+
+            <p>
+                Monitor application activity, warnings,
+                errors and security-related events.
+            </p>
+
+        </div>
+
+        <div class="logs-admin-badge">
+            Admin Only
+        </div>
+
+    </header>
+
+
+    <section class="logs-filter-card">
+
+        <form method="get"
+              asp-controller="AdminLogs"
+              asp-action="Index"
+              class="logs-filter-form">
+
+            <div class="logs-filter-field">
+
+                <label asp-for="FromDate"></label>
+
+                <input asp-for="FromDate"
+                       type="date"
+                       class="logs-input" />
+
+            </div>
+
+            <div class="logs-filter-field">
+
+                <label asp-for="ToDate"></label>
+
+                <input asp-for="ToDate"
+                       type="date"
+                       class="logs-input" />
+
+            </div>
+
+            <div class="logs-filter-field">
+
+                <label asp-for="Level">
+                    Log Level
+                </label>
+
+                <select asp-for="Level"
+                        class="logs-input">
+
+                    <option value="All">
+                        All
+                    </option>
+
+                    <option value="Information">
+                        Information
+                    </option>
+
+                    <option value="Warning">
+                        Warning
+                    </option>
+
+                    <option value="Error">
+                        Error
+                    </option>
+
+                    <option value="Critical">
+                        Critical
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div class="logs-filter-actions">
+
+                <button type="submit"
+                        class="logs-button logs-button-primary">
+                    Filter Logs
+                </button>
+
+                <a asp-controller="AdminLogs"
+                   asp-action="DownloadPdf"
+                   asp-route-fromDate="@Model.FromDate.ToString("yyyy-MM-dd")"
+                   asp-route-toDate="@Model.ToDate.ToString("yyyy-MM-dd")"
+                   asp-route-level="@Model.Level"
+                   asp-route-page="1"
+                   class="logs-button logs-button-pdf">
+
+                    Download PDF
+
+                </a>
+
+            </div>
+
+        </form>
+
+        <div asp-validation-summary="ModelOnly"
+             class="logs-validation">
+        </div>
+
+    </section>
+
+
+    <section class="logs-summary-grid">
+
+        <article class="logs-summary-card">
+
+            <span class="logs-summary-label">
+                Total Events
+            </span>
+
+            <strong>
+                @Model.TotalEvents
+            </strong>
+
+        </article>
+
+        <article class="logs-summary-card">
+
+            <span class="logs-summary-label">
+                Information
+            </span>
+
+            <strong>
+                @Model.InformationCount
+            </strong>
+
+        </article>
+
+        <article class="logs-summary-card">
+
+            <span class="logs-summary-label">
+                Warnings
+            </span>
+
+            <strong>
+                @Model.WarningCount
+            </strong>
+
+        </article>
+
+        <article class="logs-summary-card">
+
+            <span class="logs-summary-label">
+                Errors
+            </span>
+
+            <strong>
+                @Model.ErrorCount
+            </strong>
+
+        </article>
+
+        <article class="logs-summary-card">
+
+            <span class="logs-summary-label">
+                Critical
+            </span>
+
+            <strong>
+                @Model.CriticalCount
+            </strong>
+
+        </article>
+
+    </section>
+
+
+    <section class="logs-table-card">
+
+        <div class="logs-table-header">
+
+            <div>
+
+                <h2>
+                    Log Events
+                </h2>
+
+                <p>
+                    @Model.FromDate.ToString("dd MMM yyyy")
+                    →
+                    @Model.ToDate.ToString("dd MMM yyyy")
+                    · @Model.TotalCount total events · Page @Model.Page of @Model.TotalPages
+                </p>
+
+            </div>
+
+            <div class="logs-selected-level">
+                @Model.Level
+            </div>
+
+        </div>
+
+
+        @if (Model.Logs.Count == 0)
+        {
+            <div class="logs-empty">
+
+                <div class="logs-empty-icon">
+                    📋
+                </div>
+
+                <h3>
+                    No logs found
+                </h3>
+
+                <p>
+                    No system log events matched
+                    the selected filters.
+                </p>
+
+            </div>
+        }
+        else
+        {
+            <div class="logs-table-wrapper">
+
+                <table class="logs-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Date & Time
+                            </th>
+
+                            <th>
+                                Level
+                            </th>
+
+                            <th>
+                                Path
+                            </th>
+
+                            <th>
+                                Message
+                            </th>
+
+                            <th>
+                                Trace ID
+                            </th>
+
+                            <th>
+                                Details
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        @foreach (var log in Model.Logs)
+                        {
+                            var levelClass =
+                                log.Level.ToLowerInvariant();
+
+                            <tr>
+
+                                <td class="logs-time">
+
+                                    @log.Timestamp.ToLocalTime().ToString(
+                                        "dd/MM/yyyy HH:mm:ss")
+
+                                </td>
+
+                                <td>
+
+                                    <span class="log-level log-level-@levelClass">
+                                        @log.Level
+                                    </span>
+
+                                </td>
+
+                                <td class="logs-path">
+
+                                    @if (string.IsNullOrWhiteSpace(
+                                        log.Path))
+                                    {
+                                        <span class="logs-muted">
+                                            —
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        @log.Path
+                                    }
+
+                                </td>
+
+                                <td class="logs-message">
+
+                                    @log.Message
+
+                                </td>
+
+                                <td class="logs-trace">
+
+                                    @if (string.IsNullOrWhiteSpace(
+                                        log.TraceId))
+                                    {
+                                        <span class="logs-muted">
+                                            —
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        @log.TraceId
+                                    }
+
+                                </td>
+
+                                <td>
+
+                                    @if (!string.IsNullOrWhiteSpace(
+                                        log.Details))
+                                    {
+                                        <details class="logs-details">
+
+                                            <summary>
+                                                View Details
+                                            </summary>
+
+                                            <pre>@log.Details</pre>
+
+                                        </details>
+                                    }
+                                    else
+                                    {
+                                        <span class="logs-muted">
+                                            —
+                                        </span>
+                                    }
+
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+        }
+
+    </section>
+
+    @if (Model.TotalPages > 1)
+    {
+        <nav class="logs-pagination" aria-label="System log pages">
+            @if (Model.Page > 1)
+            {
+                <a asp-action="Index" asp-route-fromDate="@Model.FromDate.ToString("yyyy-MM-dd")"
+                   asp-route-toDate="@Model.ToDate.ToString("yyyy-MM-dd")" asp-route-level="@Model.Level"
+                   asp-route-page="@(Model.Page - 1)">Previous</a>
+            }
+            @if (Model.Page < Model.TotalPages)
+            {
+                <a asp-action="Index" asp-route-fromDate="@Model.FromDate.ToString("yyyy-MM-dd")"
+                   asp-route-toDate="@Model.ToDate.ToString("yyyy-MM-dd")" asp-route-level="@Model.Level"
+                   asp-route-page="@(Model.Page + 1)">Next</a>
+            }
+        </nav>
+    }
+
+</div>

@@ -1,0 +1,305 @@
+@model Planora.Web.ViewModels.Tasks.TaskDetailsViewModel
+@using Planora.Domain.Enums
+@using System.Globalization
+
+@{
+    ViewData["Title"] = Model.Task.Title;
+    Layout = "_AppLayout";
+    string statusText = Model.Task.Status switch
+    {
+        TaskItemStatus.ToDo => "To do",
+        TaskItemStatus.InProgress => "In progress",
+        TaskItemStatus.InReview => "In review",
+        TaskItemStatus.Done => "Done",
+        _ => Model.Task.Status.ToString()
+    };
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/projects.css" asp-append-version="true" />
+}
+
+<div class="project-detail-v3">
+    <div class="detail-v3-back">
+        <a asp-action="Index" asp-route-projectId="@Model.Task.ProjectId" asp-route-sprintId="@Model.Task.SprintId">
+            &larr; Back to tasks
+        </a>
+    </div>
+
+    @if (TempData["SuccessMessage"] is string success)
+    {
+        <div class="v3-alert v3-alert-success" role="status">@success</div>
+    }
+    @if (TempData["ErrorMessage"] is string error)
+    {
+        <div class="v3-alert" role="alert">@error</div>
+    }
+    @if (Model.IsReadOnly)
+    {
+        <div class="v3-alert">This task is read-only because its project, sprint or backlog item no longer allows changes.</div>
+    }
+
+    <section class="detail-v3-header">
+        <div class="detail-v3-heading">
+            <div class="detail-v3-tags">
+                <span class="projects-v3-method">SCRUM</span>
+                <span class="projects-v3-status">@statusText</span>
+            </div>
+            <h1>@Model.Task.Title</h1>
+            <p>@Model.ProjectName &middot; @Model.SprintName</p>
+        </div>
+        <div class="detail-v3-actions">
+        @if (Model.CanReportIssue)
+        {
+            <a asp-controller="Issues" asp-action="Create"
+               asp-route-projectId="@Model.Task.ProjectId"
+               asp-route-taskId="@Model.Task.Id"
+               class="detail-v3-secondary">Report issue</a>
+        }
+            <a asp-action="Board" asp-route-projectId="@Model.Task.ProjectId"
+               asp-route-sprintId="@Model.Task.SprintId" class="detail-v3-secondary">Scrum Board</a>
+        @if (Model.CanEdit && !Model.IsReadOnly)
+        {
+            <a asp-action="Edit" asp-route-projectId="@Model.Task.ProjectId" asp-route-sprintId="@Model.Task.SprintId"
+               asp-route-id="@Model.Task.Id" class="detail-v3-secondary">Edit task</a>
+        }
+        </div>
+    </section>
+
+    <section class="detail-v3-info-grid">
+        <article><span>Priority</span><strong>@Model.Task.Priority</strong></article>
+        <article><span>Status</span><strong>@statusText</strong></article>
+        <article><span>Assignee</span><strong>@(string.IsNullOrWhiteSpace(Model.Task.AssigneeName) ? "Unassigned" : Model.Task.AssigneeName)</strong></article>
+        <article><span>Deadline</span><strong>@(Model.Task.Deadline?.ToString("dd MMM yyyy", CultureInfo.InvariantCulture) ?? "No deadline")</strong></article>
+        <article><span>Created</span><strong>@Model.Task.CreatedAt.ToString("dd MMM yyyy", CultureInfo.InvariantCulture)</strong></article>
+        <article><span>Updated</span><strong>@(Model.Task.UpdatedAt?.ToString("dd MMM yyyy", CultureInfo.InvariantCulture) ?? "Not updated")</strong></article>
+    </section>
+
+    <section class="project-form-v3-panel">
+        <div class="project-form-v3-panel-head">
+            <div>
+                <span>BACKLOG ITEM</span>
+                <h2>@Model.Task.BacklogTitle</h2>
+            </div>
+        </div>
+        <div class="detail-v3-heading">
+            @foreach (var line in Model.Task.Description.Replace("\r\n", "\n").Split('\n'))
+            {
+                <p>@line</p>
+            }
+        </div>
+    </section>
+
+    <section class="project-form-v3-panel qa-history-v3">
+        <div class="project-form-v3-panel-head">
+            <div>
+                <span>QA HISTORY</span>
+                <h2>Review history</h2>
+                <p>Every pass and fail decision remains attached to this task.</p>
+            </div>
+        </div>
+        @if (Model.Task.QaReviews.Count == 0)
+        {
+            <div class="projects-v3-empty">
+                <strong>No QA reviews yet.</strong>
+            </div>
+        }
+        else
+        {
+            <div class="qa-history-v3-list">
+                @foreach (var review in Model.Task.QaReviews)
+                {
+                    <article class="qa-history-v3-item">
+                        <div>
+                            <span class="projects-v3-status">@review.Result</span>
+                            <strong>@review.ReviewerName</strong>
+                        </div>
+                        @if (!string.IsNullOrWhiteSpace(review.Notes))
+                        {
+                            <p>@review.Notes</p>
+                        }
+                        @if (review.EvidenceFiles.Count > 0)
+                        {
+                            <ul class="qa-evidence-list" aria-label="QA test evidence">
+                                @foreach (var evidence in review.EvidenceFiles)
+                                {
+                                    <li>
+                                        <a asp-controller="QaEvidence" asp-action="Download" asp-route-id="@evidence.Id">
+                                            @evidence.OriginalFileName
+                                        </a>
+                                        <span>@((evidence.FileSizeBytes / 1024d).ToString("0.#", CultureInfo.InvariantCulture)) KB · @evidence.UploadedAt.ToString("dd MMM yyyy HH:mm", CultureInfo.InvariantCulture)</span>
+                                        @if (Model.IsAdmin)
+                                        {
+                                            <form asp-controller="QaEvidence" asp-action="Delete" asp-route-id="@evidence.Id" method="post" data-confirm="Delete this QA evidence file?">
+                                                @Html.AntiForgeryToken()
+                                                <button type="submit" class="detail-v3-secondary">Delete</button>
+                                            </form>
+                                        }
+                                    </li>
+                                }
+                            </ul>
+                        }
+                        <time datetime="@review.TestedAt.ToString("O")">
+                            @review.TestedAt.ToString("dd MMM yyyy HH:mm", CultureInfo.InvariantCulture)
+                        </time>
+                    </article>
+                }
+            </div>
+        }
+    </section>
+
+    <section class="project-form-v3-panel task-collaboration-v3">
+        <div class="project-form-v3-panel-head">
+            <div>
+                <span>COMMENTS</span>
+                <h2>Task discussion</h2>
+            </div>
+        </div>
+
+        @if (!Model.IsReadOnly)
+        {
+            <form asp-action="AddComment"
+                  asp-route-projectId="@Model.Task.ProjectId"
+                  asp-route-sprintId="@Model.Task.SprintId"
+                  asp-route-id="@Model.Task.Id"
+                  method="post"
+                  class="task-collaboration-v3-form"
+                  data-single-submit>
+                @Html.AntiForgeryToken()
+                <label for="task-comment-content">Add a comment</label>
+                <textarea id="task-comment-content"
+                          name="content"
+                          maxlength="4000"
+                          rows="3"
+                          required></textarea>
+                <button type="submit" class="projects-v3-primary">Add comment</button>
+            </form>
+        }
+
+        @if (Model.Task.Comments.Count == 0)
+        {
+            <div class="projects-v3-empty"><strong>No comments yet.</strong></div>
+        }
+        else
+        {
+            <div class="task-collaboration-v3-list">
+                @foreach (var comment in Model.Task.Comments)
+                {
+                    <article class="task-collaboration-v3-item">
+                        <div class="task-collaboration-v3-meta">
+                            <strong>@comment.AuthorName</strong>
+                            <time datetime="@comment.CreatedAt.ToString("O")">
+                                @comment.CreatedAt.ToString("dd MMM yyyy HH:mm", CultureInfo.InvariantCulture)
+                            </time>
+                        </div>
+                        <div class="task-collaboration-v3-content">
+                            @foreach (var line in comment.Content.Replace("\r\n", "\n").Split('\n'))
+                            {
+                                <p>@line</p>
+                            }
+                        </div>
+                        @if (!Model.IsReadOnly &&
+                             (Model.IsAdmin || comment.AuthorUserId == Model.CurrentUserId))
+                        {
+                            <form asp-action="DeleteComment"
+                                  asp-route-projectId="@Model.Task.ProjectId"
+                                  asp-route-sprintId="@Model.Task.SprintId"
+                                  asp-route-id="@Model.Task.Id"
+                                  asp-route-commentId="@comment.Id"
+                                  method="post"
+                                  data-confirm="Delete this comment?"
+                                  data-single-submit>
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="detail-v3-secondary">Delete</button>
+                            </form>
+                        }
+                    </article>
+                }
+            </div>
+        }
+    </section>
+
+    <section class="project-form-v3-panel task-collaboration-v3">
+        <div class="project-form-v3-panel-head">
+            <div>
+                <span>ATTACHMENTS</span>
+                <h2>Reference files</h2>
+                <p>PDF, Word, Excel, PNG, JPG or ZIP files up to 10 MB.</p>
+            </div>
+        </div>
+
+        @if (Model.CanUploadAttachment)
+        {
+            <form asp-action="UploadAttachment"
+                  asp-route-projectId="@Model.Task.ProjectId"
+                  asp-route-sprintId="@Model.Task.SprintId"
+                  asp-route-id="@Model.Task.Id"
+                  method="post"
+                  enctype="multipart/form-data"
+                  class="task-collaboration-v3-upload"
+                  data-single-submit>
+                @Html.AntiForgeryToken()
+                <label for="task-attachment-file">Upload attachment</label>
+                <input id="task-attachment-file"
+                       type="file"
+                       name="file"
+                       accept=".pdf,.docx,.xlsx,.png,.jpg,.jpeg,.zip"
+                       required />
+                <button type="submit" class="projects-v3-primary">Upload</button>
+            </form>
+        }
+
+        @if (Model.Task.Attachments.Count == 0)
+        {
+            <div class="projects-v3-empty"><strong>No attachments yet.</strong></div>
+        }
+        else
+        {
+            <div class="task-collaboration-v3-list">
+                @foreach (var attachment in Model.Task.Attachments)
+                {
+                    bool canDeleteAttachment = !Model.IsReadOnly &&
+                        (Model.CanDeleteAnyAttachment ||
+                         Model.CanDeleteOwnAttachment &&
+                         attachment.UploadedByUserId == Model.CurrentUserId);
+                    <article class="task-collaboration-v3-item task-collaboration-v3-file">
+                        <div>
+                            <strong>@attachment.OriginalFileName</strong>
+                            <span>
+                                @attachment.UploadedByName &middot;
+                                @attachment.UploadedAt.ToString("dd MMM yyyy HH:mm", CultureInfo.InvariantCulture) &middot;
+                                @((attachment.FileSizeBytes / 1024d).ToString("0.#", CultureInfo.InvariantCulture)) KB
+                            </span>
+                        </div>
+                        <div class="task-collaboration-v3-actions">
+                            <a asp-action="DownloadAttachment"
+                               asp-route-projectId="@Model.Task.ProjectId"
+                               asp-route-sprintId="@Model.Task.SprintId"
+                               asp-route-id="@Model.Task.Id"
+                               asp-route-attachmentId="@attachment.Id"
+                               class="detail-v3-secondary">Download</a>
+                            @if (canDeleteAttachment)
+                            {
+                                <form asp-action="DeleteAttachment"
+                                      asp-route-projectId="@Model.Task.ProjectId"
+                                      asp-route-sprintId="@Model.Task.SprintId"
+                                      asp-route-id="@Model.Task.Id"
+                                      asp-route-attachmentId="@attachment.Id"
+                                      method="post"
+                                      data-confirm="Delete @attachment.OriginalFileName?"
+                                      data-single-submit>
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="detail-v3-secondary">Delete</button>
+                                </form>
+                            }
+                        </div>
+                    </article>
+                }
+            </div>
+        }
+    </section>
+</div>
+
+@section Scripts {
+    <script src="~/js/task-collaboration.js" asp-append-version="true"></script>
+}

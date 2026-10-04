@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
+    <title>Server Error - Planora</title>
+
+    <link rel="stylesheet"
+          href="/css/errors.css">
+
+</head>
+
+<body>
+
+<header class="error-topbar">
+
+    <a href="/"
+       class="error-brand">
+
+        <span class="error-brand-mark">P</span>
+        <span>Planora</span>
+
+    </a>
+
+</header>
+
+
+<main class="error-page">
+
+<section class="error-shell">
+
+    <div class="error-copy">
+
+        <span class="error-kicker">
+            SERVER ERROR
+        </span>
+
+        <div class="error-code">
+            500
+        </div>
+
+        <h1>
+            Something went wrong.
+        </h1>
+
+        <p>
+            An unexpected error occurred while Planora
+            was processing your request.
+            Please try again.
+        </p>
+
+        <div class="error-trace">
+            Request ID: {{TRACE_ID}}
+        </div>
+
+        <div class="error-actions">
+
+            <a href="/"
+               class="error-primary">
+                Back to Planora
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="error-visual">
+
+        <div class="error-illustration">
+
+            <div class="error-warning">
+                <span>!</span>
+            </div>
+
+            <strong class="error-security-label">
+                Temporary interruption
+            </strong>
+
+        </div>
+
+    </div>
+
+</section>
+
+</main>
+
+</body>
+</html>

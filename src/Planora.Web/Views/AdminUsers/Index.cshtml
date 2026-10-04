@@ -1,0 +1,67 @@
+@model Planora.Web.ViewModels.AdminUsers.AdminUserIndexViewModel
+@using Planora.Application.Common.Security
+@{
+    ViewData["Title"] = "User Management";
+    Layout = "_AppLayout";
+}
+@section Styles {
+    <link rel="stylesheet" href="~/css/projects.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/admin-users.css" asp-append-version="true" />
+}
+
+<div class="projects-v3-page admin-users-v3-page">
+    @if (TempData["SuccessMessage"] is string success) { <div class="app-alert app-alert-success">@success</div> }
+    <section class="projects-v3-header">
+        <div><span class="projects-v3-kicker">ADMINISTRATION</span><h1>User Management</h1><p>Manage Planora accounts, global roles, and account access.</p></div>
+        <a asp-action="Create" class="project-form-v3-submit">+ Create user</a>
+    </section>
+
+    <section class="projects-v3-panel">
+        <div class="projects-v3-toolbar admin-users-v3-toolbar">
+            <div><h2>Users</h2><p>@Model.Result.TotalCount account@(Model.Result.TotalCount == 1 ? "" : "s")</p></div>
+            <form method="get" class="admin-users-v3-filters" role="search">
+                <input type="search" name="search" value="@Model.Search" placeholder="Search name or email" aria-label="Search users by name or email" />
+                <select name="role" aria-label="Global role">
+                    <option value="">All roles</option>
+                    @foreach (string role in SystemRoles.All) { <option value="@role" selected="@(Model.Role == role)">@role</option> }
+                </select>
+                <select name="status" aria-label="Account status">
+                    <option value="">All statuses</option>
+                    <option value="enabled" selected="@(Model.Status == "enabled")">Enabled</option>
+                    <option value="disabled" selected="@(Model.Status == "disabled")">Disabled</option>
+                </select>
+                <button class="backlog-action backlog-action-edit" type="submit">Filter</button>
+            </form>
+        </div>
+
+        @if (Model.Result.Users.Count == 0)
+        {
+            <div class="projects-v3-empty"><strong>No users found</strong><p>Try changing the current search or filters.</p></div>
+        }
+        else
+        {
+            <div class="admin-users-v3-table">
+                <div class="admin-users-v3-table-head"><span>User</span><span>Global role</span><span>Status</span><span>Presence</span><span>Projects</span><span>Created</span><span>Actions</span></div>
+                @foreach (var user in Model.Result.Users)
+                {
+                    <div class="admin-users-v3-row">
+                        <div class="members-v3-user"><div class="members-v3-avatar">@(string.IsNullOrWhiteSpace(user.FullName) ? "U" : user.FullName[..1].ToUpperInvariant())</div><div class="members-v3-user-copy"><strong>@user.FullName</strong><span>@user.Email</span></div></div>
+                        <span class="projects-v3-method">@user.GlobalRole</span>
+                        <span class="admin-users-v3-status @(user.IsDisabled ? "is-disabled" : "is-enabled")">@(user.IsDisabled ? "Disabled" : "Enabled")</span>
+                        <span class="admin-users-v3-presence">@(user.IsOnline ? "Online" : $"Offline · {user.LastSeenAt?.ToLocalTime().ToString("dd MMM HH:mm") ?? "Never"}")</span>
+                        <span>@user.ProjectMembershipCount</span>
+                        <span>@user.CreatedAt.ToString("dd MMM yyyy")</span>
+                        <a asp-action="Details" asp-route-id="@user.Id" class="backlog-action backlog-action-edit">View</a>
+                    </div>
+                }
+            </div>
+        }
+        @if (Model.Result.TotalPages > 1)
+        {
+            <nav class="admin-users-v3-pagination" aria-label="User pages">
+                @for (int pageNumber = 1; pageNumber <= Model.Result.TotalPages; pageNumber++)
+                { <a asp-action="Index" asp-route-search="@Model.Search" asp-route-role="@Model.Role" asp-route-status="@Model.Status" asp-route-page="@pageNumber" class="@(pageNumber == Model.Result.Page ? "active" : "")">@pageNumber</a> }
+            </nav>
+        }
+    </section>
+</div>

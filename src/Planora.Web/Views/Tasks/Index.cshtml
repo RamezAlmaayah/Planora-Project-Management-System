@@ -1,0 +1,152 @@
+@model Planora.Web.ViewModels.Tasks.TaskIndexViewModel
+@using Planora.Domain.Enums
+@using System.Globalization
+
+@{
+    ViewData["Title"] = "Tasks";
+    Layout = "_AppLayout";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/projects.css" asp-append-version="true" />
+}
+
+<div class="projects-v3-page">
+    <div class="project-form-v3-back">
+        <a asp-controller="Sprints" asp-action="Index" asp-route-projectId="@Model.ProjectId">
+            &larr; Back to sprints
+        </a>
+    </div>
+
+    @if (TempData["SuccessMessage"] is string success)
+    {
+        <div class="v3-alert v3-alert-success" role="status">@success</div>
+    }
+    @if (TempData["ErrorMessage"] is string error)
+    {
+        <div class="v3-alert" role="alert">@error</div>
+    }
+    @if (Model.IsReadOnly)
+    {
+        <div class="v3-alert">Tasks are read-only because the project is archived or the sprint is completed.</div>
+    }
+
+    <section class="projects-v3-header">
+        <div>
+            <span class="projects-v3-kicker">SCRUM</span>
+            <h1>Tasks</h1>
+            <p>@Model.ProjectName &middot; @Model.SprintName</p>
+        </div>
+        <div class="scrum-module-actions">
+            <a asp-action="Board" asp-route-projectId="@Model.ProjectId" asp-route-sprintId="@Model.SprintId">
+                Scrum Board
+            </a>
+            @if (Model.CanManage && !Model.IsReadOnly)
+            {
+            <a asp-action="Create" asp-route-projectId="@Model.ProjectId" asp-route-sprintId="@Model.SprintId"
+               class="project-form-v3-submit">+ Create task</a>
+            }
+        </div>
+    </section>
+
+    <section class="projects-v3-panel">
+        <div class="projects-v3-toolbar">
+            <div>
+                <h2>Sprint tasks</h2>
+                <span>@Model.Tasks.TotalCount tasks</span>
+            </div>
+            <form asp-action="Index" method="get" class="projects-v3-search" role="search">
+                <span aria-hidden="true">○</span>
+                <input type="hidden" name="projectId" value="@Model.ProjectId" />
+                <input type="hidden" name="sprintId" value="@Model.SprintId" />
+                <input type="search" name="search" value="@Model.Search" placeholder="Search tasks..."
+                       aria-label="Search tasks" autocomplete="off" maxlength="200" />
+                <button type="submit" class="backlog-action backlog-action-edit">Search</button>
+                @if (!string.IsNullOrWhiteSpace(Model.Search))
+                {
+                    <a asp-action="Index" asp-route-projectId="@Model.ProjectId" asp-route-sprintId="@Model.SprintId">Clear</a>
+                }
+            </form>
+        </div>
+
+        @if (Model.Tasks.Items.Count == 0)
+        {
+            <div class="projects-v3-empty">
+                <strong>@(string.IsNullOrWhiteSpace(Model.Search) ? "No tasks yet" : "No tasks found")</strong>
+                <p>@(string.IsNullOrWhiteSpace(Model.Search)
+                    ? "Tasks created for this sprint's backlog items will appear here."
+                    : "There are no tasks matching your search.")</p>
+            </div>
+        }
+        else
+        {
+            <div class="projects-v3-table">
+                <div class="projects-v3-table-head">
+                    <span>Task / backlog item</span>
+                    <span>Priority</span>
+                    <span>Status</span>
+                    <span>Assignee</span>
+                    <span>Deadline</span>
+                    <span></span>
+                </div>
+                @foreach (var task in Model.Tasks.Items)
+                {
+                    string statusText = task.Status switch
+                    {
+                        TaskItemStatus.ToDo => "To do",
+                        TaskItemStatus.InProgress => "In progress",
+                        TaskItemStatus.InReview => "In review",
+                        TaskItemStatus.Done => "Done",
+                        _ => task.Status.ToString()
+                    };
+
+                    <div class="projects-v3-row">
+                        <div class="projects-v3-project">
+                            <div class="projects-v3-avatar">@(string.IsNullOrWhiteSpace(task.Title) ? "T" : task.Title[..1].ToUpperInvariant())</div>
+                            <div>
+                                <strong>@task.Title</strong>
+                                <span>@task.BacklogTitle</span>
+                            </div>
+                        </div>
+                        <div><span class="projects-v3-method">@task.Priority</span></div>
+                        <div><span class="projects-v3-status">@statusText</span></div>
+                        <div>@(string.IsNullOrWhiteSpace(task.AssigneeName) ? "Unassigned" : task.AssigneeName)</div>
+                        <div class="projects-v3-timeline">
+                            <strong>@(task.Deadline?.ToString("dd MMM yyyy", CultureInfo.InvariantCulture) ?? "No deadline")</strong>
+                        </div>
+                        <div class="backlog-row-actions">
+                            <a asp-action="Details" asp-route-projectId="@Model.ProjectId" asp-route-sprintId="@Model.SprintId"
+                               asp-route-id="@task.Id" class="backlog-action backlog-action-edit">View</a>
+                            @if (Model.CanManage && !Model.IsReadOnly && task.BacklogStatus == BacklogItemStatus.InSprint)
+                            {
+                                <a asp-action="Edit" asp-route-projectId="@Model.ProjectId" asp-route-sprintId="@Model.SprintId"
+                                   asp-route-id="@task.Id" class="backlog-action backlog-action-edit">Edit</a>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+
+        @if (Model.Tasks.TotalPages > 1)
+        {
+            <nav class="projects-v3-toolbar" aria-label="Task pages">
+                <div>Page @Model.Tasks.Page of @Model.Tasks.TotalPages</div>
+                <div class="backlog-row-actions">
+                    @if (Model.Tasks.Page > 1)
+                    {
+                        <a asp-action="Index" asp-route-projectId="@Model.ProjectId" asp-route-sprintId="@Model.SprintId"
+                           asp-route-search="@Model.Search" asp-route-page="@(Model.Tasks.Page - 1)"
+                           class="backlog-action backlog-action-edit" rel="prev">Previous</a>
+                    }
+                    @if (Model.Tasks.Page < Model.Tasks.TotalPages)
+                    {
+                        <a asp-action="Index" asp-route-projectId="@Model.ProjectId" asp-route-sprintId="@Model.SprintId"
+                           asp-route-search="@Model.Search" asp-route-page="@(Model.Tasks.Page + 1)"
+                           class="backlog-action backlog-action-edit" rel="next">Next</a>
+                    }
+                </div>
+            </nav>
+        }
+    </section>
+</div>

@@ -1,0 +1,144 @@
+@model Planora.Web.ViewModels.Backlog.BacklogIndexViewModel
+@using System.Globalization
+
+@{
+    ViewData["Title"] = "Product Backlog";
+    Layout = "_AppLayout";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/projects.css" asp-append-version="true" />
+}
+
+<div class="projects-v3-page">
+
+    @if (TempData["SuccessMessage"] is string success)
+    {
+        <div class="v3-alert v3-alert-success">@success</div>
+    }
+
+    @if (TempData["ErrorMessage"] is string error)
+    {
+        <div class="v3-alert">@error</div>
+    }
+
+    <section class="projects-v3-header">
+        <div>
+            <span class="projects-v3-kicker">SCRUM</span>
+            <h1>Product backlog</h1>
+            <p>@Model.ProjectName</p>
+        </div>
+
+        @if (Model.CanManage)
+        {
+            <a asp-controller="Backlog"
+               asp-action="Create"
+               asp-route-projectId="@Model.ProjectId"
+               class="project-form-v3-submit">
+                + Add backlog item
+            </a>
+        }
+    </section>
+
+    <section class="projects-v3-panel">
+
+        <div class="projects-v3-toolbar">
+            <div>
+                <h2>Backlog items</h2>
+                <span>@Model.Items.Count items</span>
+            </div>
+        </div>
+
+        @if (Model.Items.Count == 0)
+        {
+            <div class="projects-v3-empty">
+                <strong>No backlog items yet</strong>
+                <p>Create the first backlog item for this Scrum project.</p>
+            </div>
+        }
+        else
+        {
+            <div class="projects-v3-table">
+
+                <div class="projects-v3-table-head">
+                    <span>Item</span>
+                    <span>Priority</span>
+                    <span>Status</span>
+                    <span>Sprint</span>
+                    <span>Created</span>
+                    <span></span>
+                </div>
+
+                @foreach (var item in Model.Items)
+                {
+                    <div class="projects-v3-row">
+
+                        <div class="projects-v3-project">
+                            <div class="projects-v3-avatar">
+                                @(item.Title.Length > 0 ? item.Title[..1].ToUpperInvariant() : "B")
+                            </div>
+
+                            <div>
+                                <strong>@item.Title</strong>
+                                <span>@item.Description</span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <span class="projects-v3-method">@item.Priority</span>
+                        </div>
+
+                        <div>
+                            <span class="projects-v3-status">
+                                @(item.Status == Planora.Domain.Enums.BacklogItemStatus.InSprint
+                                    ? "In Sprint"
+                                    : item.Status.ToString())
+                            </span>
+                        </div>
+
+                        <div>
+                            @(item.IsAssignedToSprint ? "Assigned" : "Not assigned")
+                        </div>
+
+                        <div class="projects-v3-timeline">
+                            <strong>
+                                @item.CreatedAt.ToString("dd MMM yyyy", CultureInfo.InvariantCulture)
+                            </strong>
+                        </div>
+
+                        <div>
+                            @if (Model.CanManage &&
+                                 item.Status != Planora.Domain.Enums.BacklogItemStatus.InSprint &&
+                                 item.Status != Planora.Domain.Enums.BacklogItemStatus.Completed)
+                            {
+                                <div class="backlog-row-actions">
+
+                                    <a asp-controller="Backlog"
+                                       asp-action="Edit"
+                                       asp-route-projectId="@Model.ProjectId"
+                                       asp-route-id="@item.Id"
+                                       class="backlog-action backlog-action-edit">
+                                        Edit
+                                    </a>
+
+                                    <a asp-controller="Backlog"
+                                       asp-action="ConfirmDelete"
+                                       asp-route-projectId="@Model.ProjectId"
+                                       asp-route-id="@item.Id"
+                                       class="backlog-action backlog-action-delete">
+                                        Delete
+                                    </a>
+
+                                </div>
+                            }
+                        </div>
+
+                    </div>
+                }
+            </div>
+        }
+
+    </section>
+
+</div>
+

@@ -1,0 +1,45 @@
+@{
+    string pageTitle =
+        ViewData["Title"]?.ToString()
+        ?? "Planora";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8" />
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0" />
+
+    <title>@pageTitle - Planora</title>
+
+    <link rel="stylesheet"
+          href="~/css/auth.css"
+          asp-append-version="true" />
+
+    @await RenderSectionAsync(
+    "Styles",
+    required: false)
+
+</head>
+
+<body>
+
+    <main class="auth-page">
+
+        @RenderBody()
+
+    </main>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+    @await RenderSectionAsync(
+    "Scripts",
+    required: false)
+
+</body>
+
+</html>

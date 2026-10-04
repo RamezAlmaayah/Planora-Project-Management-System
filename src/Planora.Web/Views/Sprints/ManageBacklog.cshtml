@@ -1,0 +1,203 @@
+@model Planora.Web.ViewModels.Sprints.SprintPlanningViewModel
+@using Planora.Domain.Enums
+
+@{
+    ViewData["Title"] = "Sprint Planning";
+    Layout = "_AppLayout";
+
+    bool completed =
+        Model.SprintStatus == SprintStatus.Completed;
+    bool readOnly = completed || Model.IsArchived;
+}
+
+@section Styles {
+    <link rel="stylesheet"
+          href="~/css/projects.css"
+          asp-append-version="true" />
+}
+
+<div class="projects-v3-page">
+
+    <div class="project-form-v3-back">
+        <a asp-action="Index"
+           asp-route-projectId="@Model.ProjectId">
+            &larr; Back to sprints
+        </a>
+    </div>
+
+    @if (TempData["SuccessMessage"] is string success)
+    {
+        <div class="v3-alert v3-alert-success">@success</div>
+    }
+
+    @if (TempData["ErrorMessage"] is string error)
+    {
+        <div class="v3-alert">@error</div>
+    }
+
+    <section class="projects-v3-header">
+        <div>
+            <span class="projects-v3-kicker">SPRINT PLANNING</span>
+            <h1>@Model.SprintName</h1>
+            <p>@Model.ProjectName</p>
+        </div>
+        <a asp-controller="Tasks" asp-action="Index"
+           asp-route-projectId="@Model.ProjectId"
+           asp-route-sprintId="@Model.SprintId"
+           class="backlog-action backlog-action-edit">View Tasks</a>
+        <a asp-controller="Tasks" asp-action="Board"
+           asp-route-projectId="@Model.ProjectId"
+           asp-route-sprintId="@Model.SprintId"
+           class="backlog-action backlog-action-edit">Scrum Board</a>
+    </section>
+
+    @if (readOnly)
+    {
+        <div class="v3-alert" role="status">This sprint is read-only. You can still view its tasks.</div>
+    }
+
+    <section class="projects-v3-panel">
+
+        <div class="projects-v3-toolbar">
+            <div>
+                <h2>Sprint backlog</h2>
+                <span>@Model.SprintItems.Count items</span>
+            </div>
+        </div>
+
+        @if (Model.SprintItems.Count == 0)
+        {
+            <div class="projects-v3-empty">
+                <strong>No items in this sprint</strong>
+                <p>Add a Ready backlog item below.</p>
+            </div>
+        }
+        else
+        {
+            @foreach (var item in Model.SprintItems)
+            {
+                <div class="projects-v3-row sprint-planning-v3-row">
+                    <div class="projects-v3-project">
+                        <div class="projects-v3-avatar">B</div>
+                        <div>
+                            <strong>@item.Title</strong>
+                            <span>@item.TaskCount related tasks</span>
+                        </div>
+                    </div>
+
+                    <div>@item.Priority</div>
+
+                    <div>
+                        <span class="projects-v3-status">
+                            @(item.Status == BacklogItemStatus.InSprint ? "In Sprint" : item.Status.ToString())
+                        </span>
+                    </div>
+
+                    <div>
+                        @if (!readOnly && item.Status == BacklogItemStatus.InSprint)
+                        {
+                            <a asp-controller="Tasks" asp-action="Create"
+                               asp-route-projectId="@Model.ProjectId"
+                               asp-route-sprintId="@Model.SprintId"
+                               asp-route-sprintBacklogItemId="@item.SprintBacklogItemId"
+                               class="backlog-action backlog-action-edit">Create Task</a>
+                        }
+                    </div>
+                    <div></div>
+
+                    <div>
+                        @if (!readOnly && item.Status != BacklogItemStatus.Completed &&
+                             item.TaskCount == 0)
+                        {
+                            <form asp-action="RemoveBacklogItem"
+                                  asp-route-projectId="@Model.ProjectId"
+                                  asp-route-id="@Model.SprintId"
+                                  method="post">
+
+                                <input type="hidden"
+                                       name="backlogItemId"
+                                       value="@item.Id" />
+
+                                <button type="submit"
+                                        class="backlog-action backlog-action-delete">
+                                    Remove
+                                </button>
+                            </form>
+                        }
+                    </div>
+                </div>
+            }
+        }
+
+    </section>
+
+    @if (!readOnly)
+    {
+        <section class="projects-v3-panel">
+
+            <div class="projects-v3-toolbar">
+                <div>
+                    <h2>Ready backlog</h2>
+                    <span>@Model.ReadyItems.Count available</span>
+                </div>
+            </div>
+
+            @if (Model.ReadyItems.Count == 0)
+            {
+                <div class="projects-v3-empty">
+                    <strong>No Ready items</strong>
+                    <p>Set a backlog item to Ready first.</p>
+                </div>
+            }
+            else
+            {
+                @foreach (var item in Model.ReadyItems)
+                {
+                    <div class="projects-v3-row sprint-planning-v3-row">
+
+                        <div class="projects-v3-project">
+                            <div class="projects-v3-avatar">B</div>
+                            <div>
+                                <strong>@item.Title</strong>
+                                <span>Ready for sprint planning</span>
+                            </div>
+                        </div>
+
+                        <div>@item.Priority</div>
+
+                        <div>
+                            <span class="projects-v3-status">
+                                Ready
+                            </span>
+                        </div>
+
+                        <div></div>
+                        <div></div>
+
+                        <div>
+                            <form asp-action="AddBacklogItem"
+                                  asp-route-projectId="@Model.ProjectId"
+                                  asp-route-id="@Model.SprintId"
+                                  method="post">
+
+                                <input type="hidden"
+                                       name="backlogItemId"
+                                       value="@item.Id" />
+
+                                <button type="submit"
+                                        class="backlog-action backlog-action-edit">
+                                    Add to sprint
+                                </button>
+
+                            </form>
+                        </div>
+
+                    </div>
+                }
+            }
+
+        </section>
+    }
+
+</div>
+

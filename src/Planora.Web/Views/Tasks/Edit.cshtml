@@ -1,0 +1,43 @@
+@model Planora.Web.ViewModels.Tasks.TaskFormViewModel
+
+@{
+    ViewData["Title"] = "Edit Task";
+    ViewData["IsEdit"] = true;
+    Layout = "_AppLayout";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/projects.css" asp-append-version="true" />
+}
+
+<div class="project-form-v3-page">
+    <div class="project-form-v3-back">
+        <a asp-action="Details" asp-route-projectId="@Model.ProjectId" asp-route-sprintId="@Model.SprintId" asp-route-id="@Model.Id">
+            &larr; Back to task
+        </a>
+    </div>
+    <section class="project-form-v3-header">
+        <div>
+            <span class="project-form-v3-kicker">SCRUM</span>
+            <h1>Edit task</h1>
+            <p>@Model.ProjectName &middot; @Model.SprintName</p>
+        </div>
+    </section>
+    <form asp-action="Edit" asp-route-projectId="@Model.ProjectId" asp-route-sprintId="@Model.SprintId" asp-route-id="@Model.Id"
+          method="post" class="project-form-v3" data-task-form>
+        <partial name="_TaskForm" model="Model" />
+        <div class="project-form-v3-actions">
+            <a asp-action="Details" asp-route-projectId="@Model.ProjectId" asp-route-sprintId="@Model.SprintId" asp-route-id="@Model.Id"
+               class="project-form-v3-cancel">Cancel</a>
+            @if (Model.CanSave)
+            {
+                <button type="submit" class="project-form-v3-submit">Save changes</button>
+            }
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script type="module" src="~/js/tasks.js" asp-append-version="true"></script>
+}

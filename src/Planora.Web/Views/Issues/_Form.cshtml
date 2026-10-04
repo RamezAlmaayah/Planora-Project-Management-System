@@ -1,0 +1,42 @@
+@model Planora.Web.ViewModels.Issues.IssueFormViewModel
+@using Planora.Domain.Enums
+
+<div asp-validation-summary="ModelOnly" class="v3-alert" role="alert"></div>
+
+<div class="project-form-v3-grid">
+    <div class="project-form-v3-field project-form-v3-wide">
+        <label asp-for="Title">Title</label>
+        <input asp-for="Title" maxlength="200" autocomplete="off" />
+        <span asp-validation-for="Title"></span>
+    </div>
+
+    <div class="project-form-v3-field project-form-v3-wide">
+        <label asp-for="Description">Description</label>
+        <textarea asp-for="Description" rows="7" maxlength="3000"></textarea>
+        <span asp-validation-for="Description"></span>
+    </div>
+
+    <div class="project-form-v3-field">
+        <label asp-for="Severity">Severity</label>
+        <select asp-for="Severity" asp-items="Html.GetEnumSelectList<IssueSeverity>()"></select>
+        <span asp-validation-for="Severity"></span>
+    </div>
+
+    <div class="project-form-v3-field">
+        <label asp-for="Priority">Priority</label>
+        <select asp-for="Priority" asp-items="Html.GetEnumSelectList<PriorityLevel>()"></select>
+        <span asp-validation-for="Priority"></span>
+    </div>
+
+    <div class="project-form-v3-field project-form-v3-wide">
+        <label asp-for="TaskItemId">Related task</label>
+        <select asp-for="TaskItemId">
+            <option value="">No related task</option>
+            @foreach (var task in Model.TaskOptions)
+            {
+                <option value="@task.TaskId">@task.SprintName &mdash; @task.Title</option>
+            }
+        </select>
+        <span asp-validation-for="TaskItemId"></span>
+    </div>
+</div>

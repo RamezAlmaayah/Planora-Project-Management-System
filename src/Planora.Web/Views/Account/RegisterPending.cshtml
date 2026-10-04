@@ -1,0 +1,277 @@
+@{
+    ViewData["Title"] = "Verify Account";
+    Layout = "_AuthLayout";
+}
+
+<div class="auth-v3-shell"
+     data-auth-page="register-pending">
+
+    <!-- =====================================================
+         LEFT SIDE
+         ===================================================== -->
+
+    <section class="auth-v3-showcase">
+
+        <div class="auth-v3-brand">
+
+            <div class="auth-v3-brand-icon auth-v3-brand-logo-box">
+    <img src="~/images/brand/planora-logo.png"
+         asp-append-version="true"
+         alt="Planora"
+         class="auth-v3-brand-logo" />
+</div>
+
+<span>Planora</span>
+
+        </div>
+
+
+        <div class="auth-v3-showcase-content">
+
+            <span class="auth-v3-kicker">
+                ACCOUNT VERIFICATION
+            </span>
+
+            <h1>
+                Create. Verify. Start.
+            </h1>
+
+            <p>
+                Your Planora account has been created successfully.
+                Verify your email address to activate your account
+                and start using your workspace.
+            </p>
+
+
+            <div class="auth-v3-features">
+
+                <article>
+
+                    <div class="auth-v3-feature-icon">
+
+                        <svg viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.8"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+
+                            <path d="M20 6 9 17l-5-5" />
+
+                        </svg>
+
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Account created
+                        </strong>
+
+                        <span>
+                            Your Planora profile is ready.
+                        </span>
+
+                    </div>
+
+                </article>
+
+
+                <article>
+
+                    <div class="auth-v3-feature-icon">
+
+                        <svg viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.8"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+
+                            <rect x="3"
+                                  y="5"
+                                  width="18"
+                                  height="14"
+                                  rx="2" />
+
+                            <path d="m3 7 9 6 9-6" />
+
+                        </svg>
+
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Verify your email
+                        </strong>
+
+                        <span>
+                            Open the verification link in your inbox.
+                        </span>
+
+                    </div>
+
+                </article>
+
+
+                <article>
+
+                    <div class="auth-v3-feature-icon">
+
+                        <svg viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.8"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+
+                            <path d="M5 12h14" />
+
+                            <path d="m14 7 5 5-5 5" />
+
+                        </svg>
+
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Start securely
+                        </strong>
+
+                        <span>
+                            Sign in after your email is confirmed.
+                        </span>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+        </div>
+
+
+        <div class="auth-v3-showcase-footer">
+            Secure project management with Planora.
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         RESULT SIDE
+         ===================================================== -->
+
+    <section class="auth-v3-form-side">
+
+        <div class="auth-v3-form-wrapper">
+
+            <div class="auth-v3-mobile-brand">
+    <img src="~/images/brand/planora-logo.png"
+         asp-append-version="true"
+         alt="Planora"
+         class="auth-v3-mobile-logo" />
+    <span>Planora</span>
+</div>
+
+
+            <div class="auth-v3-result">
+
+                <div class="auth-v3-result-icon">
+
+                    <svg viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="1.8"
+                         stroke-linecap="round"
+                         stroke-linejoin="round">
+
+                        <rect x="3"
+                              y="5"
+                              width="18"
+                              height="14"
+                              rx="2" />
+
+                        <path d="m3 7 9 6 9-6" />
+
+                        <path d="m16 16 2 2 3-4" />
+
+                    </svg>
+
+                </div>
+
+
+                <span class="auth-v3-result-kicker">
+                    EMAIL VERIFICATION
+                </span>
+
+
+                <h2>
+                    Verify your email
+                </h2>
+
+
+                <p>
+                    Your Planora account was created successfully.
+                    Check your inbox and verify your email address
+                    before signing in.
+                </p>
+
+
+                <div class="auth-v3-result-note">
+
+                    <svg viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="1.8"
+                         stroke-linecap="round"
+                         stroke-linejoin="round">
+
+                        <circle cx="12"
+                                cy="12"
+                                r="9" />
+
+                        <path d="M12 8v4" />
+
+                        <path d="M12 16h.01" />
+
+                    </svg>
+
+                    <span>
+                        For security, your account remains inactive
+                        until your email address is successfully verified.
+                    </span>
+
+                </div>
+
+
+                <a asp-controller="Account"
+                   asp-action="Login"
+                   class="auth-v3-submit auth-v3-result-button">
+
+                    Back to sign in
+
+                    <svg viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="1.9"
+                         stroke-linecap="round"
+                         stroke-linejoin="round">
+
+                        <path d="M5 12h14" />
+
+                        <path d="m14 7 5 5-5 5" />
+
+                    </svg>
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</div>

@@ -1,0 +1,1632 @@
+/* =========================================================
+   PLANORA AUTH V3
+   ========================================================= */
+
+.auth-page {
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    background: #f5f5f0;
+    color: #20201e;
+}
+
+.auth-v3-shell {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: minmax(500px, 0.95fr) minmax(560px, 1.05fr);
+}
+
+
+/* =========================================================
+   SHOWCASE
+   ========================================================= */
+
+.auth-v3-showcase {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 42px 48px 34px;
+    border-right: 1px solid #deded8;
+    background: #ece9e1;
+}
+
+.auth-v3-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #20201e;
+    font-size: 24px;
+    font-weight: 650;
+}
+
+.auth-v3-brand-icon {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: #20201e;
+    color: #ffffff;
+}
+
+    .auth-v3-brand-icon svg {
+        width: 21px;
+        height: 21px;
+    }
+
+
+.auth-v3-showcase-content {
+    max-width: 610px;
+    margin: auto 0;
+}
+
+.auth-v3-kicker {
+    display: block;
+    margin-bottom: 18px;
+    color: #6e6e67;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .09em;
+}
+
+.auth-v3-showcase-content h1 {
+    margin: 0;
+    color: #20201e;
+    font-size: clamp(54px, 5vw, 78px);
+    font-weight: 600;
+    line-height: .98;
+    letter-spacing: -0.055em;
+}
+
+.auth-v3-showcase-content > p {
+    max-width: 550px;
+    margin: 26px 0 0;
+    color: #565650;
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 1.75;
+}
+
+
+/* =========================================================
+   FEATURES
+   ========================================================= */
+
+.auth-v3-features {
+    display: grid;
+    gap: 10px;
+    margin-top: 34px;
+}
+
+    .auth-v3-features article {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 14px 16px;
+        border: 1px solid #d9d5cc;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, .44);
+    }
+
+.auth-v3-feature-icon {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 42px;
+    border-radius: 9px;
+    background: #ffffff;
+    color: #3f3e39;
+}
+
+    .auth-v3-feature-icon svg {
+        width: 20px;
+        height: 20px;
+    }
+
+.auth-v3-features strong {
+    display: block;
+    color: #272724;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.auth-v3-features span {
+    display: block;
+    margin-top: 3px;
+    color: #666660;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+
+.auth-v3-showcase-footer {
+    color: #777770;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+
+/* =========================================================
+   FORM SIDE
+   ========================================================= */
+
+.auth-v3-form-side {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 46px;
+    background: #ffffff;
+}
+
+.auth-v3-form-wrapper {
+    width: 100%;
+    max-width: 560px;
+}
+
+.auth-v3-mobile-brand {
+    display: none;
+}
+
+
+/* HEADER */
+
+.auth-v3-form-header {
+    margin-bottom: 34px;
+}
+
+    .auth-v3-form-header > span {
+        display: block;
+        margin-bottom: 10px;
+        color: #74746d;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: .08em;
+    }
+
+    .auth-v3-form-header h2 {
+        margin: 0;
+        color: #20201e;
+        font-size: 40px;
+        font-weight: 600;
+        line-height: 1.15;
+        letter-spacing: -0.04em;
+    }
+
+    .auth-v3-form-header p {
+        margin: 12px 0 0;
+        color: #5f5f59;
+        font-size: 16px;
+        font-weight: 500;
+        line-height: 1.65;
+    }
+
+
+/* =========================================================
+   FORM
+   ========================================================= */
+
+.auth-v3-form {
+    width: 100%;
+}
+
+.auth-v3-field {
+    margin-bottom: 22px;
+}
+
+    .auth-v3-field label {
+        display: block;
+        margin-bottom: 10px;
+        color: #292926;
+        font-size: 15px;
+        font-weight: 600;
+    }
+
+
+/* INPUT */
+
+.auth-v3-input-wrap {
+    position: relative;
+}
+
+    .auth-v3-input-wrap > svg {
+        position: absolute;
+        top: 50%;
+        left: 16px;
+        width: 20px;
+        height: 20px;
+        transform: translateY(-50%);
+        color: #777770;
+        pointer-events: none;
+    }
+
+    .auth-v3-input-wrap input {
+        width: 100%;
+        height: 58px;
+        box-sizing: border-box;
+        padding: 0 16px 0 48px;
+        border: 1px solid #d7d7d1;
+        border-radius: 10px;
+        background: #ffffff;
+        color: #22221f;
+        outline: 0;
+        font-family: inherit;
+        font-size: 15px;
+        font-weight: 500;
+    }
+
+        .auth-v3-input-wrap input::placeholder {
+            color: #909089;
+            opacity: 1;
+        }
+
+        .auth-v3-input-wrap input:focus {
+            border-color: #777771;
+            box-shadow: 0 0 0 4px rgba(32, 32, 30, .06);
+        }
+
+
+/* =========================================================
+   OPTIONS
+   ========================================================= */
+
+.auth-v3-options {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin: 4px 0 26px;
+}
+
+.auth-v3-checkbox {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    color: #565650;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+    .auth-v3-checkbox input {
+        width: 17px;
+        height: 17px;
+        accent-color: #20201e;
+    }
+
+.auth-v3-options a,
+.auth-v3-switch a {
+    color: #20201e;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+    .auth-v3-options a:hover,
+    .auth-v3-switch a:hover {
+        text-decoration: underline;
+    }
+
+
+/* =========================================================
+   BUTTON
+   ========================================================= */
+
+.auth-v3-submit {
+    width: 100%;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border: 1px solid #20201e;
+    border-radius: 10px;
+    background: #20201e;
+    color: #ffffff;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+    .auth-v3-submit:hover {
+        background: #050505;
+    }
+
+    .auth-v3-submit svg {
+        width: 19px;
+        height: 19px;
+    }
+
+
+/* =========================================================
+   REGISTER SWITCH
+   ========================================================= */
+
+.auth-v3-switch {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    margin-top: 24px;
+    color: #6b6b65;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+
+/* =========================================================
+   VALIDATION
+   ========================================================= */
+
+.auth-v3-validation {
+    margin-bottom: 18px;
+    color: #9c4b43;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+    .auth-v3-validation:empty {
+        display: none;
+    }
+
+.auth-v3-field-error {
+    display: block;
+    margin-top: 7px;
+    color: #9c4b43;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1050px) {
+
+    .auth-v3-shell {
+        grid-template-columns: minmax(400px, .85fr) 1fr;
+    }
+
+    .auth-v3-showcase {
+        padding: 36px;
+    }
+
+    .auth-v3-showcase-content h1 {
+        font-size: 55px;
+    }
+}
+
+@media (max-width: 820px) {
+
+    .auth-v3-shell {
+        display: block;
+    }
+
+    .auth-v3-showcase {
+        display: none;
+    }
+
+    .auth-v3-form-side {
+        min-height: 100vh;
+        padding: 32px 22px;
+    }
+
+    .auth-v3-mobile-brand {
+        display: block;
+        margin-bottom: 60px;
+        color: #20201e;
+        font-size: 24px;
+        font-weight: 650;
+    }
+
+    .auth-v3-form-header h2 {
+        font-size: 36px;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .auth-v3-form-side {
+        padding: 26px 18px;
+    }
+
+    .auth-v3-form-header h2 {
+        font-size: 32px;
+    }
+
+    .auth-v3-options {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+
+/* Login hero title - single line */
+
+.auth-v3-showcase-content h1 {
+    font-size: 48px !important;
+    font-weight: 600 !important;
+    line-height: 1.08 !important;
+    letter-spacing: -0.04em !important;
+    white-space: nowrap !important;
+}
+
+/* =========================================================
+   LOGIN — LARGER LEFT SHOWCASE
+   ========================================================= */
+
+.auth-v3-shell {
+    grid-template-columns: minmax(650px, 1.15fr) minmax(520px, 0.85fr) !important;
+}
+
+/* Left side */
+
+.auth-v3-showcase {
+    padding: 48px 56px 38px !important;
+}
+
+/* Content takes more width */
+
+.auth-v3-showcase-content {
+    width: 100% !important;
+    max-width: 720px !important;
+}
+
+    /* Main title */
+
+    .auth-v3-showcase-content h1 {
+        font-size: 52px !important;
+        font-weight: 600 !important;
+        line-height: 1.08 !important;
+        letter-spacing: -0.04em !important;
+        white-space: nowrap !important;
+    }
+
+    /* Description */
+
+    .auth-v3-showcase-content > p {
+        max-width: 650px !important;
+        font-size: 17px !important;
+        line-height: 1.75 !important;
+    }
+
+/* Feature cards */
+
+.auth-v3-features {
+    width: 100% !important;
+    max-width: 650px !important;
+    gap: 12px !important;
+    margin-top: 32px !important;
+}
+
+    .auth-v3-features article {
+        min-height: 58px !important;
+        padding: 13px 16px !important;
+    }
+
+/* Right login area */
+
+.auth-v3-form-wrapper {
+    max-width: 520px !important;
+}
+
+/* =========================================================
+   PLANORA AUTH — LOGIN / REGISTER SLIDE TRANSITION
+   ========================================================= */
+
+.auth-v3-shell {
+    position: relative;
+    overflow: hidden;
+}
+
+.auth-v3-showcase,
+.auth-v3-form-side {
+    will-change: transform, opacity;
+    transition: transform .52s cubic-bezier(.76, 0, .24, 1), opacity .36s ease;
+}
+
+
+/* =========================================================
+   REGISTER LAYOUT
+   Form left / Showcase right
+   ========================================================= */
+
+.auth-v3-register {
+    grid-template-columns: minmax(520px, .85fr) minmax(650px, 1.15fr);
+}
+
+    .auth-v3-register .auth-v3-showcase {
+        border-right: 0;
+        border-left: 1px solid #deded8;
+    }
+
+
+/* =========================================================
+   LOGIN ? REGISTER
+   ========================================================= */
+
+.auth-v3-shell[data-auth-page="login"]
+.auth-v3-form-side {
+    transform: translateX(0);
+}
+
+.auth-v3-shell[data-auth-page="login"]
+.auth-v3-showcase {
+    transform: translateX(0);
+}
+
+
+.auth-v3-leave-to-register
+.auth-v3-showcase {
+    transform: translateX(100%);
+}
+
+.auth-v3-leave-to-register
+.auth-v3-form-side {
+    transform: translateX(-100%);
+    opacity: .15;
+}
+
+
+/* =========================================================
+   REGISTER ? LOGIN
+   ========================================================= */
+
+.auth-v3-leave-to-login
+.auth-v3-showcase {
+    transform: translateX(-100%);
+}
+
+.auth-v3-leave-to-login
+.auth-v3-form-side {
+    transform: translateX(100%);
+    opacity: .15;
+}
+
+
+/* =========================================================
+   REGISTER ENTERING FROM LOGIN
+   ========================================================= */
+
+.auth-v3-enter-from-login
+.auth-v3-form-side {
+    transform: translateX(-70%);
+    opacity: 0;
+}
+
+.auth-v3-enter-from-login
+.auth-v3-showcase {
+    transform: translateX(70%);
+}
+
+.auth-v3-enter-from-login.auth-v3-enter-active
+.auth-v3-form-side,
+.auth-v3-enter-from-login.auth-v3-enter-active
+.auth-v3-showcase {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+
+/* =========================================================
+   LOGIN ENTERING FROM REGISTER
+   ========================================================= */
+
+.auth-v3-enter-from-register
+.auth-v3-form-side {
+    transform: translateX(70%);
+    opacity: 0;
+}
+
+.auth-v3-enter-from-register
+.auth-v3-showcase {
+    transform: translateX(-70%);
+}
+
+.auth-v3-enter-from-register.auth-v3-enter-active
+.auth-v3-form-side,
+.auth-v3-enter-from-register.auth-v3-enter-active
+.auth-v3-showcase {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+
+/* =========================================================
+   REGISTER PASSWORD HINT
+   ========================================================= */
+
+.auth-v3-password-hint {
+    margin-top: 8px;
+    color: #6c6c66;
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 1.55;
+}
+
+
+/* =========================================================
+   MOBILE
+   No heavy sliding
+   ========================================================= */
+
+@media (max-width: 820px) {
+
+    .auth-v3-register {
+        display: block;
+    }
+
+        .auth-v3-register
+        .auth-v3-showcase {
+            display: none;
+        }
+
+    .auth-v3-showcase,
+    .auth-v3-form-side {
+        transition: opacity .25s ease, transform .25s ease;
+    }
+
+    .auth-v3-leave-to-register
+    .auth-v3-form-side,
+    .auth-v3-leave-to-login
+    .auth-v3-form-side {
+        transform: translateY(15px);
+        opacity: 0;
+    }
+}
+
+/* =========================================================
+   FIX: LOGIN -> REGISTER ANIMATION
+   ========================================================= */
+
+.auth-v3-shell[data-auth-page="login"].auth-v3-leave-to-register
+.auth-v3-showcase {
+    animation: planoraLoginShowcaseToRegister .50s cubic-bezier(.76, 0, .24, 1) forwards !important;
+}
+
+.auth-v3-shell[data-auth-page="login"].auth-v3-leave-to-register
+.auth-v3-form-side {
+    animation: planoraLoginFormToRegister .50s cubic-bezier(.76, 0, .24, 1) forwards !important;
+}
+
+
+@keyframes planoraLoginShowcaseToRegister {
+
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+
+    to {
+        transform: translateX(100%);
+        opacity: 1;
+    }
+}
+
+
+@keyframes planoraLoginFormToRegister {
+
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+
+    to {
+        transform: translateX(-100%);
+        opacity: 0.15;
+    }
+}
+
+/* =========================================================
+   AUTH RESULT / CONFIRMATION
+   ========================================================= */
+
+.auth-v3-result {
+    width: 100%;
+}
+
+.auth-v3-result-icon {
+    width: 58px;
+    height: 58px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 28px;
+    border: 1px solid #d9d9d3;
+    border-radius: 12px;
+    background: #f5f4ef;
+    color: #262623;
+}
+
+    .auth-v3-result-icon svg {
+        width: 27px;
+        height: 27px;
+    }
+
+.auth-v3-result-kicker {
+    display: block;
+    margin-bottom: 10px;
+    color: #73736c;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .08em;
+}
+
+.auth-v3-result h2 {
+    margin: 0;
+    color: #20201e;
+    font-size: 40px;
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.04em;
+}
+
+.auth-v3-result > p {
+    max-width: 520px;
+    margin: 14px 0 26px;
+    color: #5f5f59;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.7;
+}
+
+.auth-v3-result-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 28px;
+    padding: 16px;
+    border: 1px solid #deded8;
+    border-radius: 10px;
+    background: #f8f7f3;
+    color: #5e5e58;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.6;
+}
+
+    .auth-v3-result-note svg {
+        width: 19px;
+        height: 19px;
+        flex: 0 0 19px;
+        margin-top: 1px;
+    }
+
+.auth-v3-result-button {
+    text-decoration: none;
+    box-sizing: border-box;
+}
+
+/* =========================================================
+   Larger confirmation note
+   ========================================================= */
+
+.auth-v3-result-note {
+    min-height: 72px !important;
+    padding: 20px 22px !important;
+    gap: 14px !important;
+    border-radius: 12px !important;
+    font-size: 15px !important;
+    font-weight: 500 !important;
+    line-height: 1.7 !important;
+}
+
+    .auth-v3-result-note svg {
+        width: 22px !important;
+        height: 22px !important;
+        flex: 0 0 22px !important;
+        margin-top: 2px !important;
+    }
+
+    .auth-v3-result-note span {
+        font-size: 15px !important;
+        font-weight: 500 !important;
+        line-height: 1.7 !important;
+    }
+
+/* =========================================================
+   GLOBAL AUTH FEATURE CARDS — LARGER & CLEARER
+   Applies to Login / Register / Forgot / Reset / Confirm pages
+   ========================================================= */
+
+.auth-v3-features {
+    gap: 14px !important;
+}
+
+    .auth-v3-features article {
+        min-height: 78px !important;
+        padding: 16px 18px !important;
+        gap: 16px !important;
+        border-radius: 11px !important;
+    }
+
+
+/* Icon box */
+
+.auth-v3-feature-icon {
+    width: 48px !important;
+    height: 48px !important;
+    flex: 0 0 48px !important;
+    border-radius: 10px !important;
+}
+
+    .auth-v3-feature-icon svg {
+        width: 22px !important;
+        height: 22px !important;
+    }
+
+
+/* Main card title */
+
+.auth-v3-features strong {
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    line-height: 1.35 !important;
+}
+
+
+/* Card description */
+
+.auth-v3-features span {
+    margin-top: 5px !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    line-height: 1.5 !important;
+}
+
+/* =========================================================
+   PLANORA AUTH — GLOBAL LARGE SCALE
+   Reset Password page = official size reference
+   ========================================================= */
+
+/* Main split */
+.auth-v3-shell {
+    min-height: 100vh !important;
+}
+
+/* Left side */
+.auth-v3-showcase {
+    padding: 46px 58px 38px !important;
+}
+
+/* Brand */
+.auth-v3-brand {
+    font-size: 24px !important;
+    font-weight: 650 !important;
+    gap: 12px !important;
+}
+
+.auth-v3-brand-icon {
+    width: 44px !important;
+    height: 44px !important;
+}
+
+    .auth-v3-brand-icon svg {
+        width: 22px !important;
+        height: 22px !important;
+    }
+
+/* Left content */
+.auth-v3-showcase-content {
+    width: 100% !important;
+    max-width: 700px !important;
+}
+
+.auth-v3-kicker {
+    margin-bottom: 18px !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    letter-spacing: .08em !important;
+}
+
+/* Main large title */
+.auth-v3-showcase-content h1 {
+    margin: 0 !important;
+    font-size: 50px !important;
+    font-weight: 600 !important;
+    line-height: 1.08 !important;
+    letter-spacing: -0.04em !important;
+}
+
+/* Left description */
+.auth-v3-showcase-content > p {
+    max-width: 660px !important;
+    margin-top: 26px !important;
+    font-size: 17px !important;
+    font-weight: 500 !important;
+    line-height: 1.8 !important;
+}
+
+
+/* =========================================================
+   FEATURE CARDS
+   ========================================================= */
+
+.auth-v3-features {
+    margin-top: 34px !important;
+    gap: 14px !important;
+}
+
+    .auth-v3-features article {
+        min-height: 80px !important;
+        padding: 17px 18px !important;
+        gap: 16px !important;
+        border-radius: 11px !important;
+    }
+
+.auth-v3-feature-icon {
+    width: 48px !important;
+    height: 48px !important;
+    flex: 0 0 48px !important;
+}
+
+    .auth-v3-feature-icon svg {
+        width: 22px !important;
+        height: 22px !important;
+    }
+
+.auth-v3-features strong {
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    line-height: 1.4 !important;
+}
+
+.auth-v3-features span {
+    margin-top: 5px !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    line-height: 1.55 !important;
+}
+
+
+/* =========================================================
+   RIGHT SIDE
+   ========================================================= */
+
+.auth-v3-form-side {
+    padding: 48px !important;
+}
+
+.auth-v3-form-wrapper {
+    width: 100% !important;
+    max-width: 560px !important;
+}
+
+
+/* =========================================================
+   FORM HEADER
+   ========================================================= */
+
+.auth-v3-form-header {
+    margin-bottom: 34px !important;
+}
+
+    .auth-v3-form-header > span {
+        margin-bottom: 11px !important;
+        font-size: 13px !important;
+        font-weight: 700 !important;
+        letter-spacing: .08em !important;
+    }
+
+    .auth-v3-form-header h2 {
+        font-size: 40px !important;
+        font-weight: 600 !important;
+        line-height: 1.15 !important;
+        letter-spacing: -0.04em !important;
+    }
+
+    .auth-v3-form-header p {
+        margin-top: 13px !important;
+        font-size: 16px !important;
+        font-weight: 500 !important;
+        line-height: 1.7 !important;
+    }
+
+
+/* =========================================================
+   FORM FIELDS
+   ========================================================= */
+
+.auth-v3-field {
+    margin-bottom: 22px !important;
+}
+
+    .auth-v3-field label {
+        margin-bottom: 10px !important;
+        font-size: 15px !important;
+        font-weight: 600 !important;
+    }
+
+.auth-v3-input-wrap input {
+    height: 58px !important;
+    padding-left: 48px !important;
+    font-size: 15px !important;
+    font-weight: 500 !important;
+    border-radius: 10px !important;
+}
+
+.auth-v3-input-wrap > svg {
+    width: 20px !important;
+    height: 20px !important;
+    left: 16px !important;
+}
+
+.auth-v3-input-wrap input::placeholder {
+    font-size: 15px !important;
+    font-weight: 500 !important;
+}
+
+
+/* =========================================================
+   PASSWORD HINT / ERRORS
+   ========================================================= */
+
+.auth-v3-password-hint {
+    margin-top: 8px !important;
+    font-size: 12px !important;
+    font-weight: 500 !important;
+    line-height: 1.6 !important;
+}
+
+.auth-v3-field-error {
+    margin-top: 7px !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+}
+
+
+/* =========================================================
+   OPTIONS
+   ========================================================= */
+
+.auth-v3-options {
+    margin-bottom: 26px !important;
+}
+
+    .auth-v3-checkbox,
+    .auth-v3-options a,
+    .auth-v3-switch,
+    .auth-v3-switch a {
+        font-size: 14px !important;
+    }
+
+
+/* =========================================================
+   PRIMARY BUTTON
+   ========================================================= */
+
+.auth-v3-submit {
+    height: 56px !important;
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    border-radius: 10px !important;
+}
+
+    .auth-v3-submit svg {
+        width: 19px !important;
+        height: 19px !important;
+    }
+
+
+/* =========================================================
+   RESULT / CONFIRMATION PAGES
+   ========================================================= */
+
+.auth-v3-result-icon {
+    width: 58px !important;
+    height: 58px !important;
+}
+
+    .auth-v3-result-icon svg {
+        width: 27px !important;
+        height: 27px !important;
+    }
+
+.auth-v3-result-kicker {
+    font-size: 13px !important;
+    font-weight: 700 !important;
+}
+
+.auth-v3-result h2 {
+    font-size: 40px !important;
+    font-weight: 600 !important;
+    line-height: 1.15 !important;
+}
+
+.auth-v3-result > p {
+    font-size: 16px !important;
+    font-weight: 500 !important;
+    line-height: 1.7 !important;
+}
+
+.auth-v3-result-note {
+    min-height: 72px !important;
+    padding: 20px 22px !important;
+    font-size: 15px !important;
+    font-weight: 500 !important;
+    line-height: 1.7 !important;
+}
+
+    .auth-v3-result-note span {
+        font-size: 15px !important;
+        font-weight: 500 !important;
+    }
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.auth-v3-showcase-footer {
+    font-size: 13px !important;
+    font-weight: 500 !important;
+}
+
+
+/* =========================================================
+   REGISTER ONLY
+   Prevent tall form from becoming too cramped
+   ========================================================= */
+
+.auth-v3-register .auth-v3-form-side {
+    padding-top: 34px !important;
+    padding-bottom: 34px !important;
+}
+
+.auth-v3-register .auth-v3-form-header {
+    margin-bottom: 24px !important;
+}
+
+.auth-v3-register .auth-v3-field {
+    margin-bottom: 17px !important;
+}
+
+
+/* =========================================================
+   PLANORA AUTH — FINAL UNIFIED SCALE
+   Reset Password = reference for ALL auth pages
+   ========================================================= */
+
+/* LEFT SIDE */
+
+.auth-page .auth-v3-showcase {
+    padding: 46px 58px 38px !important;
+}
+
+.auth-page .auth-v3-showcase-content {
+    width: 100% !important;
+    max-width: 700px !important;
+}
+
+.auth-page .auth-v3-kicker {
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    letter-spacing: .08em !important;
+}
+
+.auth-page .auth-v3-showcase-content h1 {
+    font-size: 50px !important;
+    font-weight: 600 !important;
+    line-height: 1.08 !important;
+    letter-spacing: -0.04em !important;
+}
+
+.auth-page .auth-v3-showcase-content > p {
+    max-width: 660px !important;
+    font-size: 17px !important;
+    font-weight: 500 !important;
+    line-height: 1.8 !important;
+}
+
+
+/* BRAND */
+
+.auth-page .auth-v3-brand {
+    font-size: 24px !important;
+    font-weight: 650 !important;
+}
+
+.auth-page .auth-v3-brand-icon {
+    width: 44px !important;
+    height: 44px !important;
+}
+
+    .auth-page .auth-v3-brand-icon svg {
+        width: 22px !important;
+        height: 22px !important;
+    }
+
+
+/* FEATURE CARDS */
+
+.auth-page .auth-v3-features {
+    gap: 14px !important;
+    margin-top: 34px !important;
+}
+
+    .auth-page .auth-v3-features article {
+        min-height: 80px !important;
+        padding: 17px 18px !important;
+        gap: 16px !important;
+        border-radius: 11px !important;
+    }
+
+.auth-page .auth-v3-feature-icon {
+    width: 48px !important;
+    height: 48px !important;
+    flex: 0 0 48px !important;
+}
+
+    .auth-page .auth-v3-feature-icon svg {
+        width: 22px !important;
+        height: 22px !important;
+    }
+
+.auth-page .auth-v3-features strong {
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    line-height: 1.4 !important;
+}
+
+.auth-page .auth-v3-features span {
+    margin-top: 5px !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    line-height: 1.55 !important;
+}
+
+
+/* RIGHT SIDE */
+
+.auth-page .auth-v3-form-side {
+    padding: 48px !important;
+}
+
+.auth-page .auth-v3-form-wrapper {
+    width: 100% !important;
+    max-width: 560px !important;
+}
+
+
+/* FORM HEADERS */
+
+.auth-page .auth-v3-form-header {
+    margin-bottom: 34px !important;
+}
+
+    .auth-page .auth-v3-form-header > span {
+        margin-bottom: 11px !important;
+        font-size: 13px !important;
+        font-weight: 700 !important;
+        letter-spacing: .08em !important;
+    }
+
+    .auth-page .auth-v3-form-header h2 {
+        font-size: 40px !important;
+        font-weight: 600 !important;
+        line-height: 1.15 !important;
+        letter-spacing: -0.04em !important;
+    }
+
+    .auth-page .auth-v3-form-header p {
+        margin-top: 13px !important;
+        font-size: 16px !important;
+        font-weight: 500 !important;
+        line-height: 1.7 !important;
+    }
+
+
+/* FIELDS */
+
+.auth-page .auth-v3-field {
+    margin-bottom: 22px !important;
+}
+
+    .auth-page .auth-v3-field label {
+        margin-bottom: 10px !important;
+        font-size: 15px !important;
+        font-weight: 600 !important;
+    }
+
+.auth-page .auth-v3-input-wrap input {
+    height: 58px !important;
+    padding-left: 48px !important;
+    font-size: 15px !important;
+    font-weight: 500 !important;
+    border-radius: 10px !important;
+}
+
+.auth-page .auth-v3-input-wrap > svg {
+    width: 20px !important;
+    height: 20px !important;
+    left: 16px !important;
+}
+
+.auth-page .auth-v3-input-wrap input::placeholder {
+    font-size: 15px !important;
+    font-weight: 500 !important;
+}
+
+
+/* OPTIONS / LINKS */
+
+.auth-page .auth-v3-checkbox,
+.auth-page .auth-v3-options a,
+.auth-page .auth-v3-switch,
+.auth-page .auth-v3-switch a {
+    font-size: 14px !important;
+}
+
+
+/* BUTTONS */
+
+.auth-page .auth-v3-submit {
+    height: 56px !important;
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    border-radius: 10px !important;
+}
+
+    .auth-page .auth-v3-submit svg {
+        width: 19px !important;
+        height: 19px !important;
+    }
+
+
+/* PASSWORD HINT */
+
+.auth-page .auth-v3-password-hint {
+    font-size: 12px !important;
+    font-weight: 500 !important;
+    line-height: 1.6 !important;
+}
+
+
+/* RESULT / CONFIRMATION PAGES */
+
+.auth-page .auth-v3-result-icon {
+    width: 58px !important;
+    height: 58px !important;
+}
+
+    .auth-page .auth-v3-result-icon svg {
+        width: 27px !important;
+        height: 27px !important;
+    }
+
+.auth-page .auth-v3-result-kicker {
+    font-size: 13px !important;
+    font-weight: 700 !important;
+}
+
+.auth-page .auth-v3-result h2 {
+    font-size: 40px !important;
+    font-weight: 600 !important;
+    line-height: 1.15 !important;
+}
+
+.auth-page .auth-v3-result > p {
+    font-size: 16px !important;
+    font-weight: 500 !important;
+    line-height: 1.7 !important;
+}
+
+.auth-page .auth-v3-result-note {
+    min-height: 72px !important;
+    padding: 20px 22px !important;
+    font-size: 15px !important;
+    font-weight: 500 !important;
+    line-height: 1.7 !important;
+}
+
+    .auth-page .auth-v3-result-note span {
+        font-size: 15px !important;
+        font-weight: 500 !important;
+    }
+
+
+/* FOOTER */
+
+.auth-page .auth-v3-showcase-footer {
+    font-size: 13px !important;
+    font-weight: 500 !important;
+}
+
+
+/* REGISTER HAS MORE FIELDS — KEEP SAME SCALE,
+   ONLY REDUCE EMPTY SPACING */
+
+.auth-page .auth-v3-register .auth-v3-form-side {
+    padding-top: 30px !important;
+    padding-bottom: 30px !important;
+}
+
+.auth-page .auth-v3-register .auth-v3-form-header {
+    margin-bottom: 22px !important;
+}
+
+.auth-page .auth-v3-register .auth-v3-field {
+    margin-bottom: 16px !important;
+}
+
+/* =========================================================
+   PLANORA — UNIFIED SYSTEM TYPOGRAPHY
+   ========================================================= */
+
+html,
+body,
+.auth-page {
+    font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+button,
+input,
+select,
+textarea {
+    font-family: inherit !important;
+}
+
+/* =========================================================
+   PLANORA — CLEANER FONT WEIGHTS
+   ========================================================= */
+
+/* Main titles */
+.auth-v3-showcase-content h1,
+.auth-v3-form-header h2,
+.auth-v3-result h2 {
+    font-weight: 600 !important;
+}
+
+/* Section / card titles */
+.auth-v3-features strong {
+    font-weight: 600 !important;
+}
+
+/* Labels */
+.auth-v3-field label {
+    font-weight: 500 !important;
+}
+
+/* Normal descriptions */
+.auth-v3-showcase-content > p,
+.auth-v3-form-header p,
+.auth-v3-result > p,
+.auth-v3-result-note,
+.auth-v3-features span {
+    font-weight: 400 !important;
+}
+
+/* Inputs */
+.auth-v3-input-wrap input {
+    font-weight: 400 !important;
+}
+
+/* Buttons / links */
+.auth-v3-submit,
+.auth-v3-options a,
+.auth-v3-switch a {
+    font-weight: 500 !important;
+}
+
+/* Small uppercase text */
+.auth-v3-kicker,
+.auth-v3-form-header > span,
+.auth-v3-result-kicker {
+    font-weight: 600 !important;
+}
+/* =========================================================
+   PLANORA — GLOBAL ICON MICRO INTERACTIONS
+   ========================================================= */
+
+/* Smooth motion for icons */
+a svg,
+button svg,
+[class*="icon"] svg {
+    transform-origin: center;
+    transition:
+        transform 160ms cubic-bezier(.2, .8, .2, 1),
+        opacity 160ms ease;
+}
+
+/* Hover */
+a:hover svg,
+button:hover svg,
+[class*="icon"]:hover svg {
+    transform: translateY(-1px) scale(1.055);
+}
+
+/* Click */
+a:active svg,
+button:active svg {
+    transform: translateY(0) scale(.96);
+}
+
+/* Interactive controls feel slightly alive */
+a,
+button {
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+    a svg,
+    button svg,
+    [class*="icon"] svg {
+        transition: none !important;
+        transform: none !important;
+    }
+}
+
+
+/* ===== PLANORA BRAND LOGO ===== */
+
+.auth-v3-brand-logo-box {
+    overflow: hidden !important;
+    background: transparent !important;
+}
+
+.auth-v3-brand-logo {
+    width: 100% !important;
+    height: 100% !important;
+
+    display: block !important;
+    object-fit: contain !important;
+}
+
+.auth-v3-mobile-brand {
+    display: flex !important;
+    align-items: center !important;
+    gap: 9px !important;
+}
+
+.auth-v3-mobile-logo {
+    width: 32px !important;
+    height: 32px !important;
+
+    display: block !important;
+    object-fit: contain !important;
+}
+
+/* ===== END PLANORA BRAND LOGO ===== */
+
+/* ===== PLANORA LOGO FINAL SIZE ===== */
+
+.auth-v3-brand-logo-box {
+    width: 48px !important;
+    height: 48px !important;
+    min-width: 48px !important;
+}
+
+.auth-v3-mobile-logo {
+    width: 42px !important;
+    height: 42px !important;
+    min-width: 42px !important;
+}
+
+/* ===== END PLANORA LOGO FINAL SIZE ===== */
+
+/* ===== AUTH LOGO TRANSPARENT FIX ===== */
+
+.auth-brand-logo,
+.auth-logo,
+.auth-brand img {
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+}
+
+.auth-brand-logo {
+    padding: 0 !important;
+    border-radius: 0 !important;
+}
+
+/* ===== END AUTH LOGO TRANSPARENT FIX ===== */
+
+

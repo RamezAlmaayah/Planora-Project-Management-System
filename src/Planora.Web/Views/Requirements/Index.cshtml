@@ -1,0 +1,136 @@
+@model Planora.Web.ViewModels.Requirements.RequirementIndexViewModel
+@using Planora.Domain.Enums
+@using System.Globalization
+
+@{
+    ViewData["Title"] = "Requirements";
+    Layout = "_AppLayout";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/projects.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/requirements.css" asp-append-version="true" />
+}
+
+<div class="projects-v3-page requirements-v3-page">
+    <div class="project-form-v3-back">
+        <a asp-controller="Projects" asp-action="Details" asp-route-id="@Model.ProjectId">
+            &larr; Back to project
+        </a>
+    </div>
+
+    @if (TempData["SuccessMessage"] is string success)
+    {
+        <div class="v3-alert v3-alert-success" role="status">@success</div>
+    }
+    @if (Model.IsReadOnly)
+    {
+        <div class="v3-alert">Requirements are read-only because this project is archived.</div>
+    }
+
+    <section class="projects-v3-header">
+        <div>
+            <span class="projects-v3-kicker">V-MODEL</span>
+            <h1>Requirements</h1>
+            <p>@Model.ProjectName</p>
+        </div>
+        <div class="requirements-v3-header-actions">
+            <a asp-action="Traceability" asp-route-projectId="@Model.ProjectId"
+               class="detail-v3-secondary">Traceability</a>
+            @if (Model.CanManage)
+            {
+                <a asp-controller="AiRequirements" asp-action="Index" asp-route-projectId="@Model.ProjectId"
+                   class="detail-v3-secondary">Generate with AI</a>
+                <a asp-action="Create" asp-route-projectId="@Model.ProjectId"
+                   class="project-form-v3-submit">+ New requirement</a>
+            }
+        </div>
+    </section>
+
+    <section class="projects-v3-panel">
+        <div class="projects-v3-toolbar requirements-v3-toolbar">
+            <div>
+                <h2>Project requirements</h2>
+                <span>@Model.Requirements.Count requirements</span>
+            </div>
+            <form asp-action="Index" method="get" class="requirements-v3-filters" role="search">
+                <input type="hidden" name="projectId" value="@Model.ProjectId" />
+                <input type="search" name="search" value="@Model.Search"
+                       maxlength="200" placeholder="Search requirements..."
+                       aria-label="Search requirements" autocomplete="off" />
+                <select name="type" aria-label="Filter by type">
+                    <option value="">All types</option>
+                    @foreach (RequirementType value in Enum.GetValues<RequirementType>())
+                    {
+                        <option value="@value" selected="@(Model.Type == value ? "selected" : null)">@value</option>
+                    }
+                </select>
+                <select name="status" aria-label="Filter by status">
+                    <option value="">All statuses</option>
+                    @foreach (RequirementStatus value in Enum.GetValues<RequirementStatus>())
+                    {
+                        <option value="@value" selected="@(Model.Status == value ? "selected" : null)">@value</option>
+                    }
+                </select>
+                <select name="priority" aria-label="Filter by priority">
+                    <option value="">All priorities</option>
+                    @foreach (PriorityLevel value in Enum.GetValues<PriorityLevel>())
+                    {
+                        <option value="@value" selected="@(Model.Priority == value ? "selected" : null)">@value</option>
+                    }
+                </select>
+                <button type="submit" class="backlog-action backlog-action-edit">Filter</button>
+                @if (!string.IsNullOrWhiteSpace(Model.Search) || Model.Type.HasValue ||
+                     Model.Status.HasValue || Model.Priority.HasValue)
+                {
+                    <a asp-action="Index" asp-route-projectId="@Model.ProjectId">Clear</a>
+                }
+            </form>
+        </div>
+
+        @if (Model.Requirements.Count == 0)
+        {
+            <div class="projects-v3-empty">
+                <strong>No requirements found</strong>
+                <p>V-Model project requirements will appear here.</p>
+            </div>
+        }
+        else
+        {
+            <div class="projects-v3-table requirements-v3-table">
+                <div class="projects-v3-table-head">
+                    <span>Requirement</span>
+                    <span>Type</span>
+                    <span>Status</span>
+                    <span>Priority</span>
+                    <span>Created</span>
+                    <span></span>
+                </div>
+                @foreach (var requirement in Model.Requirements)
+                {
+                    <div class="projects-v3-row">
+                        <div class="projects-v3-project">
+                            <div class="projects-v3-avatar">@requirement.Identifier[..1]</div>
+                            <div>
+                                <strong>@requirement.Identifier</strong>
+                                <span>@requirement.Title</span>
+                            </div>
+                        </div>
+                        <div><span class="projects-v3-method">@requirement.Type</span></div>
+                        <div><span class="projects-v3-status">@requirement.Status</span></div>
+                        <div>@requirement.Priority</div>
+                        <div class="projects-v3-timeline">
+                            <strong>@requirement.CreatorName</strong>
+                            <span>@requirement.CreatedAt.ToString("dd MMM yyyy", CultureInfo.InvariantCulture)</span>
+                        </div>
+                        <div class="backlog-row-actions">
+                            <a asp-action="Details" asp-route-projectId="@Model.ProjectId"
+                               asp-route-id="@requirement.Id"
+                               class="backlog-action backlog-action-edit">View</a>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </section>
+</div>

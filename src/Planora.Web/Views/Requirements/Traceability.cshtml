@@ -1,0 +1,147 @@
+@model Planora.Web.ViewModels.Requirements.RequirementTraceabilityViewModel
+@using Planora.Domain.Enums
+
+@{
+    ViewData["Title"] = "Requirement Traceability";
+    Layout = "_AppLayout";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/projects.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/requirements.css" asp-append-version="true" />
+}
+
+<div class="projects-v3-page requirements-v3-page">
+    <div class="project-form-v3-back">
+        <a asp-action="Index" asp-route-projectId="@Model.ProjectId">&larr; Back to requirements</a>
+    </div>
+    <section class="projects-v3-header">
+        <div>
+            <span class="projects-v3-kicker">V-MODEL</span>
+            <h1>Traceability</h1>
+            <p>@Model.ProjectName</p>
+            <small class="requirements-v3-ieee-title-note">
+                Requirement format aligned with IEEE SRS standards.
+            </small>
+        </div>
+    </section>
+
+    <section class="projects-v3-panel requirements-v3-traceability-panel">
+        <div class="projects-v3-toolbar">
+            <div>
+                <h2>Requirement traceability chains</h2>
+                <span>Real project artifacts and separate manual or external references.</span>
+            </div>
+        </div>
+        @if (Model.Requirements.Count == 0)
+        {
+            <div class="projects-v3-empty">
+                <strong>No requirements yet</strong>
+                <p>Create requirements before adding traceability references.</p>
+            </div>
+        }
+        else
+        {
+            <div class="requirements-v3-traceability-list">
+                @foreach (var requirement in Model.Requirements)
+                {
+                    <article>
+                        <div class="requirements-v3-traceability-heading">
+                            <div>
+                                <a asp-action="Details" asp-route-projectId="@Model.ProjectId"
+                                   asp-route-id="@requirement.RequirementId"><strong>@requirement.Identifier</strong></a>
+                                <span>@requirement.Title</span>
+                            </div>
+                            <div class="traceability-v3-statuses">
+                                <span class="projects-v3-status">@requirement.Status</span>
+                                <span class="projects-v3-status">@requirement.CoverageState</span>
+                            </div>
+                        </div>
+                        <div class="requirements-v3-traceability-content">
+                            <div>
+                                <strong>Dependencies</strong>
+                                @if (requirement.Dependencies.Count == 0)
+                                {
+                                    <span>None</span>
+                                }
+                                else
+                                {
+                                    <span>@string.Join(", ", requirement.Dependencies.Select(item => item.Identifier))</span>
+                                }
+                            </div>
+                            <div class="traceability-v3-matrix">
+                                <strong>Requirement &rarr; Design &rarr; Implementation &rarr; Verification</strong>
+                                @if (requirement.DesignArtifacts.Count == 0)
+                                {
+                                    <span>No Design</span>
+                                    <span>No Implementation</span>
+                                    <span>No Test Case</span>
+                                    <span>Not Executed</span>
+                                }
+                                else
+                                {
+                                    @foreach (var design in requirement.DesignArtifacts)
+                                    {
+                                        <span><a asp-controller="DesignArtifacts" asp-action="Details"
+                                                 asp-route-projectId="@Model.ProjectId" asp-route-id="@design.Id">@design.Identifier - @design.Title</a></span>
+                                        @if (design.ImplementationArtifacts.Count == 0)
+                                        {
+                                            <span>&darr; No Implementation</span>
+                                        }
+                                        else
+                                        {
+                                            @foreach (var implementation in design.ImplementationArtifacts)
+                                            {
+                                                <span>&darr; <a asp-controller="ImplementationArtifacts" asp-action="Details"
+                                                               asp-route-projectId="@Model.ProjectId" asp-route-id="@implementation.Id">@implementation.Identifier - @implementation.Title</a></span>
+                                                @if (implementation.TestCases.Count == 0)
+                                                {
+                                                    <span>&darr; No Test Case</span>
+                                                }
+                                                else
+                                                {
+                                                    @foreach (var testCase in implementation.TestCases)
+                                                    {
+                                                        <span>&darr; <a asp-controller="VModelTesting" asp-action="Details"
+                                                                       asp-route-projectId="@Model.ProjectId" asp-route-id="@testCase.Id">@testCase.Identifier - @testCase.Title</a>
+                                                            &mdash; @(testCase.LatestResult?.ToString() ?? "Not Executed")</span>
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            </div>
+                            <div>
+                                <strong>Phase Validation</strong>
+                                @if (requirement.LatestPhaseValidation is null)
+                                {
+                                    <span>No Validation</span>
+                                }
+                                else
+                                {
+                                    <span>@requirement.LatestPhaseValidation.PhaseType: @requirement.LatestPhaseValidation.Result</span>
+                                }
+                                <span>Coverage State: @requirement.CoverageState</span>
+                            </div>
+                            <div>
+                                <strong>Manual Traceability References</strong>
+                                @if (requirement.Traces.Count == 0)
+                                {
+                                    <span>No linked manual traceability references yet.</span>
+                                }
+                                else
+                                {
+                                    @foreach (var trace in requirement.Traces)
+                                    {
+                                        <span>@trace.Stage: @trace.ReferenceCode</span>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </article>
+                }
+            </div>
+        }
+    </section>
+</div>
