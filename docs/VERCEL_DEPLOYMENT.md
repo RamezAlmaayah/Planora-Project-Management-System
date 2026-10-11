@@ -98,12 +98,17 @@ development behavior is preserved. No external storage service was chosen.
 * Profile images still write to `wwwroot/uploads/profiles`; they have the same
   durability and cross-instance limitations. Verify serving newly uploaded files
   in a published container before using this feature.
-* Data-protection keys default to local storage. Login cookies, antiforgery and
-  Identity tokens can become invalid after replacement or on a different instance.
-  `DataProtection__KeyRingPath` supports a shared persistent directory on hosts
-  that provide one; setting it to a Vercel local directory does **not** make keys
-  durable. An external shared, encrypted key repository remains required for
-  reliable authentication across instances. No key values are committed.
+* Vercel Production requires a shared SQL Server Data Protection key ring in
+  `dbo.DataProtectionKeys`, provisioned with `docs/sql/data-protection-key-store.sql`.
+  This separate operational context does not change application migrations.
+  Keys are encrypted at rest using `DataProtection__CertificateBase64` (a private
+  PFX) and `DataProtection__CertificatePassword`, both Production secrets.
+  All instances use the application discriminator `Planora`. Never delete old keys
+  or replace the certificate without retaining a decryptor for the previous certificate.
+  Back up the database and protection certificate securely; losing either invalidates
+  existing cookies and Identity tokens. Development keeps its existing local behavior.
+  The one-time switch from local keys requires a fresh page and sign-in; old cookies
+  and tokens issued by the former container-local key rings cannot be recovered.
 * Presence/SignalR groups, AI quality cache, SRS draft cache and rate-limit counters
   are in memory. Presence is incomplete across instances; draft/cache state is
   lost on replacement; rate limits are per instance. Durable/shared coordination

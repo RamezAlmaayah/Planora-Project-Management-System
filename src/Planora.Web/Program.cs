@@ -18,6 +18,7 @@ using Planora.Web.Authorization;
 using Planora.Web.Identity;
 using Planora.Web.Middleware;
 using Planora.Web.Presence;
+using Planora.Web.Security;
 using Serilog;
 using Serilog.Events;
 
@@ -54,13 +55,8 @@ if (isVercel)
     });
 }
 
-var keyRingPath = builder.Configuration["DataProtection:KeyRingPath"];
-if (!string.IsNullOrWhiteSpace(keyRingPath))
-{
-    builder.Services.AddDataProtection()
-        .SetApplicationName("Planora")
-        .PersistKeysToFileSystem(new DirectoryInfo(keyRingPath));
-}
+builder.Services.AddPlanoraDataProtection(builder.Configuration,
+    requireSharedKeys: isVercel && builder.Environment.IsProduction());
 
 // =========================================================
 // QUESTPDF
@@ -81,6 +77,9 @@ var logConfiguration = new LoggerConfiguration()
     .MinimumLevel.Override(
         "Microsoft.AspNetCore",
         LogEventLevel.Warning)
+    .MinimumLevel.Override(
+        "Microsoft.AspNetCore.Mvc.ViewFeatures.Filters",
+        LogEventLevel.Information)
     .MinimumLevel.Override(
         "Microsoft.EntityFrameworkCore",
         LogEventLevel.Warning)
@@ -469,7 +468,9 @@ var app = builder.Build();
 if (isVercel)
 {
     app.UseForwardedHeaders();
-    app.Logger.LogWarning("Vercel local uploads, local data-protection keys, caches and presence are instance-local and are not durable across replacements or shared across instances.");
+    app.Logger.LogWarning("Vercel local uploads, caches and presence are instance-local and are not durable across replacements or shared across instances.");
+    if (app.Environment.IsProduction())
+        app.Logger.LogInformation("Data Protection uses the shared SQL Server key ring with certificate encryption at rest.");
 }
 
 // =========================================================

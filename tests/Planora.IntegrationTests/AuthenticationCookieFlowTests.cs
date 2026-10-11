@@ -1,4 +1,6 @@
 using System.Net;
+using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -11,12 +13,87 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Planora.Application.Common.Security;
 using Planora.Infrastructure.Identity;
 using Planora.Infrastructure.Persistence;
+using Planora.Web.Security;
 
 namespace Planora.IntegrationTests;
 
 public sealed class AuthenticationCookieFlowTests
 {
     private const string CookieName = "__Host-Planora.Auth";
+
+    [Theory]
+    [InlineData("/Account/Login")]
+    [InlineData("/Account/Register")]
+    [InlineData("/Account/ForgotPassword")]
+    public async Task AntiforgeryFormFromOneInstanceCanBeSubmittedToAnother(string path)
+    {
+        string database = $"shared-form-{Guid.NewGuid():N}";
+        string certificate = TestCertificate();
+        await using var first = new PlanoraWebFactory(database, certificate);
+        await using var second = new PlanoraWebFactory(database, certificate);
+        using var browser = first.CreateClient(ClientOptions());
+        using var otherInstance = second.CreateClient(ClientOptions());
+        using var page = await browser.GetAsync(path);
+        string html = await page.Content.ReadAsStringAsync();
+        using var request = new HttpRequestMessage(HttpMethod.Post, path) { Content = Form(html) };
+        request.Headers.Add("Cookie", Cookies(page));
+        using var result = await otherInstance.SendAsync(request);
+
+        // Empty required fields reach MVC model validation after successful antiforgery validation.
+        Assert.Equal(HttpStatusCode.OK, result.StatusCode);
+    }
+
+    [Fact]
+    public async Task SharedEncryptedKeysKeepLoginCookieValidAcrossInstancesAndRestarts()
+    {
+        string database = $"shared-login-{Guid.NewGuid():N}";
+        string certificate = TestCertificate();
+        await using var first = new PlanoraWebFactory(database, certificate);
+        await using var second = new PlanoraWebFactory(database, certificate);
+        await first.CreateConfirmedUserAsync();
+        using var browser = first.CreateClient(ClientOptions());
+        using var otherInstance = second.CreateClient(ClientOptions());
+        using var page = await browser.GetAsync("/Account/Login");
+        using var request = new HttpRequestMessage(HttpMethod.Post, "/Account/Login")
+        {
+            Content = Form(await page.Content.ReadAsStringAsync(),
+                ("Email", PlanoraWebFactory.Email), ("Password", PlanoraWebFactory.Password))
+        };
+        request.Headers.Add("Cookie", Cookies(page));
+        using var login = await otherInstance.SendAsync(request);
+        Assert.Equal(HttpStatusCode.Redirect, login.StatusCode);
+
+        // A third independently created host represents a replacement container.
+        await using var replacement = new PlanoraWebFactory(database, certificate);
+        using var replacementBrowser = replacement.CreateClient(ClientOptions());
+        using var dashboardRequest = new HttpRequestMessage(HttpMethod.Get, "/Dashboard");
+        dashboardRequest.Headers.Add("Cookie", Cookies(login));
+        using var dashboard = await replacementBrowser.SendAsync(dashboardRequest);
+        Assert.Equal(HttpStatusCode.OK, dashboard.StatusCode);
+
+        using var scope = replacement.Services.CreateScope();
+        var keys = await scope.ServiceProvider.GetRequiredService<DataProtectionKeyDbContext>()
+            .DataProtectionKeys.ToListAsync();
+        Assert.NotEmpty(keys);
+        Assert.True(keys.All(key => key.Xml?.Contains("encryptedSecret", StringComparison.Ordinal) == true),
+            "Shared keys must be encrypted at rest.");
+    }
+
+    private static WebApplicationFactoryClientOptions ClientOptions() => new()
+    {
+        AllowAutoRedirect = false, BaseAddress = new Uri("https://localhost")
+    };
+
+    private static string Cookies(HttpResponseMessage response) =>
+        string.Join("; ", response.Headers.GetValues("Set-Cookie").Select(value => value.Split(';')[0]));
+
+    private static string TestCertificate()
+    {
+        using var rsa = RSA.Create(2048);
+        var request = new CertificateRequest("CN=Planora Test", rsa, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+        using var certificate = request.CreateSelfSigned(DateTimeOffset.UtcNow.AddDays(-1), DateTimeOffset.UtcNow.AddDays(7));
+        return Convert.ToBase64String(certificate.Export(X509ContentType.Pkcs12));
+    }
 
     [Theory]
     [InlineData("/Account/Login")]
@@ -242,11 +319,21 @@ public sealed class AuthenticationCookieFlowTests
     {
         public const string Email = "cookie-flow@example.test";
         public const string Password = "Planora!2345";
-        private readonly string _databaseName = $"auth-flow-{Guid.NewGuid():N}";
+        private readonly string _databaseName;
+        private readonly string? _certificate;
+
+        public PlanoraWebFactory(string? databaseName = null, string? certificate = null)
+        {
+            _databaseName = databaseName ?? $"auth-flow-{Guid.NewGuid():N}";
+            _certificate = certificate;
+        }
 
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
             builder.UseEnvironment("Testing");
+            builder.UseSetting("DataProtection:PersistToSqlServer", (_certificate is not null).ToString());
+            if (_certificate is not null)
+                builder.UseSetting("DataProtection:CertificateBase64", _certificate);
             builder.UseSetting(
                 "ConnectionStrings:DefaultConnection",
                 "Server=(localdb)\\mssqllocaldb;Database=PlanoraAuthFlow;Trusted_Connection=True");
@@ -254,7 +341,9 @@ public sealed class AuthenticationCookieFlowTests
                 configuration.AddInMemoryCollection(new Dictionary<string, string?>
                 {
                     ["ConnectionStrings:DefaultConnection"] =
-                        "Server=(localdb)\\mssqllocaldb;Database=PlanoraAuthFlow;Trusted_Connection=True"
+                        "Server=(localdb)\\mssqllocaldb;Database=PlanoraAuthFlow;Trusted_Connection=True",
+                    ["DataProtection:PersistToSqlServer"] = (_certificate is not null).ToString(),
+                    ["DataProtection:CertificateBase64"] = _certificate
                 }));
             builder.ConfigureServices(services =>
             {
@@ -264,6 +353,14 @@ public sealed class AuthenticationCookieFlowTests
                 services.RemoveAll<ApplicationDbContext>();
                 services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseInMemoryDatabase(_databaseName));
+                if (_certificate is not null)
+                {
+                    services.RemoveAll<DbContextOptions<DataProtectionKeyDbContext>>();
+                    services.RemoveAll<IDbContextOptionsConfiguration<DataProtectionKeyDbContext>>();
+                    services.RemoveAll<DataProtectionKeyDbContext>();
+                    services.AddDbContext<DataProtectionKeyDbContext>(options =>
+                        options.UseInMemoryDatabase(_databaseName + "-keys"));
+                }
             });
         }
 
