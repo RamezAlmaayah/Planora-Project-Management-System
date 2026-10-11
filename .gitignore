@@ -1,4 +1,7 @@
 # .NET build output
+**/node_modules/
+**/test-results/
+**/playwright-report/
 [Bb]in/
 [Oo]bj/
 /artifacts/

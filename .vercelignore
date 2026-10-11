@@ -4,6 +4,7 @@
 .idea
 .vscode
 tmp
+tests/browser
 Planora_Professional_Showcase.mp4
 **/bin
 **/obj

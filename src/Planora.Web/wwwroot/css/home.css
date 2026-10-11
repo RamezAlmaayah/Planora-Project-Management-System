@@ -586,3 +586,10 @@ a {
 }
 
 /* ===== END PLANORA LOGO FINAL SIZE ===== */
+
+@media (max-width: 480px) {
+    .public-topbar { gap: 12px !important; padding: 0 16px !important; flex-wrap: wrap; }
+    .public-brand-logo { width: 42px !important; height: 42px !important; min-width: 42px !important; }
+    .public-brand > span { font-size: 20px !important; }
+    .public-login, .public-register { padding: 0 12px !important; }
+}

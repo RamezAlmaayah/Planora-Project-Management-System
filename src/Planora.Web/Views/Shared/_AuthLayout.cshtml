@@ -26,7 +26,7 @@
 
 </head>
 
-<body>
+<body class="planora-auth">
 
     <main class="auth-page">
 
@@ -39,6 +39,8 @@
     @await RenderSectionAsync(
     "Scripts",
     required: false)
+
+    <script src="~/js/auth-forms.js" asp-append-version="true"></script>
 
 </body>
 

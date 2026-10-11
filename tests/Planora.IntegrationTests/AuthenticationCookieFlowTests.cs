@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
@@ -14,12 +15,129 @@ using Planora.Application.Common.Security;
 using Planora.Infrastructure.Identity;
 using Planora.Infrastructure.Persistence;
 using Planora.Web.Security;
+using Planora.Application.Abstractions.Common;
 
 namespace Planora.IntegrationTests;
 
 public sealed class AuthenticationCookieFlowTests
 {
     private const string CookieName = "__Host-Planora.Auth";
+
+    [Fact]
+    public async Task RegistrationConfirmationRecoveryAndResetCompleteWithProtectedForms()
+    {
+        string database = $"lifecycle-{Guid.NewGuid():N}";
+        await using var factory = new PlanoraWebFactory(database);
+        using (var scope = factory.Services.CreateScope())
+        {
+            // SQL migrations seed this role; the isolated InMemory fixture does not.
+            var roles = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            Assert.True((await roles.CreateAsync(new IdentityRole(SystemRoles.Developer))).Succeeded);
+        }
+        using var client = factory.CreateClient(ClientOptions());
+        const string email = "lifecycle@example.test";
+        const string initial = "Planora!2345";
+        const string replacement = "Planora!6789";
+        async Task<HttpResponseMessage> Post(string path, params (string Name, string Value)[] fields)
+        {
+            string html = await (await client.GetAsync(path)).Content.ReadAsStringAsync();
+            return await client.PostAsync(path, Form(html, fields));
+        }
+        using var registration = await Post("/Account/Register", ("FullName", "Lifecycle User"),
+            ("Email", email), ("Password", initial), ("ConfirmPassword", initial));
+        Assert.Equal(HttpStatusCode.Redirect, registration.StatusCode);
+        Assert.Equal("/Account/RegisterPending", RedirectTarget(registration));
+        Assert.Single(factory.Mail.Bodies);
+
+        using var pendingLogin = await Post("/Account/Login", ("Email", email), ("Password", initial));
+        Assert.Equal(HttpStatusCode.OK, pendingLogin.StatusCode);
+        string confirmation = EmailLink(factory.Mail.Bodies.Single(), "ConfirmEmail");
+        using var confirmed = await client.GetAsync(confirmation);
+        Assert.Contains("Email verified", await confirmed.Content.ReadAsStringAsync(), StringComparison.Ordinal);
+
+        using var duplicate = await Post("/Account/Register", ("FullName", "Lifecycle User"),
+            ("Email", email), ("Password", initial), ("ConfirmPassword", initial));
+        Assert.Equal(HttpStatusCode.OK, duplicate.StatusCode);
+        Assert.Contains("Unable to create an account", await duplicate.Content.ReadAsStringAsync(), StringComparison.Ordinal);
+
+        using var unknownRecovery = await Post("/Account/ForgotPassword", ("Email", "unknown@example.test"));
+        using var knownRecovery = await Post("/Account/ForgotPassword", ("Email", email));
+        Assert.Equal(unknownRecovery.StatusCode, knownRecovery.StatusCode);
+        Assert.Equal(RedirectTarget(unknownRecovery), RedirectTarget(knownRecovery));
+        Assert.Equal(2, factory.Mail.Bodies.Count);
+
+        string reset = EmailLink(factory.Mail.Bodies.Last(), "ResetPassword");
+        var query = QueryHelpers.ParseQuery(new Uri("https://localhost" + reset).Query);
+        using var changed = await Post(reset, ("Email", email), ("Code", query["code"].ToString()),
+            ("Password", replacement), ("ConfirmPassword", replacement));
+        Assert.Equal(HttpStatusCode.OK, changed.StatusCode);
+        Assert.Contains("Password updated", await changed.Content.ReadAsStringAsync(), StringComparison.Ordinal);
+        // Use another instance so the replay check is not masked by the recovery rate limit.
+        await using var replayHost = new PlanoraWebFactory(database);
+        using var replayClient = replayHost.CreateClient(ClientOptions());
+        string replayHtml = await (await replayClient.GetAsync(reset)).Content.ReadAsStringAsync();
+        using var reused = await replayClient.PostAsync(reset, Form(replayHtml,
+            ("Email", email), ("Code", query["code"].ToString()),
+            ("Password", initial), ("ConfirmPassword", initial)));
+        Assert.Contains("Reset link invalid", await reused.Content.ReadAsStringAsync(), StringComparison.Ordinal);
+
+        using var oldPassword = await Post("/Account/Login", ("Email", email), ("Password", initial));
+        Assert.Equal(HttpStatusCode.OK, oldPassword.StatusCode);
+        using var login = await Post("/Account/Login", ("Email", email), ("Password", replacement));
+        Assert.Equal(HttpStatusCode.Redirect, login.StatusCode);
+        using var home = await client.GetAsync(RedirectTarget(login));
+        Assert.StartsWith("/Dashboard", RedirectTarget(home), StringComparison.Ordinal);
+        using var dashboard = await client.GetAsync(RedirectTarget(home));
+        Assert.Equal(HttpStatusCode.OK, dashboard.StatusCode);
+        using var reload = await client.GetAsync("/Dashboard");
+        Assert.Equal(HttpStatusCode.OK, reload.StatusCode);
+        string dashboardHtml = await dashboard.Content.ReadAsStringAsync();
+        using var logout = await client.PostAsync("/Account/Logout", Form(dashboardHtml));
+        Assert.Equal(HttpStatusCode.Redirect, logout.StatusCode);
+        using var protectedPage = await client.GetAsync("/Dashboard");
+        Assert.Equal(HttpStatusCode.Redirect, protectedPage.StatusCode);
+    }
+
+    [Theory]
+    [InlineData("/Account/AccessDenied", HttpStatusCode.Forbidden)]
+    [InlineData("/not-found-audit", HttpStatusCode.NotFound)]
+    public async Task FriendlyGetErrorPagesPreserveTheirStatus(string path, HttpStatusCode expected)
+    {
+        await using var factory = new PlanoraWebFactory();
+        using var client = factory.CreateClient(ClientOptions());
+        using var response = await client.GetAsync(path);
+        Assert.Equal(expected, response.StatusCode);
+        Assert.Equal("text/html", response.Content.Headers.ContentType?.MediaType);
+    }
+
+    private static string EmailLink(string body, string action)
+    {
+        var match = Regex.Match(body, "href=\"(https://localhost/Account/" + action + "[^\"]+)\"");
+        Assert.True(match.Success, "The captured test email must contain the expected account action.");
+        return new Uri(WebUtility.HtmlDecode(match.Groups[1].Value)).PathAndQuery;
+    }
+
+    private sealed class CapturedEmail : IEmailService
+    {
+        public List<string> Bodies { get; } = [];
+        public Task SendEmailAsync(string toEmail, string subject, string htmlBody,
+            CancellationToken cancellationToken = default, EmailInlineResource? inlineResource = null)
+        {
+            Bodies.Add(htmlBody);
+            return Task.CompletedTask;
+        }
+    }
+
+    [Fact]
+    public async Task AuthStylesheetReturnsCssContentInsteadOfEmptySuccess()
+    {
+        await using var factory = new PlanoraWebFactory();
+        using var client = factory.CreateClient(ClientOptions());
+        using var response = await client.GetAsync("/css/auth.css");
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        Assert.Equal("text/css", response.Content.Headers.ContentType?.MediaType);
+        Assert.Contains(".auth-v3-input-wrap", await response.Content.ReadAsStringAsync(), StringComparison.Ordinal);
+    }
 
     [Theory]
     [InlineData("/Account/Login")]
@@ -321,6 +439,7 @@ public sealed class AuthenticationCookieFlowTests
         public const string Password = "Planora!2345";
         private readonly string _databaseName;
         private readonly string? _certificate;
+        public CapturedEmail Mail { get; } = new();
 
         public PlanoraWebFactory(string? databaseName = null, string? certificate = null)
         {
@@ -347,6 +466,8 @@ public sealed class AuthenticationCookieFlowTests
                 }));
             builder.ConfigureServices(services =>
             {
+                services.RemoveAll<IEmailService>();
+                services.AddSingleton<IEmailService>(Mail);
                 services.RemoveAll<DbContextOptions<ApplicationDbContext>>();
                 services.RemoveAll<DbContextOptions>();
                 services.RemoveAll<IDbContextOptionsConfiguration<ApplicationDbContext>>();

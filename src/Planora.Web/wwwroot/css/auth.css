@@ -1630,3 +1630,32 @@ button {
 /* ===== END AUTH LOGO TRANSPARENT FIX ===== */
 
 
+
+/* Responsive boundaries for the existing auth panels. */
+body.planora-auth { margin: 0; }
+.planora-auth .auth-page,
+.planora-auth .auth-page * { box-sizing: border-box; }
+.auth-page .auth-v3-shell { grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr) !important; }
+.auth-page .auth-v3-register { grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr) !important; }
+.auth-page .auth-v3-form-side,
+.auth-page .auth-v3-showcase,
+.auth-page .auth-v3-form-wrapper { min-width: 0; }
+.auth-page .auth-v3-showcase-content h1 { white-space: normal !important; overflow-wrap: break-word; }
+@media (min-width: 1101px) {
+    .auth-page .auth-v3-mobile-brand { display: none !important; }
+}
+@media (max-width: 1100px) {
+    .auth-page .auth-v3-shell { display: block; }
+    .auth-page .auth-v3-showcase { display: none; }
+    .auth-page .auth-v3-form-side { min-height: 100svh; padding: 32px 24px !important; }
+    .auth-page .auth-v3-form-wrapper { width: 100%; margin: 0 auto; }
+    .auth-page .auth-v3-mobile-brand { margin-bottom: 36px; }
+}
+@media (max-width: 480px) {
+    .auth-page .auth-v3-form-side { padding: 24px 18px !important; }
+    .auth-page .auth-v3-form-header h2,
+    .auth-page .auth-v3-result h2 { font-size: 32px !important; }
+    .auth-page .auth-v3-switch a,
+    .auth-page .auth-v3-options a,
+    .auth-page .auth-v3-checkbox { min-height: 44px; display: inline-flex; align-items: center; }
+}
