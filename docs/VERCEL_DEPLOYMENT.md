@@ -2,10 +2,11 @@
 
 ## Deployment strategy
 
-Use Vercel's official **Container Runtime (beta)**, detected through the root
-`Dockerfile.vercel`. This runs the existing ASP.NET Core MVC application, Razor
+Use Vercel's official **Container Runtime (beta)**, explicitly configured as the
+single `planora` service in `vercel.json` with `Dockerfile.vercel` as its entrypoint.
+This runs the existing ASP.NET Core MVC application, Razor
 views and .NET libraries as an OCI container; no Node adapter or frontend rewrite
-is needed. All HTTP paths route to the container automatically.
+is needed. The catch-all rewrite routes all HTTP paths to this container.
 
 Official reference: https://vercel.com/docs/functions/runtimes/container
 
@@ -25,7 +26,7 @@ docker build -f Dockerfile.vercel -t planora:production .
 Create/link `planora-project-management-system` in the account/team selected by
 the owner. Connect the existing GitHub repository
 `RamezAlmaayah/Planora-Project-Management-System`, use the repository root, choose
-Other for Framework Preset, and set the production branch to `main`. Do not add
+Services for Framework Preset, and set the production branch to `main`. Do not add
 Node build/output commands. Use Vercel's secure dashboard environment-variable
 flow or interactive `vercel env add` prompts for values. Never put secrets in
 command arguments, chat, source files, Docker build arguments or Git.

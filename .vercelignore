@@ -1,5 +1,10 @@
 .git
 .vercel
+.vs
+.idea
+.vscode
+tmp
+Planora_Professional_Showcase.mp4
 **/bin
 **/obj
 **/logs
