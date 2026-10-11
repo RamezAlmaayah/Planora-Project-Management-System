@@ -514,9 +514,14 @@ app.UseMiddleware<SecurityHeadersMiddleware>();
 
 app.UseMiddleware<GlobalExceptionMiddleware>();
 
-app.UseStatusCodePagesWithReExecute(
-    "/Error/HandleStatusCode",
-    "?code={0}");
+// Re-execution preserves the request method. The display-only error endpoint is
+// GET-only, so re-executing a rejected POST would replace its status with 405.
+// Keep unsafe-method failures (including antiforgery 400s) intact.
+app.UseWhen(
+    context => HttpMethods.IsGet(context.Request.Method) || HttpMethods.IsHead(context.Request.Method),
+    branch => branch.UseStatusCodePagesWithReExecute(
+        "/Error/HandleStatusCode",
+        "?code={0}"));
 
 // =========================================================
 // ROUTING

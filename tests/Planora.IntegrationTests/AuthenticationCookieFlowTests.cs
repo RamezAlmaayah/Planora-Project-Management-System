@@ -18,6 +18,25 @@ public sealed class AuthenticationCookieFlowTests
 {
     private const string CookieName = "__Host-Planora.Auth";
 
+    [Theory]
+    [InlineData("/Account/Login")]
+    [InlineData("/Account/Register")]
+    [InlineData("/Account/ForgotPassword")]
+    public async Task PostWithoutAntiforgeryPreservesBadRequestInsteadOfMethodNotAllowed(string path)
+    {
+        await using var factory = new PlanoraWebFactory();
+        using HttpClient client = factory.CreateClient(new WebApplicationFactoryClientOptions
+        {
+            AllowAutoRedirect = false,
+            BaseAddress = new Uri("https://localhost")
+        });
+
+        using HttpResponseMessage response = await client.PostAsync(path,
+            new FormUrlEncodedContent(new Dictionary<string, string>()));
+
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+    }
+
     [Fact]
     public async Task AdminLoginReachesDashboardAndLogoutAllowsFreshLogin()
     {
