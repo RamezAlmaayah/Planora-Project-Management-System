@@ -1519,3 +1519,7 @@ a:has(svg) {
         transition: none;
     }
 }
+
+@media (max-width: 900px) {
+    .sidebar-toggle, .topbar-primary-button { min-width: 44px; min-height: 44px !important; }
+}
