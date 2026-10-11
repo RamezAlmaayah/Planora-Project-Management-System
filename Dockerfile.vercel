@@ -1,0 +1,24 @@
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
+WORKDIR /src
+COPY global.json Planora.sln ./
+COPY src/Planora.Domain/Planora.Domain.csproj src/Planora.Domain/
+COPY src/Planora.Application/Planora.Application.csproj src/Planora.Application/
+COPY src/Planora.Infrastructure/Planora.Infrastructure.csproj src/Planora.Infrastructure/
+COPY src/Planora.Web/Planora.Web.csproj src/Planora.Web/
+RUN dotnet restore src/Planora.Web/Planora.Web.csproj -r linux-x64
+COPY src/ src/
+RUN dotnet publish src/Planora.Web/Planora.Web.csproj -c Release -r linux-x64 --no-restore --self-contained false -o /app/publish
+
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
+WORKDIR /app
+ENV ASPNETCORE_ENVIRONMENT=Production \
+    ASPNETCORE_HTTP_PORTS=8080 \
+    PORT=8080 \
+    Logging__FileEnabled=false \
+    TaskAttachments__StoragePath=/tmp/planora/attachments \
+    QaEvidenceStorage__StoragePath=/tmp/planora/qa-evidence
+COPY --from=build --chown=app:app /app/publish .
+USER app
+EXPOSE 8080
+# Vercel's project PORT must match the listening port; use 8080 in project settings.
+ENTRYPOINT ["sh", "-c", "exec dotnet Planora.Web.dll --urls http://0.0.0.0:${PORT:-8080}"]

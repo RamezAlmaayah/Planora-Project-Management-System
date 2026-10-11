@@ -3,6 +3,9 @@ using System.Security.Claims;
 using System.Threading.RateLimiting;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.Data.SqlClient;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.RateLimiting;
@@ -20,6 +23,45 @@ using Serilog.Events;
 
 var builder = WebApplication.CreateBuilder(args);
 
+bool isVercel = builder.Configuration["VERCEL"] == "1";
+
+if (builder.Environment.IsProduction())
+{
+    var connection = builder.Configuration.GetConnectionString("DefaultConnection");
+    if (string.IsNullOrWhiteSpace(connection))
+        throw new InvalidOperationException("Production requires ConnectionStrings__DefaultConnection for a remote SQL Server database.");
+
+    var sql = new SqlConnectionStringBuilder(connection);
+    string server = sql.DataSource;
+    if (server.Contains("localdb", StringComparison.OrdinalIgnoreCase)
+        || server.Contains("localhost", StringComparison.OrdinalIgnoreCase)
+        || server.Contains("127.0.0.1", StringComparison.OrdinalIgnoreCase)
+        || server.StartsWith(@".\", StringComparison.OrdinalIgnoreCase)
+        || server is "." or "(local)")
+        throw new InvalidOperationException("Production cannot use a local SQL Server database.");
+}
+
+if (isVercel)
+{
+    builder.Services.Configure<ForwardedHeadersOptions>(options =>
+    {
+        // Vercel is the sole ingress to this container; its proxy addresses are dynamic.
+        // Never enable this trust policy on a publicly reachable standalone container.
+        options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+        options.ForwardLimit = 1;
+        options.KnownIPNetworks.Clear();
+        options.KnownProxies.Clear();
+    });
+}
+
+var keyRingPath = builder.Configuration["DataProtection:KeyRingPath"];
+if (!string.IsNullOrWhiteSpace(keyRingPath))
+{
+    builder.Services.AddDataProtection()
+        .SetApplicationName("Planora")
+        .PersistKeysToFileSystem(new DirectoryInfo(keyRingPath));
+}
+
 // =========================================================
 // QUESTPDF
 // =========================================================
@@ -31,7 +73,7 @@ QuestPDF.Settings.License =
 // SERILOG
 // =========================================================
 
-Log.Logger = new LoggerConfiguration()
+var logConfiguration = new LoggerConfiguration()
     .MinimumLevel.Information()
     .MinimumLevel.Override(
         "Microsoft",
@@ -43,13 +85,18 @@ Log.Logger = new LoggerConfiguration()
         "Microsoft.EntityFrameworkCore",
         LogEventLevel.Warning)
     .Enrich.FromLogContext()
-    .WriteTo.Console()
-    .WriteTo.File(
+    .WriteTo.Console();
+
+if (builder.Configuration.GetValue("Logging:FileEnabled", true))
+{
+    logConfiguration.WriteTo.File(
         path: "logs/planora-.log",
         rollingInterval: RollingInterval.Day,
         retainedFileCountLimit: 30,
-        shared: true)
-    .CreateLogger();
+        shared: true);
+}
+
+Log.Logger = logConfiguration.CreateLogger();
 
 builder.Host.UseSerilog();
 
@@ -418,6 +465,12 @@ builder.Services.AddRateLimiter(options =>
 // =========================================================
 
 var app = builder.Build();
+
+if (isVercel)
+{
+    app.UseForwardedHeaders();
+    app.Logger.LogWarning("Vercel local uploads, local data-protection keys, caches and presence are instance-local and are not durable across replacements or shared across instances.");
+}
 
 // =========================================================
 // BOOTSTRAP ADMIN

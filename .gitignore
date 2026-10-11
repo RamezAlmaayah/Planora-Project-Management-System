@@ -35,6 +35,7 @@ __pycache__/
 venv/
 
 # Local secrets and user-specific settings
+.vercel/
 .env
 .env.*
 !.env.example
