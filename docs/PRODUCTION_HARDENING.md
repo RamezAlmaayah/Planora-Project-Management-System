@@ -1,8 +1,12 @@
 # Production hardening acceptance record
 
-Status: **not complete**. The dynv6 custom domain passes DNS, HTTPS, public
-forms, assets, and responsive checks. Live Admin acceptance now passes after an authorized Identity password reset;
-emailed confirmation/reset acceptance remains pending.
+Status: **DEPLOYED**. Production URL: https://planora.dynv6.net.
+DNS, Vercel domain verification, HTTPS, access without VPN, MonsterASP SQL
+connectivity, and responsive/browser checks pass. Production Admin login,
+Dashboard load, Dashboard reload session persistence, and Admin Users access
+pass. GitHub main is synchronized. The deployment task is closed at the user's
+request; optional registration/confirmation/reset email scenarios are excluded
+from the accepted scope and will not be continued.
 
 ## dynv6 custom-domain acceptance — 2026-10-12 (Asia/Amman)
 
@@ -20,7 +24,7 @@ Valid Configuration**. No TXT ownership challenge is currently required.
   return the expected HTTP 200/404. Valid-antiforgery Register POST renders model
   validation with HTTP 200; Forgot Password POST for a synthetic nonexistent
   account returns the generic confirmation redirect. No 400/405/500 was observed
-  in these checks. Actual registration and email delivery were not exercised.
+  in these checks. The later registration check is recorded below; actual inbox delivery is unverified.
 - All 47 live browser regression checks pass. An additional 54 public-page
   viewport checks pass across 1440, 1280, 1024, 768, 430, 390, 375, 360, and mobile
   landscape widths. Checked assets load; auth icons have bounded sizes. Visual
@@ -41,13 +45,19 @@ Valid Configuration**. No TXT ownership challenge is currently required.
   Admin password handoff values were removed after verification.
 - A separate non-admin acceptance account was registered through the real public
   form using a Gmail plus-alias of the Admin mailbox. Registration returns HTTP
-  302; application logs report verification email sent. Actual inbox delivery,
-  confirmation-token acceptance, and the emailed reset flow await secure local
-  link handoff. The test account is identifiable as Production Acceptance Test;
-  its generated password is held only in local User Secrets for the pending flow.
+  302; application logs report verification email sent. The user stopped optional
+  email acceptance scenarios. Inbox delivery, confirmation links, and reset email
+  flows remain unverified and are non-blocking for the accepted deployment scope.
+  Temporary test credentials/link handoffs were removed from local User Secrets.
+  The non-admin Production Acceptance Test account remains in the database;
+  no account deletion was requested or performed.
 - No migrations, DNS updater, forwarding, or additional projects were introduced.
-  Full production acceptance is not complete until real emailed links and the
-  subsequent test-user login have been verified.
+  No additional optional testing is planned.
+
+Remaining non-blocking limitations: SQL TLS certificate validation is skipped by
+provider configuration; local runtime uploads/evidence and process-local
+presence/cache have the durability/scaling limitations in `VERCEL_DEPLOYMENT.md`;
+optional real email confirmation/reset flows are unverified.
 
 ## Custom-domain acceptance — 2026-10-12 (Asia/Amman)
 
