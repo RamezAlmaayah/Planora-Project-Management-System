@@ -1,32 +1,43 @@
 # Production hardening acceptance record
 
-Status: **not complete**. Local checks pass; live production acceptance is blocked
-by connection resets from the audit environment. Do not equate Vercel READY with
-successful live authentication or visual acceptance.
+Status: **not complete**. The dynv6 custom domain passes DNS, HTTPS, public
+forms, assets, and responsive checks. Live Admin acceptance remains blocked by
+credential rejection; do not equate domain acceptance with full authentication
+acceptance.
 
 ## dynv6 custom-domain acceptance — 2026-10-12 (Asia/Amman)
 
-Status: **blocked; not accepted**. `planora.dynv6.net` is attached to the existing
-`planora-project-management-system` Vercel project. Ownership is **Verified**,
-but Vercel reports **Invalid Configuration** and sees no A records. No ownership
-TXT challenge is currently required.
+`planora.dynv6.net` is attached to the existing
+`planora-project-management-system` Vercel project. Vercel reports **Verified /
+Valid Configuration**. No TXT ownership challenge is currently required.
 
-After the reported DNS save, Cloudflare (`1.1.1.1`), Google (`8.8.8.8`),
-`ns1.dynv6.com`, and `ns2.dynv6.net` all returned NXDOMAIN for the exact hostname.
-The required root A values returned by Vercel remain `216.198.79.1` and
-`64.29.17.1`. Direct HTTPS fails at DNS lookup before TLS or an HTTP request.
-Only Wi-Fi was active; no connected system VPN adapter was observed.
-
-MonsterASP production SQL connectivity was rechecked successfully with encrypted
-SQL authentication. The provider connection continues to skip TLS certificate
-validation. No migrations, seeding, account resets, application code changes,
-DNS updaters, forwarding, or additional projects were introduced.
-
-HTTPS issuance, normal public/auth POST flows, Admin login, Dashboard reload,
-Admin Users, logout, 404, live assets and responsive acceptance remain unverified
-on this hostname. Resolve the authoritative DNS result before claiming production
-acceptance. GitHub authentication was verified as `RamezAlmaayah`; synchronizing
-the previously tested source commits does not establish successful live acceptance.
+- Both authoritative servers (`ns1.dynv6.com`, `ns2.dynv6.net`), Cloudflare
+  (`1.1.1.1`), and Google (`8.8.8.8`) resolve the root A record to
+  `216.198.79.1`. Vercel accepts this configuration; no DNS changes were made.
+- Direct HTTPS returns HTTP 200 with certificate validation successful. Direct
+  command-line and fresh browser checks pass with only Wi-Fi active and no
+  connected system VPN adapter observed. No VPN credentials were accessed.
+- Landing, Login, Register, Forgot Password, Contact, and a genuine unknown route
+  return the expected HTTP 200/404. Valid-antiforgery Register POST renders model
+  validation with HTTP 200; Forgot Password POST for a synthetic nonexistent
+  account returns the generic confirmation redirect. No 400/405/500 was observed
+  in these checks. Actual registration and email delivery were not exercised.
+- All 47 live browser regression checks pass. An additional 54 public-page
+  viewport checks pass across 1440, 1280, 1024, 768, 430, 390, 375, 360, and mobile
+  landscape widths. Checked assets load; auth icons have bounded sizes. Visual
+  captures of mobile Register and desktop Login show no layout defects.
+- MonsterASP production SQL connectivity passes using encrypted SQL
+  authentication. The provider connection still skips TLS certificate validation.
+- Two secure Admin login attempts return HTTP 200 with the generic invalid
+  credentials message. Production diagnosis confirms the expected account exists,
+  email is confirmed, it is enabled, the password hash is structurally plausible,
+  Admin membership exists, and there is no active lockout or two-factor challenge.
+  The supplied password was not accepted; no password reset was performed.
+  Temporary password handoffs were removed without printing credential values.
+- Admin login, authenticated Dashboard reload, Admin Users, and logout acceptance
+  remain blocked. Normal registration, confirmation/reset links, and actual SMTP
+  delivery remain unverified. No migrations, seeding, bootstrap, application code,
+  DNS updater, forwarding, or additional projects were introduced by this pass.
 
 ## Custom-domain acceptance — 2026-10-12 (Asia/Amman)
 
