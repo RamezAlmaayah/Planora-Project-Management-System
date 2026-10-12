@@ -4,6 +4,64 @@ Status: **not complete**. Local checks pass; live production acceptance is block
 by connection resets from the audit environment. Do not equate Vercel READY with
 successful live authentication or visual acceptance.
 
+## dynv6 custom-domain acceptance — 2026-10-12 (Asia/Amman)
+
+Status: **blocked; not accepted**. `planora.dynv6.net` is attached to the existing
+`planora-project-management-system` Vercel project. Ownership is **Verified**,
+but Vercel reports **Invalid Configuration** and sees no A records. No ownership
+TXT challenge is currently required.
+
+After the reported DNS save, Cloudflare (`1.1.1.1`), Google (`8.8.8.8`),
+`ns1.dynv6.com`, and `ns2.dynv6.net` all returned NXDOMAIN for the exact hostname.
+The required root A values returned by Vercel remain `216.198.79.1` and
+`64.29.17.1`. Direct HTTPS fails at DNS lookup before TLS or an HTTP request.
+Only Wi-Fi was active; no connected system VPN adapter was observed.
+
+MonsterASP production SQL connectivity was rechecked successfully with encrypted
+SQL authentication. The provider connection continues to skip TLS certificate
+validation. No migrations, seeding, account resets, application code changes,
+DNS updaters, forwarding, or additional projects were introduced.
+
+HTTPS issuance, normal public/auth POST flows, Admin login, Dashboard reload,
+Admin Users, logout, 404, live assets and responsive acceptance remain unverified
+on this hostname. Resolve the authoritative DNS result before claiming production
+acceptance. GitHub authentication was verified as `RamezAlmaayah`; synchronizing
+the previously tested source commits does not establish successful live acceptance.
+
+## Custom-domain acceptance — 2026-10-12 (Asia/Amman)
+
+Status: **blocked; not accepted**. The registration was not merged. Official
+is-a.dev registration PR [#56135](https://github.com/is-a-dev/register/pull/56135)
+is closed with `merged = false`. The review bot reports denial as "Not Related
+to Software Development". No registration request was submitted or reopened by
+this verification pass.
+
+- Current DNS, Cloudflare, and the authoritative `ns1.is-a.dev` resolve
+  `planora.is-a.dev` to `104.18.4.103` / `104.18.5.103`, not the requested Vercel
+  records. The `_vercel.planora.is-a.dev` TXT verification record is absent.
+- HTTPS certificate validation succeeds for the currently served is-a.dev
+  endpoint, but it responds HTTP 302 to
+  `https://is-a.dev/available?d=planora`. This is not Planora acceptance or proof
+  that a Vercel certificate has been issued for the custom domain.
+- Vercel reports **Invalid Configuration**, ownership verification pending.
+  The hostname remains attached to the existing
+  `planora-project-management-system` project; no new project was created.
+- Only Wi-Fi was active during the direct curl check; no system VPN adapter was
+  connected. The placeholder endpoint is reachable, but bypass of filtering for
+  the actual Planora application remains unverified.
+- MonsterASP production SQL connectivity passes using encrypted SQL
+  authentication. The provider connection still skips TLS certificate validation.
+  No migrations, account resets, or seeding were performed.
+- Public/authenticated route checks, Admin login, Dashboard reload, logout,
+  production assets and responsive acceptance cannot be tested against this
+  hostname while it points to the registration placeholder.
+- Local GitHub authentication is working as `RamezAlmaayah`. Pending Planora
+  commits have not been pushed because the requested prerequisite of successful
+  live verification has not been satisfied.
+
+Resolve the denied registration with is-a.dev manually (or choose another
+hostname/provider), then repeat DNS, ownership, HTTPS and live acceptance checks.
+
 ## Confirmed issues and fixes
 
 - Auth desktop minimum grid tracks totaled 1170px and later `!important` rules
