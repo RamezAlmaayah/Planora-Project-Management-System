@@ -1,9 +1,8 @@
 # Production hardening acceptance record
 
 Status: **not complete**. The dynv6 custom domain passes DNS, HTTPS, public
-forms, assets, and responsive checks. Live Admin acceptance remains blocked by
-credential rejection; do not equate domain acceptance with full authentication
-acceptance.
+forms, assets, and responsive checks. Live Admin acceptance now passes after an authorized Identity password reset;
+emailed confirmation/reset acceptance remains pending.
 
 ## dynv6 custom-domain acceptance — 2026-10-12 (Asia/Amman)
 
@@ -28,16 +27,27 @@ Valid Configuration**. No TXT ownership challenge is currently required.
   captures of mobile Register and desktop Login show no layout defects.
 - MonsterASP production SQL connectivity passes using encrypted SQL
   authentication. The provider connection still skips TLS certificate validation.
-- Two secure Admin login attempts return HTTP 200 with the generic invalid
-  credentials message. Production diagnosis confirms the expected account exists,
-  email is confirmed, it is enabled, the password hash is structurally plausible,
-  Admin membership exists, and there is no active lockout or two-factor challenge.
-  The supplied password was not accepted; no password reset was performed.
-  Temporary password handoffs were removed without printing credential values.
-- Admin login, authenticated Dashboard reload, Admin Users, and logout acceptance
-  remain blocked. Normal registration, confirmation/reset links, and actual SMTP
-  delivery remain unverified. No migrations, seeding, bootstrap, application code,
-  DNS updater, forwarding, or additional projects were introduced by this pass.
+- Earlier supplied credentials were rejected. The user explicitly authorized a
+  reset of only the existing Production Admin. The new password was entered in a
+  masked local dialog and validated with ASP.NET Core Identity PasswordValidators
+  using the actual Planora policy (a source fingerprint guards against drift).
+  UserManager GeneratePasswordResetTokenAsync / ResetPasswordAsync performed the
+  reset transactionally. No LocalDB changes, additional Admin, role changes,
+  seeding, bootstrap enablement, or application code changes were made.
+- Live Admin login returns HTTP 302 and reaches Dashboard. Secure/HttpOnly/Lax
+  authentication cookie checks pass. Dashboard reload, Admin Users authorization,
+  and logout pass; both protected routes redirect to Login after logout. Dashboard
+  and Admin Users pass overflow checks at all nine audited viewports. Temporary
+  Admin password handoff values were removed after verification.
+- A separate non-admin acceptance account was registered through the real public
+  form using a Gmail plus-alias of the Admin mailbox. Registration returns HTTP
+  302; application logs report verification email sent. Actual inbox delivery,
+  confirmation-token acceptance, and the emailed reset flow await secure local
+  link handoff. The test account is identifiable as Production Acceptance Test;
+  its generated password is held only in local User Secrets for the pending flow.
+- No migrations, DNS updater, forwarding, or additional projects were introduced.
+  Full production acceptance is not complete until real emailed links and the
+  subsequent test-user login have been verified.
 
 ## Custom-domain acceptance — 2026-10-12 (Asia/Amman)
 
